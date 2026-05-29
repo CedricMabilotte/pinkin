@@ -1,0 +1,64 @@
+name: Bug report
+description: Something's broken. Help me reproduce it.
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting. Please give me what I need to reproduce — vague
+        bug reports usually stay unfixed because I can't make them happen
+        on my end.
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: One paragraph. The shortest possible repro.
+      placeholder: "I clicked Connect Google, the consent screen opened, I authorized, and the carte stayed empty forever."
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect?
+      placeholder: "Pins to appear on the map after geocoding."
+    validations:
+      required: true
+  - type: dropdown
+    id: surface
+    attributes:
+      label: Where?
+      options:
+        - Extension Chrome (Manifest V3)
+        - PWA (pinkin.org)
+        - Both
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      placeholder: "1.0.0 (visible in chrome://extensions for the extension)"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser + OS
+      placeholder: "Chrome 130 on macOS 14.5, or Firefox 128 on Ubuntu 24.04"
+    validations:
+      required: true
+  - type: textarea
+    id: console
+    attributes:
+      label: Browser console output
+      description: F12 → Console. Copy any red errors here.
+      render: text
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Sanity checks
+      options:
+        - label: I've searched existing issues and didn't find a duplicate
+          required: true
+        - label: I'm not reporting a security issue (those go to SECURITY.md)
+          required: true

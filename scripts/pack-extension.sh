@@ -114,18 +114,38 @@ rm -f "$ZIP"
 # Liste blanche de ce qui rentre dans le zip — plus sûr qu'une liste noire.
 # Si un nouveau dossier de prod apparaît, il faut l'ajouter ici explicitement
 # (force la conscience de ce qui est livré).
-zip -r "$ZIP" \
-  manifest.json \
-  extension/ \
-  core/ \
-  ui/ \
-  i18n/ \
-  assets/icons/ \
-  lib/leaflet/ \
-  -x "*.DS_Store" \
-  -x "*/node_modules/*" \
-  -x "*/test/*" \
-  > /dev/null
+#
+# REPRODUCIBLE BUILDS (S9-ter D2). Pour que deux builds successifs produisent
+# un .zip strictement identique (bit-à-bit) :
+#   - timestamps fixés à une date stable (SOURCE_DATE_EPOCH si fourni, sinon
+#     date du dernier commit) ;
+#   - ordre des fichiers déterministe (find | sort) ;
+#   - pas de extra-fields ZIP avec timestamps OS courants ;
+#   - umask uniforme pour les permissions stockées dans le zip.
+# Un utilisateur peut alors vérifier que le binaire CWS correspond au code
+# source ouvert : `bash scripts/pack-extension.sh && sha256sum dist/*.zip`.
+
+# Date stable : SOURCE_DATE_EPOCH (convention reproducible-builds.org) sinon
+# date du HEAD git.
+if [ -z "${SOURCE_DATE_EPOCH:-}" ]; then
+  SOURCE_DATE_EPOCH=$(git log -1 --pretty=%ct 2>/dev/null || echo 1735689600)
+fi
+export SOURCE_DATE_EPOCH
+
+# Liste blanche, ordonnée
+FILES=$(find \
+  manifest.json extension/ core/ ui/ i18n/ assets/icons/ lib/leaflet/ \
+  -type f \
+  ! -name '.DS_Store' \
+  ! -path '*/node_modules/*' \
+  ! -path '*/test/*' \
+  | LC_ALL=C sort)
+
+# Tous les fichiers à la même mtime stable pour timestamps zip déterministes
+echo "$FILES" | xargs touch -t "$(date -u -d "@$SOURCE_DATE_EPOCH" '+%Y%m%d%H%M.%S')" 2>/dev/null || true
+
+# zip -X : pas d'extra fields OS-spécifiques. Ordre par stdin (-@) = déterministe.
+echo "$FILES" | zip -X -@ "$ZIP" > /dev/null
 
 echo ""
 echo "✅ Empaquetage terminé."

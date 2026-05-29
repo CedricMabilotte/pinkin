@@ -1,7 +1,7 @@
 {
   "name": "Pinkin",
   "short_name": "Pinkin",
-  "description": "Épingle tes proches sur une carte.",
+  "description": "Où sont tes proches sur la carte ? Tes contacts Google sur OpenStreetMap.",
   "start_url": "/pwa/",
   "display": "standalone",
   "background_color": "#FFFFFF",

@@ -41,6 +41,9 @@ vitest.config.js
 # === Manifest extension MV3 — ne pas confondre avec manifest.webmanifest (PWA) ===
 manifest.json
 
+# === Notes de diffusion internes ===
+marketing/
+
 # === Docs internes (BRIEF, HANDOFF, plans, audits) ===
 *.md
 

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Pinkin",
   "version": "1.0.0",
-  "description": "Épingle tes proches sur une carte.",
+  "description": "Où sont tes proches sur la carte ? Tes contacts Google sur OpenStreetMap, sans serveur, sans tracker.",
   "homepage_url": "https://pinkin.org",
   "minimum_chrome_version": "116",
 

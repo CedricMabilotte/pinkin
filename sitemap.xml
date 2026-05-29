@@ -35,4 +35,11 @@
     <xhtml:link rel="alternate" hreflang="x-default" href="https://pinkin.org/terms"/>
   </url>
 
+  <url>
+    <loc>https://pinkin.org/blog/visualize-google-contacts-on-a-map</loc>
+    <lastmod>2026-05-29</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
 </urlset>

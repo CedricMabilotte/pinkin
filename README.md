@@ -1,8 +1,15 @@
 # Pinkin
 
-**Épingle tes proches sur une carte.**  
-Extension Chrome (desktop) + PWA (mobile/universel).  
-Pont d'acquisition vers le framework communautaire générique (Freechi).
+**Où sont tes proches sur la carte ?**
+
+Extension Chrome + PWA qui épingle tes contacts Google sur OpenStreetMap.
+Zéro serveur, zéro tracker, code consultable.
+
+[![Tests](https://github.com/CedricMabilotte/pinkin/actions/workflows/test.yml/badge.svg)](https://github.com/CedricMabilotte/pinkin/actions/workflows/test.yml)
+[![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
+[![Open Source](https://img.shields.io/badge/source-public-brightgreen.svg)](https://github.com/CedricMabilotte/pinkin)
+
+→ **pinkin.org** · [Privacy](https://pinkin.org/privacy) · [Terms](https://pinkin.org/terms) · [Security](SECURITY.md)
 
 ---
 
@@ -135,7 +142,47 @@ Depuis `pinkin_logo.svg`, exporter :
 
 ## Forks
 
-Ce projet est conçu pour être forké.  
-- `core/` est générique — aucune logique Freechi/Pinkin-specific
+Ce projet est conçu pour être forké.
+
+- `core/` est générique — aucune logique Pinkin-specific
 - Les spécificités Pinkin sont dans `extension/`, `pwa/`, `ui/`
 - Remplacer `platform.js` pour une nouvelle surface de distribution
+
+**Licence : AGPL-3.0.** Si tu sers Pinkin (ou un fork) comme web service,
+tu dois publier ton code source modifié. Voir [`LICENSE`](LICENSE).
+
+---
+
+## Reproducible builds
+
+Le `.zip` Chrome Web Store distribué doit être reproductible bit-à-bit
+depuis ce repo public — sinon le « code consultable » est creux.
+
+```bash
+git checkout v1.0.0
+npm ci
+npm run install-leaflet
+cp extension/background/secrets.example.js extension/background/secrets.js
+# (renseigner les valeurs OAuth — elles ne changent pas le hash si elles
+# matchent celles utilisées au build officiel)
+bash scripts/pack-extension.sh
+sha256sum dist/pinkin-v1.0.0.zip
+```
+
+`SOURCE_DATE_EPOCH` est dérivé du commit Git ; deux builds successifs du
+même commit produisent un zip identique.
+
+---
+
+## Sécurité
+
+Voir [`SECURITY.md`](SECURITY.md) — disclosure policy + reconnaissance.
+
+---
+
+## Contribuer
+
+Voir [`CONTRIBUTING.md`](CONTRIBUTING.md). Pinkin est intentionnellement
+single-purpose. Les PRs qui élargissent le scope seront probablement
+déclinées ; celles qui durcissent la posture (sécurité, privacy,
+qualité) sont les bienvenues.

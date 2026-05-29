@@ -1,0 +1,48 @@
+name: Feature suggestion
+description: An idea to make Pinkin better. Read CONTRIBUTING.md first.
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Pinkin is **intentionally single-purpose** (Google Contacts on a map)
+        and **intentionally privacy-respecting** (no analytics, no third-party
+        calls beyond Google + OSM). Feature requests that strengthen that
+        posture are welcome. Features that compromise it will be politely
+        declined.
+  - type: textarea
+    id: problem
+    attributes:
+      label: What problem does this solve?
+      description: One paragraph. The pain you're hitting today.
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: What do you propose?
+      description: As concrete as possible. Mockup if it helps.
+    validations:
+      required: true
+  - type: dropdown
+    id: compromise
+    attributes:
+      label: Does this feature require any of the following?
+      multiple: true
+      options:
+        - A new third-party service / endpoint
+        - Telemetry or analytics, even anonymous
+        - A server-side component for Pinkin itself
+        - Loosening the CSP of the PWA
+        - Capturing data Pinkin doesn't already touch
+    validations:
+      required: true
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Sanity checks
+      options:
+        - label: I've read CONTRIBUTING.md
+          required: true
+        - label: I've searched existing issues
+          required: true
