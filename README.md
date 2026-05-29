@@ -56,17 +56,45 @@ pinkin/
 ### 1. Identifiants OAuth
 
 Pinkin embarque deux clients OAuth Google, un par surface. Pour un fork,
-remplacer les valeurs par les siennes :
+remplacer les valeurs par les siennes.
 
-- Extension — `extension/background/auth-worker.js` : `CLIENT_ID` et `CLIENT_SECRET`
-- PWA — `pwa/platform-pwa.js` : `CLIENT_ID` et `CLIENT_SECRET`
+**Extension Chrome.** Les identifiants vivent dans
+`extension/background/secrets.js` (gitignored). Le fichier est créé à
+partir de `extension/background/secrets.example.js` :
+
+```bash
+cp extension/background/secrets.example.js extension/background/secrets.js
+# puis remplace CLIENT_ID et CLIENT_SECRET par tes vraies valeurs
+```
+
+Le fichier `secrets.js` est inclus automatiquement dans le zip CWS par
+`scripts/pack-extension.sh` (qui refuse de packer si le fichier contient
+encore les valeurs placeholder).
+
+**PWA.** Les identifiants vivent comme env vars Cloudflare du Worker
+`pinkin-org` :
+
+- `PINKIN_PWA_CLIENT_ID` — variable publique (déclarée dans `wrangler.toml`).
+- `PINKIN_PWA_CLIENT_SECRET` — variable encrypted, posée via dashboard
+  Cloudflare ou `wrangler secret put PINKIN_PWA_CLIENT_SECRET`.
+
+`worker.js` lit ces vars et les expose via `/api/oauth-config`, que
+`pwa/platform-pwa.js` consomme au boot pour faire l'échange OAuth.
+
+Pour le développement local (`npm run dev:pwa`), `pwa/dev-server.js`
+doit servir un `/api/oauth-config` équivalent — TODO sur le TAF.
 
 Il n'y a pas de bloc `oauth2` dans `manifest.json` : le flux passe par
 `launchWebAuthFlow` (extension) et PKCE (PWA).
 
-Note : ces clients sont des applications front ; leur code — donc leur
-`CLIENT_SECRET` — est livré au navigateur. Ne pas pousser le dépôt en public
-sans avoir tranché le traitement de ces identifiants (cf. `PLAN_PHASE_E.md`).
+**Note honnête sécurité.** Ces clients sont des applications front ;
+leur `CLIENT_SECRET` reste de fait public — quiconque inspecte le zip
+CWS distribué ou ouvre les DevTools sur pinkin.org peut le lire. C'est
+une exigence technique de Google pour un client OAuth « Web » (PKCE ne
+remplace pas le secret). La vraie protection est le verrouillage du
+redirect URI côté Google (cf. `JUSTIFICATION_OAUTH.md`). Le mécanisme
+ci-dessus garde juste le secret hors de l'historique git, pas hors de
+la portée d'un utilisateur curieux.
 
 ### 2. Installer Leaflet localement (requis MV3)
 

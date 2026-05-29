@@ -214,3 +214,63 @@ lien (fait S9-ter). Solution long terme : voie 2 héritée S9-bis
 
 Verdict : *correction immédiate*. Statut : **clos** (court terme).
 Ré-ouvrir si l'opérateur décide la voie 2.
+
+---
+
+## Session #9-ter (suite voie γ) — 2026-05-29 (après-midi)
+
+**L16 — Cloudflare auto-deploy webhook fragile : `wrangler` local en
+fallback opérationnel.** Cas vécu en S9-ter : après le deuxième push de
+la session, Cloudflare ne re-déclenche plus de build (webhook GitHub →
+Cloudflare silencieux, aucun nouveau deployment listé via API). Bloque
+tout sondage post-push. Solution trouvée : installer `wrangler` dans le
+sandbox (`npm install --no-save wrangler`), auth via `CLOUDFLARE_API_TOKEN`
++ `CLOUDFLARE_ACCOUNT_ID`, puis `wrangler deploy` pousse directement le
+Worker depuis le sandbox sans passer par le webhook GitHub.
+
+Verdict : *garde-fou opérationnel*. Statut : **clos** — wrangler reste
+disponible comme méthode de déploiement de secours. À reconsidérer si
+le webhook GitHub → Cloudflare se ré-active sur le repo public, mais
+même alors `wrangler` reste utile pour les déploiements sans push
+(p. ex. tester une variante rapide). Note : le contrôle suivant de
+session ouvre la question « Cloudflare auto-deploy s'est-il rétabli
+post-repo-public ? ».
+
+**L17 — Squash + branche archive locale pour la transition privé → public.**
+Question opérateur S9-ter : « peut-on virer tout l'historique et repartir
+d'une base propre ? ». Trois options envisagées (garder + Resolve as
+revoked / squash sur même repo / nouveau repo). Choix : squash via
+`git checkout --orphan` + force-push, AVEC backup local en branche
+`archive/pre-public-v1` qui conserve les 61 commits historiques mais
+n'est jamais poussée. Avantage : `origin/main` = 1 seul commit propre
+côté public, historique narratif détaillé conservé localement.
+
+Verdict : *bonne pratique transitoire — clos en l'état*. Statut : **clos**.
+Reproductible la prochaine fois qu'un repo Pinkin-like passera de privé
+à public.
+
+**L18 — Séquence ordonnée pour rotation de secrets en zéro-downtime.**
+Apprentissage S9-ter sur le bon ordre quand on change un secret OAuth
+qui sert en prod ET embarqué dans plusieurs surfaces (extension + PWA) :
+
+  1. Refactor du code pour lire le secret depuis une source externe
+     (fichier gitignored côté extension, env var Cloudflare côté PWA).
+  2. Push le refactor (le code lit le secret « depuis l'extérieur » mais
+     l'extérieur contient encore l'ancien).
+  3. Déployer côté Cloudflare avec le secret externe = ancien (continuité).
+  4. Opérateur ajoute un NOUVEAU secret côté Google Cloud (deux secrets
+     coexistent, l'ancien et le nouveau, tous deux acceptés par Google).
+  5. Opérateur pose le NOUVEAU secret côté env var Cloudflare / fichier
+     extension local. Cloudflare lit le nouveau au runtime suivant ;
+     côté extension le prochain pack-extension prendra le nouveau.
+  6. Vérification end-to-end : nouveau secret bien servi.
+  7. Opérateur DÉSACTIVE l'ancien secret côté Google (puisque plus rien
+     ne l'utilise).
+
+Cassures évitées : si on désactivait l'ancien avant l'étape 5, la prod
+casserait. Si on collait le nouveau avant l'étape 4, le pivot serait
+encore plus risqué. La séquence 1→7 garantit zéro-downtime même si la
+session multi-étapes est interrompue à n'importe quel point intermédiaire.
+
+Verdict : *consignée comme procédure*. Statut : **clos** — pattern
+réutilisable pour toute rotation de secret futur.

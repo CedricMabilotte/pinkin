@@ -1,6 +1,33 @@
 # TAF — pinkin
 Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAUDE.md).
 
+## À faire — V1.0 actions opérateur RESTANTES (chemin critique submission)
+
+- **Désactiver les anciens CLIENT_SECRET côté Google Cloud Console.** Tu
+  as ajouté de nouveaux secrets en S9-ter mais les anciens restent
+  marqués comme actifs. À désactiver pour propreté. (5 sec côté UI.)
+
+- **5 captures d'écran 1280×800** selon plan `FICHE_CWS.md`.
+
+- **Vidéo OAuth ~4 min** selon `PLAN_VIDEO_OAUTH.md`. Compte test Google
+  + OBS Studio. Upload YouTube *Unlisted*.
+
+- **Upload `dist/pinkin-v1.0.0.zip`** sur dashboard CWS → visibilité
+  *Non-listé* → soumettre revue magasin.
+
+- **Submit OAuth verification** dans Google Cloud Console (textes prêts
+  dans `JUSTIFICATION_OAUTH.md`).
+
+- **Dev local : fallback `/api/oauth-config` dans `pwa/dev-server.js`.**
+  Sinon `npm run dev:pwa` ne peut plus tester l'OAuth depuis localhost
+  après le refactor S9-ter. Petit pattern : lire un `pwa/.secrets-dev.js`
+  gitignored, ou env var au démarrage du dev-server.
+
+- **Re-tester Cloudflare auto-deploy webhook** maintenant que le repo est
+  public. Si toujours cassé : soit reconnecter la GitHub app côté
+  Cloudflare Workers, soit garder `wrangler deploy` depuis sandbox/local
+  comme méthode officielle.
+
 ## À faire — V0.2 résiduel
 
 - **R5 mailto/WhatsApp/Signal côté env opérateur (Linux).** Diagnostic posé
