@@ -5,7 +5,7 @@
 Extension Chrome + PWA qui épingle tes contacts Google sur OpenStreetMap.
 Zéro serveur, zéro tracker, code consultable.
 
-[![Tests](https://github.com/CedricMabilotte/pinkin/actions/workflows/test.yml/badge.svg)](https://github.com/CedricMabilotte/pinkin/actions/workflows/test.yml)
+[![Tests](https://github.com/CedricMabilotte/pinkin/actions/workflows/tests.yml/badge.svg)](https://github.com/CedricMabilotte/pinkin/actions/workflows/tests.yml)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL_v3-blue.svg)](LICENSE)
 [![Open Source](https://img.shields.io/badge/source-public-brightgreen.svg)](https://github.com/CedricMabilotte/pinkin)
 
