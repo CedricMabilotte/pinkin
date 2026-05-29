@@ -1,0 +1,10 @@
+# robots.txt — pinkin.org
+# ─────────────────────────────────────────────────────────────────────────────
+# Pinkin sert un site public (landing + pages légales + PWA). Tout est indexable.
+# Aucune zone privée, aucun /admin, aucune section à cacher des crawlers.
+
+User-agent: *
+Allow: /
+
+# Sitemap pour faciliter le crawl initial.
+Sitemap: https://pinkin.org/sitemap.xml

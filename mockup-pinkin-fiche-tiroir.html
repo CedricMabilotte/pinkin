@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pinkin — maquette P7 : Fiche en tiroir</title>
+<style>
+  :root{
+    --pink:#C2185B; --pink-hot:#E91E8C; --pink-blush:#FCE4EC;
+    --ink:#1A1A2E; --ink-soft:#4A4A6A;
+    --surface:#FFFFFF; --surface-off:#FDF6F0; --border:#F0E0E8;
+    --radius:12px; --radius-sm:8px; --shadow:0 4px 24px rgba(194,24,91,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--surface-off); color:var(--ink); line-height:1.5;
+    padding:32px 20px 64px;
+  }
+  .wrap{max-width:1060px;margin:0 auto;}
+  h1{font-size:22px;color:var(--pink);letter-spacing:-.3px;}
+  h2{font-size:15px;margin:32px 0 10px;color:var(--ink);
+     border-bottom:2px solid var(--pink-blush);padding-bottom:5px;}
+  .lede{color:var(--ink-soft);font-size:14px;max-width:760px;margin-top:6px;}
+  .row{display:flex;gap:26px;flex-wrap:wrap;align-items:flex-start;margin-top:14px;}
+  figure{margin:0;}
+  figcaption{margin-top:9px;font-size:13px;color:var(--ink-soft);max-width:560px;}
+  figcaption b{color:var(--ink);}
+
+  /* cadre app */
+  .app{
+    position:relative;background:var(--surface);
+    border:1px solid var(--border);border-radius:var(--radius);
+    overflow:hidden;box-shadow:0 2px 12px rgba(26,26,46,.07);
+  }
+  .app.desktop{width:560px;height:360px;}
+  .app.mobile{width:320px;height:430px;}
+
+  .hd{
+    height:44px;display:flex;align-items:center;justify-content:space-between;
+    padding:0 12px;background:var(--surface);border-bottom:1px solid var(--border);
+    position:relative;z-index:6;
+  }
+  .logo{display:flex;align-items:center;gap:7px;font-weight:800;font-size:15px;color:var(--pink);}
+  .logo .d{width:18px;height:18px;border-radius:5px;background:var(--pink);}
+  .acts{display:flex;gap:6px;}
+  .hbtn{
+    height:30px;padding:0 9px;border:none;background:transparent;border-radius:var(--radius-sm);
+    color:var(--ink-soft);font:600 12px/1 inherit;font-family:inherit;cursor:pointer;
+    display:flex;align-items:center;
+  }
+  .tabs{height:34px;display:flex;border-bottom:1px solid var(--border);position:relative;z-index:6;}
+  .tabs span{flex:1;display:flex;align-items:center;justify-content:center;
+    font:600 12px inherit;font-family:inherit;color:var(--ink-soft);
+    border-bottom:2px solid transparent;}
+  .tabs span.on{color:var(--pink);border-bottom-color:var(--pink);}
+
+  /* carte */
+  .canvas{position:absolute;left:0;right:0;top:78px;bottom:0;
+    background:
+      repeating-linear-gradient(0deg,#EAF0EC 0 33px,#E0E8E3 33px 34px),
+      repeating-linear-gradient(90deg,#EAF0EC 0 33px,#E0E8E3 33px 34px);}
+  .pin{position:absolute;width:26px;height:26px;border-radius:50%;
+    background:var(--pink-blush);border:2.5px solid var(--pink);
+    display:flex;align-items:center;justify-content:center;
+    font-weight:700;font-size:10px;color:var(--pink);
+    box-shadow:0 2px 7px rgba(194,24,91,.25);transform:translate(-50%,-50%);}
+  .pin.sel{background:var(--pink);color:#fff;width:30px;height:30px;
+    box-shadow:0 0 0 4px rgba(194,24,91,.22);}
+
+  /* overlay sombre — seulement la modale */
+  .veil{position:absolute;inset:44px 0 0 0;background:rgba(26,26,46,.32);z-index:8;}
+
+  /* ====== FICHE — variante MODALE (avant) ====== */
+  .fiche-modal{
+    position:absolute;top:54%;left:50%;transform:translate(-50%,-50%);
+    width:300px;z-index:9;background:var(--surface);border-radius:18px;
+    box-shadow:var(--shadow);overflow:hidden;
+  }
+  /* ====== FICHE — variante TIROIR (desktop) ====== */
+  .fiche-drawer{
+    position:absolute;top:44px;right:0;bottom:0;width:300px;z-index:9;
+    background:var(--surface);border-left:1px solid var(--border);
+    box-shadow:-8px 0 24px rgba(26,26,46,.13);overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  /* ====== FICHE — variante FEUILLE DU BAS (mobile) ====== */
+  .fiche-sheet{
+    position:absolute;left:0;right:0;bottom:0;height:62%;z-index:9;
+    background:var(--surface);border-radius:18px 18px 0 0;
+    box-shadow:0 -8px 24px rgba(26,26,46,.16);overflow:hidden;
+    display:flex;flex-direction:column;
+  }
+  .grab{width:34px;height:4px;border-radius:99px;background:var(--border);
+    margin:7px auto 0;flex-shrink:0;}
+
+  /* contenu de fiche, schématique */
+  .fhead{padding:15px 15px 13px;background:var(--surface-off);position:relative;}
+  .fclose{position:absolute;top:11px;right:11px;width:26px;height:26px;border:none;
+    background:var(--surface);border-radius:50%;cursor:pointer;color:var(--ink-soft);
+    box-shadow:0 1px 4px rgba(0,0,0,.12);font-size:14px;}
+  .fid{display:flex;gap:11px;align-items:center;padding-right:30px;}
+  .fav{width:48px;height:48px;border-radius:50%;background:var(--pink-blush);
+    color:var(--pink);font-weight:700;font-size:17px;
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .fname{font-weight:700;font-size:15px;}
+  .fstatus{display:inline-block;margin-top:3px;font-size:9px;font-weight:700;
+    padding:2px 7px;border-radius:99px;background:var(--pink-blush);color:var(--pink);}
+  .fsec{padding:13px 15px;border-top:1px solid var(--border);}
+  .flab{font-size:9px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;
+    color:var(--ink-soft);margin-bottom:9px;}
+  .chans{display:flex;gap:10px;}
+  .chan{width:38px;height:38px;border-radius:50%;background:var(--pink-blush);}
+  .faddr{font-size:12px;color:var(--ink);}
+
+  /* annotations */
+  .tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;
+    border-radius:99px;margin-bottom:6px;}
+  .tag.bad{background:#F6D9D2;color:#A23A1E;}
+  .tag.good{background:#D8EBDD;color:#1E7A3A;}
+  .callout{position:absolute;z-index:12;background:var(--ink);color:#fff;
+    font-size:10.5px;font-weight:600;padding:4px 8px;border-radius:6px;
+    box-shadow:0 2px 8px rgba(0,0,0,.25);}
+  .callout::after{content:"";position:absolute;width:8px;height:8px;
+    background:var(--ink);transform:rotate(45deg);}
+  .note{background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:14px 16px;margin-top:16px;font-size:13px;color:var(--ink-soft);}
+  .note b{color:var(--ink);}
+  .note code{background:var(--pink-blush);color:var(--pink);padding:1px 5px;border-radius:4px;font-size:12px;}
+  ul{margin:6px 0 0 18px;}li{margin:3px 0;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Pinkin — Fiche en tiroir (piste P7)</h1>
+  <p class="lede">L'audit a nommé la couture la plus coûteuse : la Fiche est une
+  <b>carte modale centrée</b> — sur la Carte, elle s'ouvre par-dessus le marqueur
+  qu'on vient de cliquer, et son fond voilé bloque l'en-tête. La piste P7
+  remplace la modale par un <b>tiroir latéral</b> (desktop) / une <b>feuille du
+  bas</b> (mobile). Maquette pour décider sur pièce. Rouvre une décision du
+  handoff #3 — c'est volontaire.</p>
+
+  <!-- AVANT -->
+  <h2>Avant — la modale centrée</h2>
+  <div class="row">
+    <figure>
+      <span class="tag bad">aujourd'hui</span>
+      <div class="app desktop">
+        <div class="hd">
+          <div class="logo"><span class="d"></span>pinkin</div>
+          <div class="acts"><button class="hbtn">Synchroniser</button><button class="hbtn">Écriture</button><button class="hbtn">Déconnexion</button></div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas">
+          <div class="pin" style="left:24%;top:38%;">AB</div>
+          <div class="pin" style="left:70%;top:62%;">CD</div>
+        </div>
+        <div class="veil"></div>
+        <div class="fiche-modal">
+          <div class="fhead"><button class="fclose">✕</button>
+            <div class="fid"><div class="fav">MC</div><div><div class="fname">Marie C.</div><span class="fstatus">Sur la carte</span></div></div>
+          </div>
+          <div class="fsec"><div class="flab">Joindre</div><div class="chans"><div class="chan"></div><div class="chan"></div><div class="chan"></div></div></div>
+          <div class="fsec"><div class="flab">Adresse</div><div class="faddr">12 rue des Lilas, Lyon</div></div>
+        </div>
+        <div class="callout" style="left:300px;top:150px;">le marqueur de Marie est ICI dessous — masqué</div>
+      </div>
+      <figcaption>La modale s'ouvre au centre, donc par-dessus le marqueur
+      cliqué. Le fond voilé recouvre l'en-tête : Synchroniser / Écriture /
+      Déconnexion sont injoignables tant que la Fiche est ouverte.</figcaption>
+    </figure>
+  </div>
+
+  <!-- APRÈS desktop -->
+  <h2>Après — tiroir latéral (extension / desktop)</h2>
+  <div class="row">
+    <figure>
+      <span class="tag good">proposé</span>
+      <div class="app desktop">
+        <div class="hd">
+          <div class="logo"><span class="d"></span>pinkin</div>
+          <div class="acts"><button class="hbtn">Synchroniser</button><button class="hbtn">Écriture</button><button class="hbtn">Déconnexion</button></div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas">
+          <div class="pin sel" style="left:30%;top:40%;">MC</div>
+          <div class="pin" style="left:55%;top:70%;">CD</div>
+        </div>
+        <div class="fiche-drawer">
+          <div class="fhead"><button class="fclose">✕</button>
+            <div class="fid"><div class="fav">MC</div><div><div class="fname">Marie C.</div><span class="fstatus">Sur la carte</span></div></div>
+          </div>
+          <div class="fsec"><div class="flab">Joindre</div><div class="chans"><div class="chan"></div><div class="chan"></div><div class="chan"></div></div></div>
+          <div class="fsec"><div class="flab">Adresse</div><div class="faddr">12 rue des Lilas, Lyon</div></div>
+        </div>
+        <div class="callout" style="left:12px;top:96px;">marqueur visible et mis en évidence</div>
+        <div class="callout" style="left:300px;top:9px;">en-tête resté cliquable</div>
+      </div>
+      <figcaption>La Fiche glisse depuis la droite ; la carte reste visible à
+      gauche, le marqueur de Marie est mis en évidence. <b>Pas de fond voilé</b> :
+      l'en-tête reste cliquable — la couture en-tête ↔ Fiche disparaît. Cliquer
+      un autre marqueur remplace le contenu du tiroir ; cliquer le fond de carte,
+      ou Échap, le ferme.</figcaption>
+    </figure>
+  </div>
+
+  <!-- APRÈS mobile -->
+  <h2>Après — feuille du bas (PWA / mobile)</h2>
+  <div class="row">
+    <figure>
+      <span class="tag good">proposé</span>
+      <div class="app mobile">
+        <div class="hd">
+          <div class="logo"><span class="d"></span>pinkin</div>
+          <div class="acts"><button class="hbtn">⟳</button><button class="hbtn">⚲</button><button class="hbtn">⏻</button></div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas">
+          <div class="pin sel" style="left:40%;top:24%;">MC</div>
+        </div>
+        <div class="fiche-sheet">
+          <div class="grab"></div>
+          <div class="fhead"><button class="fclose">✕</button>
+            <div class="fid"><div class="fav">MC</div><div><div class="fname">Marie C.</div><span class="fstatus">Sur la carte</span></div></div>
+          </div>
+          <div class="fsec"><div class="flab">Joindre</div><div class="chans"><div class="chan"></div><div class="chan"></div><div class="chan"></div></div></div>
+          <div class="fsec"><div class="flab">Adresse</div><div class="faddr">12 rue des Lilas, Lyon</div></div>
+        </div>
+      </div>
+      <figcaption>Sur écran étroit, un tiroir latéral n'a pas la place : la Fiche
+      devient une feuille qui monte du bas. La carte et le marqueur restent
+      visibles au-dessus. Même logique d'ouverture/fermeture.</figcaption>
+    </figure>
+  </div>
+
+  <!-- ce que ça change -->
+  <h2>Ce que P7 règle, et ce que ça engage</h2>
+  <div class="note">
+  <b>Résout —</b>
+  <ul>
+    <li>couture <b>Carte ↔ Fiche</b> (2.1) : le marqueur cliqué reste visible, et mis en évidence ;</li>
+    <li>couture <b>en-tête ↔ Fiche</b> (2.3) : plus de fond voilé sur l'en-tête — Synchroniser, Écriture, Déconnexion restent accessibles. Le bouton Écriture (piste P1) devient donc utilisable Fiche ouverte ;</li>
+    <li>prépare la couture <b>Carnet ↔ Carte</b> (P5, post-V1) : ouvrir un contact localisé pourra centrer la carte, le tiroir n'empêche plus de voir le résultat.</li>
+  </ul>
+  </div>
+  <div class="note">
+  <b>Ce que ça engage —</b> refonte CSS de <code>#contact-panel</code> (centré →
+  glissé, deux formes selon la largeur), abandon du fond voilé plein, animation
+  de glissement. Logique JS d'ouverture/fermeture <b>quasi inchangée</b> — c'est
+  une refonte de présentation, pas de comportement. Le contenu de la Fiche
+  (identité, Joindre, Adresse, Mise à jour) ne bouge pas.
+  <br><br>
+  <b>Le point à trancher —</b> sans fond voilé, la Fiche n'est plus « modale » :
+  on peut interagir avec la carte derrière. C'est l'objectif (garder le
+  contexte) — mais c'est le renversement assumé du choix « carte compacte
+  centrée » du handoff #3. La maquette est là pour ça : à toi de juger sur pièce.
+  </div>
+
+</div>
+</body>
+</html>

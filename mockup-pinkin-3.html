@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinkin #3 — Maquette structure onglets</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#EFEDE8;color:#1A1A2E;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:32px}
+.pk-cap{font-size:13px;color:#4A4A6A;text-align:center;max-width:620px;line-height:1.5}
+.pk-app{--pk:#C2185B;--bl:#FCE4EC;--ink:#1A1A2E;--ins:#4A4A6A;--bd:#F0E0E8;--so:#FDF6F0;position:relative;width:620px;height:472px;background:#fff;border:1px solid rgba(0,0,0,.16);border-radius:12px;overflow:hidden;color:var(--ink)}
+.pk-hd{height:44px;display:flex;align-items:center;justify-content:space-between;padding:0 12px;border-bottom:1px solid var(--bd)}
+.pk-logo{display:flex;align-items:center;gap:7px;font-weight:800;font-size:16px;color:var(--pk);letter-spacing:-.3px}
+.pk-ic{width:30px;height:30px;border:none;background:transparent;border-radius:8px;color:var(--ins);cursor:pointer;display:flex;align-items:center;justify-content:center}
+.pk-ic:hover{background:var(--bl);color:var(--pk)}
+.pk-tabs{display:flex;height:42px;border-bottom:1px solid var(--bd)}
+.pk-tab{flex:1;border:none;background:transparent;font-family:inherit;font-size:14px;color:var(--ins);cursor:pointer;border-bottom:2px solid transparent}
+.pk-tab.on{color:var(--pk);font-weight:600;border-bottom-color:var(--pk)}
+.pk-content{position:absolute;top:86px;left:0;right:0;bottom:0}
+.pk-view{position:absolute;inset:0}
+.pk-map{width:100%;height:100%;background:var(--so);position:relative;overflow:hidden}
+.pk-land{position:absolute;background:var(--bl);opacity:.6}
+.pk-pin{position:absolute;width:34px;height:34px;border-radius:50%;border:2.5px solid var(--pk);background:var(--bl);color:var(--pk);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;cursor:pointer;transform:translate(-50%,-50%)}
+.pk-pin:hover{background:var(--pk);color:#fff}
+.pk-filter{padding:10px 12px;border-bottom:1px solid var(--bd)}
+.pk-search{width:100%;height:34px;padding:0 10px;border:1.5px solid var(--bd);border-radius:8px;font-family:inherit;font-size:13px;color:var(--ink);margin-bottom:8px}
+.pk-search:focus{outline:none;border-color:var(--pk)}
+.pk-seg{display:flex;gap:6px}
+.pk-segb{flex:1;height:30px;border:1.5px solid var(--bd);background:#fff;border-radius:99px;font-family:inherit;font-size:12px;color:var(--ins);cursor:pointer}
+.pk-segb.on{border-color:var(--pk);background:var(--bl);color:var(--pk);font-weight:600}
+.pk-list{position:absolute;top:93px;left:0;right:0;bottom:0;overflow-y:auto}
+.pk-row{display:flex;align-items:center;gap:11px;padding:9px 14px;border-bottom:1px solid var(--bd);cursor:pointer}
+.pk-row:hover{background:var(--so)}
+.pk-av{width:38px;height:38px;border-radius:50%;background:var(--bl);color:var(--pk);font-size:13px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.pk-rn{font-size:14px}
+.pk-rs{font-size:12px;color:var(--ins);margin-top:1px}
+.pk-badge{margin-left:auto;font-size:11px;padding:3px 9px;border-radius:99px;white-space:nowrap}
+.pk-empty{padding:24px 14px;font-size:13px;color:var(--ins);text-align:center}
+.pk-ov{position:absolute;inset:0;background:rgba(26,26,46,.32);z-index:5}
+.pk-sheet{position:absolute;left:0;right:0;bottom:0;z-index:6;background:#fff;border-radius:14px 14px 0 0;padding:10px 16px 18px;transform:translateY(110%);transition:transform .25s cubic-bezier(.32,.72,0,1)}
+.pk-sheet.up{transform:translateY(0)}
+.pk-handle{width:36px;height:4px;background:var(--bd);border-radius:99px;margin:0 auto 12px}
+.pk-shead{display:flex;align-items:center;gap:11px;margin-bottom:6px}
+.pk-close{width:30px;height:30px;border:none;background:var(--so);border-radius:50%;color:var(--ins);cursor:pointer;margin-left:auto;flex-shrink:0;font-size:15px}
+.pk-chips{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.pk-chip{display:inline-flex;align-items:center;padding:7px 13px;border:1.5px solid var(--bd);border-radius:99px;font-size:12px;color:var(--ink);background:#fff}
+.pk-sec{margin-top:13px;padding-top:13px;border-top:1px solid var(--bd)}
+.pk-lab{font-size:11px;color:var(--ins);text-transform:uppercase;letter-spacing:.4px;margin-bottom:7px}
+.pk-act{display:inline-flex;align-items:center;padding:7px 13px;border:1.5px solid var(--bd);border-radius:99px;font-size:12px;color:var(--ink);background:#fff;cursor:pointer}
+.pk-bridge{width:100%;padding:9px;background:var(--so);border:1.5px dashed var(--pk);border-radius:8px;color:var(--pk);font-size:12px;font-family:inherit;cursor:pointer;margin-top:7px}
+.pk-future{width:100%;padding:9px;background:#fff;border:1.5px dashed var(--bd);border-radius:8px;color:var(--ins);font-size:11.5px;text-align:center;margin-top:7px}
+</style>
+</head>
+<body>
+
+<div class="pk-app">
+  <div class="pk-hd">
+    <div class="pk-logo">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="#C2185B"><circle cx="12" cy="9" r="6.5"/><path d="M12 23l-6-9h12z"/></svg>
+      pinkin
+    </div>
+    <div style="display:flex;gap:2px">
+      <button class="pk-ic" title="Synchroniser"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.5 9a9 9 0 0114.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0020.5 15"/></svg></button>
+      <button class="pk-ic" title="Déconnexion"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg></button>
+    </div>
+  </div>
+  <div class="pk-tabs">
+    <button class="pk-tab on" data-tab="map">Carte</button>
+    <button class="pk-tab" data-tab="book">Carnet</button>
+  </div>
+  <div class="pk-content">
+    <div class="pk-view" id="v-map">
+      <div class="pk-map" id="map">
+        <div class="pk-land" style="width:170px;height:120px;left:55px;top:78px;border-radius:46% 54% 60% 40%"></div>
+        <div class="pk-land" style="width:155px;height:165px;left:300px;top:45px;border-radius:55% 45% 40% 60%"></div>
+        <div class="pk-land" style="width:120px;height:95px;left:445px;top:215px;border-radius:50% 50% 45% 55%"></div>
+      </div>
+    </div>
+    <div class="pk-view" id="v-book" style="display:none">
+      <div class="pk-filter">
+        <input class="pk-search" id="search" placeholder="Rechercher un contact…">
+        <div class="pk-seg">
+          <button class="pk-segb on" data-f="all">Tous</button>
+          <button class="pk-segb" data-f="map">Sur la carte</button>
+          <button class="pk-segb" data-f="off">Hors carte</button>
+        </div>
+      </div>
+      <div class="pk-list" id="list"></div>
+    </div>
+  </div>
+  <div class="pk-ov" id="ov" style="display:none"></div>
+  <div class="pk-sheet" id="sheet"><div id="sheetbody"></div></div>
+</div>
+
+<p class="pk-cap">Maquette cliquable — Pinkin #3. Deux onglets (Carte, Carnet) ; la fiche est une vue détail ouverte depuis un pin ou une ligne du carnet. Le filtre « Hors carte » du carnet = la file de réparation des adresses.</p>
+
+<script>
+(function(){
+var C=[
+{n:"Awa Diallo",loc:"Dakar, Sénégal",st:"map",x:33,y:62},
+{n:"Bruno Lefèvre",loc:"Lyon, France",st:"map",x:49,y:33},
+{n:"Carla Moretti",loc:"Bologna, Italie",st:"map",x:54,y:39},
+{n:"Daniel Okafor",loc:"Lagos, Nigéria",st:"map",x:48,y:67},
+{n:"Emma Bernard",loc:"Montréal, Canada",st:"map",x:19,y:31},
+{n:"Jonas Weber",loc:"Berlin, Allemagne",st:"map",x:52,y:30},
+{n:"Farid Benali",loc:"Adresse non résolue",st:"unloc"},
+{n:"Greta Hansen",loc:"Adresse non résolue",st:"unloc"},
+{n:"Hugo Marchand",loc:"Pas d'adresse",st:"none"},
+{n:"Inès Caron",loc:"Pas d'adresse",st:"none"}
+];
+var ST={
+map:{bg:"#FCE4EC",t:"#72243E",lab:"Sur la carte"},
+unloc:{bg:"#FAEEDA",t:"#854F0B",lab:"Adresse non résolue"},
+none:{bg:"#F1EFE8",t:"#5F5E5A",lab:"Pas d'adresse"}
+};
+function ini(n){return n.split(/\s+/).slice(0,2).map(function(w){return w[0];}).join("").toUpperCase();}
+var filter="all",query="";
+var mapEl=document.getElementById("map"),listEl=document.getElementById("list");
+var ov=document.getElementById("ov"),sheet=document.getElementById("sheet"),sb=document.getElementById("sheetbody");
+
+C.forEach(function(c){
+  if(c.st!=="map")return;
+  var p=document.createElement("div");
+  p.className="pk-pin";p.textContent=ini(c.n);
+  p.style.left=c.x+"%";p.style.top=c.y+"%";
+  p.onclick=function(){openSheet(c);};
+  mapEl.appendChild(p);
+});
+
+function renderList(){
+  listEl.innerHTML="";
+  var rows=C.filter(function(c){
+    if(filter==="map"&&c.st!=="map")return false;
+    if(filter==="off"&&c.st==="map")return false;
+    if(query&&c.n.toLowerCase().indexOf(query)<0)return false;
+    return true;
+  });
+  if(!rows.length){listEl.innerHTML='<div class="pk-empty">Aucun contact.</div>';return;}
+  rows.forEach(function(c){
+    var s=ST[c.st];
+    var r=document.createElement("div");r.className="pk-row";
+    r.innerHTML='<div class="pk-av">'+ini(c.n)+'</div><div><div class="pk-rn">'+c.n+'</div><div class="pk-rs">'+c.loc+'</div></div><span class="pk-badge" style="background:'+s.bg+';color:'+s.t+'">'+s.lab+'</span>';
+    r.onclick=function(){openSheet(c);};
+    listEl.appendChild(r);
+  });
+}
+renderList();
+
+function openSheet(c){
+  var first=c.n.split(/\s+/)[0];
+  var addrTxt=c.st==="map"?c.loc:(c.st==="unloc"?"Adresse présente mais non localisable":"Aucune adresse enregistrée");
+  sb.innerHTML=
+  '<div class="pk-handle"></div>'+
+  '<div class="pk-shead"><div class="pk-av" style="width:46px;height:46px;font-size:15px">'+ini(c.n)+'</div>'+
+  '<div><div style="font-size:16px;font-weight:700">'+c.n+'</div>'+
+  '<div style="font-size:12px;color:#4A4A6A;margin-top:2px">'+c.loc+'</div></div>'+
+  '<button class="pk-close" id="sc">&#10005;</button></div>'+
+  '<div class="pk-chips"><span class="pk-chip">Email</span><span class="pk-chip">Appeler</span><span class="pk-chip">SMS</span><span class="pk-chip">WhatsApp</span><span class="pk-chip">Signal</span></div>'+
+  '<div class="pk-sec"><div class="pk-lab">Adresse</div>'+
+  '<div style="font-size:12px;color:#4A4A6A;margin-bottom:8px">'+addrTxt+'</div>'+
+  '<span class="pk-act">Corriger l\'adresse</span>'+
+  '<button class="pk-bridge">Demander à '+first+' de mettre à jour sa fiche'+
+  '<div style="font-size:10.5px;color:#4A4A6A;margin-top:3px">e-mail prérempli — sans compte, sans serveur</div></button></div>'+
+  '<div class="pk-sec"><div class="pk-lab">Gestion de relation</div>'+
+  '<div class="pk-future">Rappels, dernier contact, notes &middot; périmètre à qualifier</div></div>';
+  document.getElementById("sc").onclick=closeSheet;
+  ov.style.display="block";
+  sheet.classList.add("up");
+}
+function closeSheet(){sheet.classList.remove("up");ov.style.display="none";}
+ov.onclick=closeSheet;
+
+document.querySelectorAll(".pk-tab").forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll(".pk-tab").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on");
+    var t=b.getAttribute("data-tab");
+    document.getElementById("v-map").style.display=t==="map"?"block":"none";
+    document.getElementById("v-book").style.display=t==="book"?"block":"none";
+    closeSheet();
+  };
+});
+document.querySelectorAll(".pk-segb").forEach(function(b){
+  b.onclick=function(){
+    document.querySelectorAll(".pk-segb").forEach(function(x){x.classList.remove("on");});
+    b.classList.add("on");filter=b.getAttribute("data-f");renderList();
+  };
+});
+document.getElementById("search").oninput=function(e){query=e.target.value.toLowerCase().trim();renderList();};
+})();
+</script>
+</body>
+</html>

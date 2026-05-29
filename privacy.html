@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<!--
+  privacy.html — Politique de confidentialité de Pinkin.
+  ─────────────────────────────────────────────────────────────────────────────
+  Hébergée sur https://pinkin.org/privacy — adresse référencée dans :
+    · l'écran de consentement OAuth (Google Cloud Console, projet pinkin) ;
+    · la fiche Chrome Web Store ;
+    · la fiche de l'app PWA (footer).
+
+  Trilingue fr / en / es — chaque langue dans un <article data-lang="…">
+  séparé, un seul visible à la fois (CSS body[lang] selector + JS switcher).
+  Le title et la meta description sont également adaptatifs.
+
+  Rédigée pour PASSER la validation Google OAuth scope sensible :
+    · identifie nommément les données accédées (Google Contacts via People API) ;
+    · explicite le « Limited Use » du Google API Services User Data Policy
+      (en français paraphrasé + verbatim anglais Google) ;
+    · ton geek libertaire toléré (zéro serveur, tout local) — décision opérateur #8.
+
+  Page autonome : zéro dépendance, CSS+JS inline, palette Pinkin partagée
+  avec terms.html et index.html.
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#C2185B">
+  <title>Confidentialité · Pinkin</title>
+  <meta name="description" content="Politique de confidentialité de Pinkin — zéro serveur, zéro tracker, tes contacts ne quittent jamais ton navigateur.">
+
+  <!-- Open Graph + Twitter Card -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pinkin">
+  <meta property="og:url" content="https://pinkin.org/privacy">
+  <meta property="og:title" content="Confidentialité · Pinkin">
+  <meta property="og:description" content="Politique de confidentialité de Pinkin — zéro serveur, zéro tracker, tes contacts ne quittent jamais ton navigateur.">
+  <meta property="og:image" content="https://pinkin.org/assets/og/og-image.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Confidentialité · Pinkin">
+  <meta name="twitter:description" content="Pinkin — zéro serveur, zéro tracker.">
+  <meta name="twitter:image" content="https://pinkin.org/assets/og/og-image.png">
+
+  <link rel="icon" href="/assets/icons/icon32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon128.png">
+
+  <!-- Titre + description adaptatifs (lus par le JS de bascule de langue) -->
+  <meta name="x-pinkin-title-fr" content="Confidentialité · Pinkin">
+  <meta name="x-pinkin-title-en" content="Privacy · Pinkin">
+  <meta name="x-pinkin-title-es" content="Privacidad · Pinkin">
+  <meta name="x-pinkin-desc-fr" content="Politique de confidentialité de Pinkin — zéro serveur, zéro tracker, tes contacts ne quittent jamais ton navigateur.">
+  <meta name="x-pinkin-desc-en" content="Pinkin privacy policy — zero servers, zero trackers, your contacts never leave your browser.">
+  <meta name="x-pinkin-desc-es" content="Política de privacidad de Pinkin — cero servidores, cero trackers, tus contactos nunca salen de tu navegador.">
+
+  <style>
+    :root {
+      --rose: #C2185B;
+      --fuchsia: #E91E8C;
+      --blush: #FCE4EC;
+      --fond: #FDF6F0;
+      --texte: #1A1A2E;
+      --gris: #5a5a6e;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--texte);
+      background: var(--fond);
+    }
+
+    /* En-tête site (cohérent landing) */
+    header.top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid var(--blush);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-weight: 700; font-size: 1.15rem; color: var(--rose);
+      text-decoration: none;
+    }
+    .brand img { width: 32px; height: 32px; }
+    .lang-switch button {
+      border: 1px solid var(--blush);
+      background: transparent;
+      color: var(--gris);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 0.2rem;
+    }
+    .lang-switch button.active {
+      background: var(--rose);
+      color: white;
+      border-color: var(--rose);
+    }
+
+    main.wrap { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    article > header { padding-bottom: 1.5rem; border-bottom: 2px solid var(--blush); margin-bottom: 2rem; }
+    .nav-back { font-size: 0.9rem; margin-bottom: 1rem; }
+    .nav-back a { color: var(--rose); text-decoration: none; font-weight: 600; }
+    .nav-back a:hover { text-decoration: underline; }
+    h1 { color: var(--rose); font-size: 2rem; margin: 0 0 0.25rem; }
+    .updated { color: var(--gris); font-size: 0.9rem; }
+    h2 { color: var(--rose); font-size: 1.3rem; margin-top: 2.25rem; margin-bottom: 0.75rem; }
+    h3 { font-size: 1.05rem; margin-top: 1.5rem; margin-bottom: 0.5rem; }
+    p { margin: 0.5rem 0 1rem; }
+    code, .code { font-family: 'Menlo', 'Consolas', monospace; background: var(--blush); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.92em; }
+    ul { padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    .pillar {
+      background: var(--blush);
+      border-left: 4px solid var(--rose);
+      padding: 1rem 1.25rem;
+      border-radius: 4px;
+      margin: 1.5rem 0;
+    }
+    .pillar strong { color: var(--rose); }
+    a { color: var(--fuchsia); }
+
+    /* Footer riche (cohérent landing) */
+    footer.bottom {
+      border-top: 2px solid var(--blush);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--gris);
+      font-size: 0.9rem;
+    }
+    footer.bottom a { font-weight: 600; text-decoration: none; }
+    footer.bottom a:hover { text-decoration: underline; }
+    .links { margin-bottom: 0.75rem; }
+    .links a { margin: 0 0.5rem; }
+
+    /* Bascule langue : un seul <article data-lang> visible + spans inline du footer */
+    [data-lang] { display: none; }
+    body[lang="fr"] [data-lang="fr"],
+    body[lang="en"] [data-lang="en"],
+    body[lang="es"] [data-lang="es"] { display: revert; }
+    .lang-switch [data-lang] { display: inline-block; }
+  </style>
+</head>
+<body lang="fr">
+  <header class="top">
+    <a class="brand" href="/">
+      <img src="/assets/icons/icon32.png" alt="">
+      <span>pinkin</span>
+    </a>
+    <nav class="lang-switch" aria-label="Choix de langue">
+      <button type="button" data-set-lang="fr" class="active">FR</button>
+      <button type="button" data-set-lang="en">EN</button>
+      <button type="button" data-set-lang="es">ES</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ═════════════════════ FRANÇAIS ═════════════════════ -->
+    <article data-lang="fr">
+      <header>
+        <p class="nav-back"><a href="/">← pinkin</a></p>
+        <h1>Confidentialité</h1>
+        <p class="updated">Mise à jour : 28 mai 2026</p>
+      </header>
+
+      <p>
+        Pinkin est une extension Chrome et une PWA qui épingle tes contacts
+        Google sur une carte. Cette page t'explique exactement quelles données
+        Pinkin touche, ce qu'il en fait, et — surtout — ce qu'il <em>ne</em>
+        fait pas.
+      </p>
+
+      <div class="pillar">
+        <strong>Le résumé honnête.</strong> Pinkin n'a pas de serveur. Tes
+        contacts ne quittent jamais ton navigateur. Aucune donnée n'est
+        transmise à Pinkin ni à un tiers — sauf à Google, dont les contacts
+        viennent et où la position que tu choisis d'enregistrer retourne.
+        Aucun analytics, aucun tracker, aucune pub. Le code est open source.
+      </div>
+
+      <h2>Données collectées</h2>
+      <h3>Données issues de ton compte Google</h3>
+      <p>
+        Avec ton autorisation explicite via OAuth Google, Pinkin lit, depuis
+        <strong>Google People API</strong>, les champs suivants de tes
+        contacts :
+      </p>
+      <ul>
+        <li>noms, photos ;</li>
+        <li>adresses postales (utilisées pour le géocodage) ;</li>
+        <li>numéros de téléphone, adresses email (affichés dans la fiche
+          contact pour ouvrir un mailto, un tel, un lien WhatsApp ou Signal) ;</li>
+        <li>champ <code>userDefined</code> nommé <code>GEO</code> au format
+          RFC 6350 (la position géographique elle-même).</li>
+      </ul>
+      <p>
+        Si tu actives l'<strong>écriture opt-in</strong> (scope
+        <code>contacts</code>), Pinkin écrit en plus, et uniquement avec ton
+        geste explicite :
+      </p>
+      <ul>
+        <li>la coordonnée <code>GEO</code> du contact (ce qu'il fait au cœur
+          — épingler) ;</li>
+        <li>l'adresse postale corrigée si tu la modifies depuis la fiche.</li>
+      </ul>
+      <h3>Données générées localement</h3>
+      <ul>
+        <li>une <strong>clé de chiffrement maître</strong> générée à
+          l'installation (WebCrypto API, AES-GCM 256), stockée localement, qui
+          ne quitte jamais le navigateur ;</li>
+        <li>le <strong>refresh token OAuth</strong> Google, chiffré avec cette
+          clé ;</li>
+        <li>un <strong>cache local</strong> des contacts (TTL 10 minutes), pour
+          éviter de re-tirer People API à chaque ouverture ;</li>
+        <li>la position géocodée renvoyée par
+          <strong>OpenStreetMap / Nominatim</strong> à partir des adresses non
+          encore résolues.</li>
+      </ul>
+      <h3>Ce que Pinkin ne collecte pas</h3>
+      <ul>
+        <li>aucune donnée d'utilisation (pas d'analytics, pas de Google
+          Analytics, pas de Sentry, pas de Mixpanel) ;</li>
+        <li>aucun identifiant publicitaire ;</li>
+        <li>aucune empreinte navigateur, aucun cookie tiers ;</li>
+        <li>aucune télémétrie crash ou performance ;</li>
+        <li>aucune donnée biométrique, aucune donnée de santé, aucun fichier
+          de ton ordinateur en dehors de l'éventuel <code>.vcf</code> que tu
+          choisis d'importer.</li>
+      </ul>
+
+      <h2>Comment Pinkin utilise ces données</h2>
+      <p>
+        Strictement pour la fonction unique de l'application : <strong>afficher
+        tes contacts épinglés sur une carte</strong>. Concrètement :
+      </p>
+      <ul>
+        <li>les <strong>adresses</strong> sont envoyées à Nominatim
+          (OpenStreetMap) une seule fois, pour obtenir des coordonnées GPS ;</li>
+        <li>les <strong>coordonnées</strong> obtenues sont écrites — si tu
+          l'autorises — dans le champ <code>GEO</code> du contact, côté Google,
+          pour que la prochaine ouverture soit instantanée ;</li>
+        <li>les <strong>noms, photos, téléphones, emails</strong> sont affichés
+          dans l'UI et utilisés pour les actions de la fiche (appel, email,
+          SMS, WhatsApp, Signal).</li>
+      </ul>
+
+      <div class="pillar">
+        <strong>Google API Services — Limited Use Disclosure.</strong> Pinkin
+        affirme que son usage et son transfert d'informations reçues des Google
+        APIs vers toute autre app respectent la <a href="https://developers.google.com/terms/api-services-user-data-policy#limited-use">Google
+        API Services User Data Policy</a>, y compris les exigences <em>Limited
+        Use</em>. Les données Google ne sont utilisées que pour fournir ou
+        améliorer des fonctions visibles dans l'UI ; elles ne sont pas
+        vendues, ni transférées à des tiers à des fins publicitaires, ni
+        utilisées pour entraîner des modèles d'IA, ni lues par un humain
+        (incluant l'auteur du logiciel).
+        <br><br>
+        <em>Verbatim (English) :</em> Pinkin's use and transfer to any other
+        app of information received from Google APIs will adhere to
+        <a href="https://developers.google.com/terms/api-services-user-data-policy#limited-use">Google
+        API Services User Data Policy</a>, including the Limited Use
+        requirements.
+      </div>
+
+      <h2>Où vivent ces données</h2>
+      <p>
+        Toutes les données restent <strong>dans ton navigateur</strong> (extension
+        Chrome ou PWA selon ta surface), à l'exception des allers-retours
+        strictement nécessaires :
+      </p>
+      <ul>
+        <li>vers <strong>Google</strong> (People API) pour lire et — sur ton
+          opt-in — écrire dans tes contacts ;</li>
+        <li>vers <strong>Nominatim / OpenStreetMap</strong> pour le géocodage
+          des adresses (une requête par adresse non encore résolue, en
+          arrière-plan, 1 par seconde maximum) ;</li>
+        <li>vers les <strong>serveurs de tuiles OpenStreetMap</strong> pour
+          afficher la carte.</li>
+      </ul>
+      <p>
+        <strong>Pinkin n'a pas de serveur d'application.</strong> Aucune
+        donnée n'est transmise à pinkin.org, à l'auteur, ou à un tiers en
+        dehors des trois entités listées ci-dessus.
+      </p>
+
+      <h2>Combien de temps</h2>
+      <ul>
+        <li>le cache local des contacts a une durée de vie de 10 minutes, puis
+          Pinkin re-tire People API à la prochaine ouverture ;</li>
+        <li>les coordonnées géocodées sont conservées tant que tu n'as pas
+          révoqué le scope écriture côté Google (auquel cas elles restent dans
+          le champ <code>GEO</code> du contact, sous ton contrôle) ;</li>
+        <li>le refresh token chiffré reste tant que tu es connecté ; il est
+          effacé à la déconnexion ;</li>
+        <li>la clé maître est effacée à la désinstallation de l'extension ou
+          au <em>clear site data</em> de la PWA.</li>
+      </ul>
+
+      <h2>Tes droits et tes leviers</h2>
+      <p>
+        Tout ce que Pinkin touche, tu peux le révoquer ou l'effacer toi-même,
+        sans contacter qui que ce soit :
+      </p>
+      <ul>
+        <li><strong>Te déconnecter</strong> depuis le bouton de l'en-tête —
+          efface les données locales (cache, refresh token chiffré, clé
+          maître) ;</li>
+        <li><strong>Révoquer l'autorisation Google</strong> à tout moment
+          depuis ton compte Google
+          (<a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>) ;</li>
+        <li><strong>Désinstaller</strong> l'extension (Chrome) ou
+          <strong>vider les données du site</strong> (PWA, depuis les
+          DevTools ou les paramètres du navigateur) ;</li>
+        <li><strong>Effacer les coordonnées GEO écrites</strong> directement
+          depuis Google Contacts (le champ <code>userDefined / GEO</code> est
+          modifiable et supprimable).</li>
+      </ul>
+      <p>
+        Si tu es en Union européenne, le RGPD t'accorde des droits d'accès,
+        rectification, effacement et portabilité. Comme Pinkin ne détient
+        <em>aucune</em> donnée sur ses serveurs (il n'a pas de serveurs), ces
+        droits s'exercent directement sur ton navigateur et sur ton compte
+        Google ; aucune demande à envoyer à l'auteur n'est nécessaire pour les
+        faire valoir.
+      </p>
+
+      <h2>Sécurité</h2>
+      <ul>
+        <li>refresh token <strong>chiffré AES-GCM 256</strong> via WebCrypto
+          API, avec une clé qui ne quitte jamais le navigateur ;</li>
+        <li>aucune transmission HTTP : tous les échanges (Google, Nominatim,
+          tuiles OSM) sont en HTTPS ;</li>
+        <li>extension <strong>Manifest V3</strong>, principe du moindre
+          privilège, hosts autorisés explicitement déclarés.</li>
+      </ul>
+
+      <h2>Mineurs</h2>
+      <p>
+        Pinkin n'est pas conçu pour les moins de 13 ans et ne collecte pas
+        sciemment d'informations sur eux. L'application affiche les contacts
+        Google de la personne qui s'y connecte ; la responsabilité éditoriale
+        de ces contacts est entièrement entre les mains de l'utilisateur.
+      </p>
+
+      <h2>Évolutions de cette politique</h2>
+      <p>
+        Si la politique change matériellement, la date de mise à jour en tête
+        de page est révisée et l'historique du dépôt git public reflète le
+        diff exact des modifications.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        L'auteur est joignable à
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+      </p>
+    </article>
+
+    <!-- ═════════════════════ ENGLISH ═════════════════════ -->
+    <article data-lang="en">
+      <header>
+        <p class="nav-back"><a href="/">← pinkin</a></p>
+        <h1>Privacy</h1>
+        <p class="updated">Last updated: 28 May 2026</p>
+      </header>
+
+      <p>
+        Pinkin is a Chrome extension and a PWA that pins your Google Contacts
+        on a map. This page tells you exactly what data Pinkin touches, what
+        it does with it, and — most importantly — what it <em>does not</em>
+        do.
+      </p>
+
+      <div class="pillar">
+        <strong>The honest summary.</strong> Pinkin has no server. Your
+        contacts never leave your browser. No data is sent to Pinkin or any
+        third party — except Google, where your contacts come from and where
+        the locations you choose to save go back to. No analytics, no
+        trackers, no ads. The code is open source.
+      </div>
+
+      <h2>Data collected</h2>
+      <h3>Data from your Google account</h3>
+      <p>
+        With your explicit OAuth authorization, Pinkin reads from
+        <strong>Google People API</strong> the following fields of your
+        contacts:
+      </p>
+      <ul>
+        <li>names and photos;</li>
+        <li>postal addresses (used for geocoding);</li>
+        <li>phone numbers and email addresses (displayed in the contact card
+          to open a mailto, a tel, a WhatsApp or Signal link);</li>
+        <li><code>userDefined</code> field named <code>GEO</code> in RFC 6350
+          format (the geographic location itself).</li>
+      </ul>
+      <p>
+        If you enable <strong>write opt-in</strong> (scope
+        <code>contacts</code>), Pinkin also writes — and only on your
+        explicit action:
+      </p>
+      <ul>
+        <li>the <code>GEO</code> coordinate of the contact (the core feature
+          — pinning);</li>
+        <li>the corrected postal address if you edit it from the contact
+          card.</li>
+      </ul>
+      <h3>Data generated locally</h3>
+      <ul>
+        <li>a <strong>master encryption key</strong> generated at install
+          time (WebCrypto API, AES-GCM 256), stored locally, which never
+          leaves the browser;</li>
+        <li>the Google <strong>OAuth refresh token</strong>, encrypted with
+          that key;</li>
+        <li>a <strong>local cache</strong> of contacts (TTL 10 minutes), to
+          avoid re-fetching People API on every opening;</li>
+        <li>the geocoded location returned by
+          <strong>OpenStreetMap / Nominatim</strong> for not-yet-resolved
+          addresses.</li>
+      </ul>
+      <h3>What Pinkin does not collect</h3>
+      <ul>
+        <li>no usage data (no analytics, no Google Analytics, no Sentry, no
+          Mixpanel);</li>
+        <li>no advertising identifier;</li>
+        <li>no browser fingerprint, no third-party cookie;</li>
+        <li>no crash or performance telemetry;</li>
+        <li>no biometric data, no health data, no file from your computer
+          beyond the optional <code>.vcf</code> you choose to import.</li>
+      </ul>
+
+      <h2>How Pinkin uses this data</h2>
+      <p>
+        Strictly for the app's single purpose: <strong>display your contacts
+        as pins on a map</strong>. Concretely:
+      </p>
+      <ul>
+        <li><strong>addresses</strong> are sent to Nominatim (OpenStreetMap)
+          once, to obtain GPS coordinates;</li>
+        <li>obtained <strong>coordinates</strong> are written — if you
+          authorize it — into the contact's <code>GEO</code> field on Google,
+          so the next opening is instant;</li>
+        <li><strong>names, photos, phones, emails</strong> are displayed in
+          the UI and used for contact-card actions (call, email, SMS,
+          WhatsApp, Signal).</li>
+      </ul>
+
+      <div class="pillar">
+        <strong>Google API Services — Limited Use Disclosure.</strong>
+        Pinkin's use and transfer to any other app of information received
+        from Google APIs will adhere to
+        <a href="https://developers.google.com/terms/api-services-user-data-policy#limited-use">Google
+        API Services User Data Policy</a>, including the Limited Use
+        requirements. Google user data is only used to provide or improve
+        user-facing features that are prominent in the application's UI; it
+        is not sold, not transferred to third parties for advertising
+        purposes, not used to train AI models, and not read by any human
+        (including the software's author).
+      </div>
+
+      <h2>Where this data lives</h2>
+      <p>
+        All data stays <strong>inside your browser</strong> (Chrome extension
+        or PWA depending on your surface), with the exception of the
+        strictly necessary round-trips:
+      </p>
+      <ul>
+        <li>to <strong>Google</strong> (People API) to read and — on your
+          opt-in — write to your contacts;</li>
+        <li>to <strong>Nominatim / OpenStreetMap</strong> for address
+          geocoding (one request per not-yet-resolved address, in the
+          background, capped at 1 per second);</li>
+        <li>to <strong>OpenStreetMap tile servers</strong> to render the
+          map.</li>
+      </ul>
+      <p>
+        <strong>Pinkin has no application server.</strong> No data is sent
+        to pinkin.org, to the author, or to any third party beyond the three
+        entities listed above.
+      </p>
+
+      <h2>How long</h2>
+      <ul>
+        <li>the local contact cache lives for 10 minutes, after which Pinkin
+          re-fetches People API on the next opening;</li>
+        <li>geocoded coordinates are kept as long as you have not revoked
+          the write scope on Google's side (in which case they remain in the
+          contact's <code>GEO</code> field, under your control);</li>
+        <li>the encrypted refresh token stays as long as you are signed in;
+          it is erased on sign-out;</li>
+        <li>the master key is erased when the extension is uninstalled or
+          when the PWA's site data is cleared.</li>
+      </ul>
+
+      <h2>Your rights and your levers</h2>
+      <p>
+        Everything Pinkin touches, you can revoke or erase yourself, without
+        contacting anyone:
+      </p>
+      <ul>
+        <li><strong>Sign out</strong> from the header button — erases local
+          data (cache, encrypted refresh token, master key);</li>
+        <li><strong>Revoke Google authorization</strong> at any time from
+          your Google account
+          (<a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>);</li>
+        <li><strong>Uninstall</strong> the extension (Chrome) or
+          <strong>clear site data</strong> (PWA, from DevTools or browser
+          settings);</li>
+        <li><strong>Erase written GEO coordinates</strong> directly from
+          Google Contacts (the <code>userDefined / GEO</code> field is
+          editable and deletable).</li>
+      </ul>
+      <p>
+        If you are in the European Union, the GDPR grants you rights to
+        access, rectify, erase, and port your data. Since Pinkin holds
+        <em>no</em> data on its servers (it has no servers), these rights
+        are exercised directly on your browser and your Google account; no
+        request to the author is needed to enforce them.
+      </p>
+
+      <h2>Security</h2>
+      <ul>
+        <li>refresh token <strong>AES-GCM 256 encrypted</strong> via the
+          WebCrypto API, with a key that never leaves the browser;</li>
+        <li>no HTTP transmission: all exchanges (Google, Nominatim, OSM
+          tiles) are over HTTPS;</li>
+        <li><strong>Manifest V3</strong> extension, principle of least
+          privilege, host permissions explicitly declared.</li>
+      </ul>
+
+      <h2>Minors</h2>
+      <p>
+        Pinkin is not designed for users under 13 and does not knowingly
+        collect information about them. The app displays the Google
+        Contacts of the person who signs in; editorial responsibility for
+        those contacts rests entirely with the user.
+      </p>
+
+      <h2>Changes to this policy</h2>
+      <p>
+        If the policy changes materially, the update date at the top of the
+        page is revised, and the public git repository history reflects the
+        exact diff of the changes.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        The author can be reached at
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+      </p>
+    </article>
+
+    <!-- ═════════════════════ ESPAÑOL ═════════════════════ -->
+    <article data-lang="es">
+      <header>
+        <p class="nav-back"><a href="/">← pinkin</a></p>
+        <h1>Privacidad</h1>
+        <p class="updated">Última actualización: 28 de mayo de 2026</p>
+      </header>
+
+      <p>
+        Pinkin es una extensión de Chrome y una PWA que fija a tus contactos
+        de Google en un mapa. Esta página te explica exactamente qué datos
+        toca Pinkin, qué hace con ellos y — sobre todo — qué <em>no</em>
+        hace.
+      </p>
+
+      <div class="pillar">
+        <strong>El resumen honesto.</strong> Pinkin no tiene servidor. Tus
+        contactos nunca salen de tu navegador. Ningún dato se envía a Pinkin
+        ni a terceros — salvo a Google, de donde vienen los contactos y
+        adonde vuelve la posición que decides guardar. Sin analytics, sin
+        trackers, sin publicidad. El código es abierto.
+      </div>
+
+      <h2>Datos recogidos</h2>
+      <h3>Datos de tu cuenta Google</h3>
+      <p>
+        Con tu autorización explícita vía OAuth Google, Pinkin lee, desde
+        <strong>Google People API</strong>, los campos siguientes de tus
+        contactos:
+      </p>
+      <ul>
+        <li>nombres y fotos;</li>
+        <li>direcciones postales (utilizadas para la geocodificación);</li>
+        <li>números de teléfono y correos electrónicos (mostrados en la
+          ficha de contacto para abrir un mailto, un tel, un enlace WhatsApp
+          o Signal);</li>
+        <li>campo <code>userDefined</code> llamado <code>GEO</code> en
+          formato RFC 6350 (la posición geográfica en sí).</li>
+      </ul>
+      <p>
+        Si activas la <strong>escritura opt-in</strong> (scope
+        <code>contacts</code>), Pinkin escribe además, y únicamente con tu
+        acción explícita:
+      </p>
+      <ul>
+        <li>la coordenada <code>GEO</code> del contacto (lo que hace en su
+          esencia — fijar);</li>
+        <li>la dirección postal corregida si la modificas desde la ficha.</li>
+      </ul>
+      <h3>Datos generados localmente</h3>
+      <ul>
+        <li>una <strong>clave maestra de cifrado</strong> generada en la
+          instalación (WebCrypto API, AES-GCM 256), almacenada localmente,
+          que nunca sale del navegador;</li>
+        <li>el <strong>refresh token OAuth</strong> de Google, cifrado con
+          esa clave;</li>
+        <li>una <strong>caché local</strong> de los contactos (TTL 10
+          minutos), para evitar volver a consultar People API en cada
+          apertura;</li>
+        <li>la posición geocodificada devuelta por
+          <strong>OpenStreetMap / Nominatim</strong> a partir de las
+          direcciones aún no resueltas.</li>
+      </ul>
+      <h3>Lo que Pinkin no recoge</h3>
+      <ul>
+        <li>ningún dato de uso (sin analytics, sin Google Analytics, sin
+          Sentry, sin Mixpanel);</li>
+        <li>ningún identificador publicitario;</li>
+        <li>ninguna huella del navegador, ninguna cookie de terceros;</li>
+        <li>ninguna telemetría de crash o rendimiento;</li>
+        <li>ningún dato biométrico, ningún dato de salud, ningún archivo de
+          tu ordenador fuera del eventual <code>.vcf</code> que decidas
+          importar.</li>
+      </ul>
+
+      <h2>Cómo usa Pinkin estos datos</h2>
+      <p>
+        Estrictamente para la función única de la aplicación: <strong>mostrar
+        tus contactos fijados en un mapa</strong>. Concretamente:
+      </p>
+      <ul>
+        <li>las <strong>direcciones</strong> se envían a Nominatim
+          (OpenStreetMap) una sola vez, para obtener coordenadas GPS;</li>
+        <li>las <strong>coordenadas</strong> obtenidas se escriben — si lo
+          autorizas — en el campo <code>GEO</code> del contacto, en Google,
+          para que la próxima apertura sea instantánea;</li>
+        <li>los <strong>nombres, fotos, teléfonos y correos</strong> se
+          muestran en la UI y se usan para las acciones de la ficha
+          (llamada, email, SMS, WhatsApp, Signal).</li>
+      </ul>
+
+      <div class="pillar">
+        <strong>Google API Services — Limited Use Disclosure.</strong>
+        Pinkin afirma que su uso y transferencia de información recibida de
+        las Google APIs hacia cualquier otra app respeta la
+        <a href="https://developers.google.com/terms/api-services-user-data-policy#limited-use">Google
+        API Services User Data Policy</a>, incluidas las exigencias
+        <em>Limited Use</em>. Los datos de Google solo se usan para
+        proporcionar o mejorar funciones visibles en la UI; no se venden,
+        ni se transfieren a terceros con fines publicitarios, ni se
+        utilizan para entrenar modelos de IA, ni los lee ningún humano
+        (incluido el autor del software).
+        <br><br>
+        <em>Verbatim (English):</em> Pinkin's use and transfer to any other
+        app of information received from Google APIs will adhere to
+        <a href="https://developers.google.com/terms/api-services-user-data-policy#limited-use">Google
+        API Services User Data Policy</a>, including the Limited Use
+        requirements.
+      </div>
+
+      <h2>Dónde viven estos datos</h2>
+      <p>
+        Todos los datos permanecen <strong>en tu navegador</strong>
+        (extensión Chrome o PWA según tu superficie), excepto los
+        viajes estrictamente necesarios:
+      </p>
+      <ul>
+        <li>a <strong>Google</strong> (People API) para leer y — con tu
+          opt-in — escribir en tus contactos;</li>
+        <li>a <strong>Nominatim / OpenStreetMap</strong> para la
+          geocodificación de direcciones (una petición por dirección aún no
+          resuelta, en segundo plano, máximo 1 por segundo);</li>
+        <li>a los <strong>servidores de tiles OpenStreetMap</strong> para
+          mostrar el mapa.</li>
+      </ul>
+      <p>
+        <strong>Pinkin no tiene servidor de aplicación.</strong> Ningún
+        dato se transmite a pinkin.org, al autor ni a terceros fuera de las
+        tres entidades listadas arriba.
+      </p>
+
+      <h2>Cuánto tiempo</h2>
+      <ul>
+        <li>la caché local de contactos vive 10 minutos, luego Pinkin
+          vuelve a consultar People API en la próxima apertura;</li>
+        <li>las coordenadas geocodificadas se conservan mientras no hayas
+          revocado el scope de escritura en Google (en cuyo caso permanecen
+          en el campo <code>GEO</code> del contacto, bajo tu control);</li>
+        <li>el refresh token cifrado se queda mientras estés conectado; se
+          borra al cerrar sesión;</li>
+        <li>la clave maestra se borra al desinstalar la extensión o al
+          <em>clear site data</em> de la PWA.</li>
+      </ul>
+
+      <h2>Tus derechos y tus palancas</h2>
+      <p>
+        Todo lo que Pinkin toca, puedes revocarlo o borrarlo tú mismo, sin
+        contactar a nadie:
+      </p>
+      <ul>
+        <li><strong>Cerrar sesión</strong> desde el botón de la cabecera —
+          borra los datos locales (caché, refresh token cifrado, clave
+          maestra);</li>
+        <li><strong>Revocar la autorización Google</strong> en cualquier
+          momento desde tu cuenta Google
+          (<a href="https://myaccount.google.com/permissions">myaccount.google.com/permissions</a>);</li>
+        <li><strong>Desinstalar</strong> la extensión (Chrome) o
+          <strong>vaciar los datos del sitio</strong> (PWA, desde las
+          DevTools o los ajustes del navegador);</li>
+        <li><strong>Borrar las coordenadas GEO escritas</strong>
+          directamente desde Google Contacts (el campo
+          <code>userDefined / GEO</code> es modificable y eliminable).</li>
+      </ul>
+      <p>
+        Si estás en la Unión Europea, el RGPD te concede derechos de
+        acceso, rectificación, supresión y portabilidad. Como Pinkin no
+        retiene <em>ningún</em> dato en sus servidores (no tiene
+        servidores), estos derechos se ejercen directamente sobre tu
+        navegador y tu cuenta Google; no es necesaria ninguna solicitud al
+        autor para hacerlos valer.
+      </p>
+
+      <h2>Seguridad</h2>
+      <ul>
+        <li>refresh token <strong>cifrado AES-GCM 256</strong> vía
+          WebCrypto API, con una clave que nunca sale del navegador;</li>
+        <li>ninguna transmisión HTTP: todos los intercambios (Google,
+          Nominatim, tiles OSM) están en HTTPS;</li>
+        <li>extensión <strong>Manifest V3</strong>, principio de mínimo
+          privilegio, hosts autorizados explícitamente declarados.</li>
+      </ul>
+
+      <h2>Menores</h2>
+      <p>
+        Pinkin no está diseñado para menores de 13 años y no recoge a
+        sabiendas información sobre ellos. La aplicación muestra los
+        contactos Google de la persona que se conecta; la responsabilidad
+        editorial de esos contactos está enteramente en manos del usuario.
+      </p>
+
+      <h2>Cambios en esta política</h2>
+      <p>
+        Si la política cambia materialmente, la fecha de actualización en
+        la cabecera de la página se revisa, y el historial del repositorio
+        git público refleja el diff exacto de los cambios.
+      </p>
+
+      <h2>Contacto</h2>
+      <p>
+        El autor está disponible en
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+      </p>
+    </article>
+
+  </main>
+
+  <footer class="bottom">
+    <div class="links">
+      <a href="/privacy">
+        <span data-lang="fr">Confidentialité</span>
+        <span data-lang="en">Privacy</span>
+        <span data-lang="es">Privacidad</span>
+      </a>
+      <a href="/terms">
+        <span data-lang="fr">Conditions</span>
+        <span data-lang="en">Terms</span>
+        <span data-lang="es">Condiciones</span>
+      </a>
+      <a href="https://github.com/CedricMabilotte/pinkin">
+        <span data-lang="fr">Code source</span>
+        <span data-lang="en">Source code</span>
+        <span data-lang="es">Código fuente</span>
+      </a>
+      <a href="mailto:cedric.mabilotte@gmail.com">
+        <span data-lang="fr">Contact</span>
+        <span data-lang="en">Contact</span>
+        <span data-lang="es">Contacto</span>
+      </a>
+    </div>
+    <p>
+      <span data-lang="fr">Projet libre, sans modèle commercial. Une carte et tes proches dessus.</span>
+      <span data-lang="en">Free software project, no business model. A map and your loved ones on it.</span>
+      <span data-lang="es">Proyecto libre, sin modelo comercial. Un mapa y tus seres queridos sobre él.</span>
+    </p>
+  </footer>
+
+  <script>
+    // i18n minimal partagé avec index.html et terms.html.
+    // Bascule de langue, persistance localStorage, fallback navigator.language,
+    // mise à jour de document.title, meta description et documentElement.lang.
+    (function () {
+      var SUPPORTED = ['fr', 'en', 'es'];
+      var KEY = 'pinkin_landing_lang';
+      function getMeta(name) {
+        var m = document.querySelector('meta[name="' + name + '"]');
+        return m ? m.getAttribute('content') : null;
+      }
+      function detect() {
+        try {
+          var saved = localStorage.getItem(KEY);
+          if (saved && SUPPORTED.indexOf(saved) >= 0) return saved;
+        } catch (_) {}
+        var nav = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+        return SUPPORTED.indexOf(nav) >= 0 ? nav : 'fr';
+      }
+      function setLang(lang) {
+        document.body.lang = lang;
+        document.documentElement.lang = lang;
+        try { localStorage.setItem(KEY, lang); } catch (_) {}
+        var t = getMeta('x-pinkin-title-' + lang);
+        if (t) document.title = t;
+        var d = getMeta('x-pinkin-desc-' + lang);
+        var descEl = document.querySelector('meta[name="description"]');
+        if (d && descEl) descEl.setAttribute('content', d);
+        var btns = document.querySelectorAll('.lang-switch button[data-set-lang]');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle('active', btns[i].dataset.setLang === lang);
+        }
+      }
+      setLang(detect());
+      document.querySelectorAll('.lang-switch button[data-set-lang]').forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.dataset.setLang); });
+      });
+    })();
+  </script>
+</body>
+</html>

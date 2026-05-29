@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pinkin</title>
+  <link rel="stylesheet" href="../../lib/leaflet/leaflet.css">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+
+  <!-- Point de montage unique. Tout le balisage de l'app est désormais injecté
+       par ui/shell.js (source unique, partagée avec la PWA). Voir ui/shell.js
+       pour le pourquoi de la centralisation. -->
+  <div id="app"></div>
+
+  <!-- Leaflet en variable globale AVANT le module : MV3 interdit le CDN et
+       ui/map.js lit window.L. Le <script> classique s'exécute avant le module
+       différé qui suit. -->
+  <script src="../../lib/leaflet/leaflet.js"></script>
+  <script src="popup.js" type="module"></script>
+</body>
+</html>

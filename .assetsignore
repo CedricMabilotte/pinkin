@@ -1,0 +1,60 @@
+# .assetsignore — exclusions Cloudflare Workers Static Assets (pinkin.org)
+# ─────────────────────────────────────────────────────────────────────────────
+# Syntaxe gitignore-like. Cloudflare exclut TOUT ce qui matche avant l'upload.
+# Cf. wrangler.toml pour le mode (Workers Static Assets, assets-only).
+#
+# OBJECTIF. Le repo `pinkin` contient extension + PWA + landing + tests +
+# docs + scripts. Seul le sous-ensemble web-public doit être servi sur
+# https://pinkin.org/. Tout le reste est exclu ici.
+#
+# RÈGLE D'OR. extension/background/ NE DOIT JAMAIS être servi — il porte
+# le CLIENT_SECRET en clair (décision #5 / L5 préservée).
+
+# === Sécurité — interdit absolu ===
+extension/background/
+
+# === Reste du dossier extension/ — code Chrome ext, pas du web ===
+extension/popup/popup.html
+extension/popup/popup.js
+extension/platform-extension.js
+# (extension/popup/popup.css reste — référencé par pwa/index.html)
+
+# === Tests et reports ===
+test/
+e2e/
+test-results/
+playwright-report/
+
+# === Build, déps, historique ===
+scripts/
+dist/
+node_modules/
+.git/
+.github/
+
+# === Configs dev ===
+package.json
+package-lock.json
+playwright.config.js
+vitest.config.js
+
+# === Manifest extension MV3 — ne pas confondre avec manifest.webmanifest (PWA) ===
+manifest.json
+
+# === Docs internes (BRIEF, HANDOFF, plans, audits) ===
+*.md
+
+# === Brouillons historiques de l'UI extension ===
+mockup-*.html
+
+# === Métadonnées Cloudflare elles-mêmes ===
+wrangler.toml
+.assetsignore
+.gitignore
+worker.js
+# (worker.js est l'entry du Worker — il est uploadé par Cloudflare au
+# déploiement comme handler, jamais servi comme asset statique. L'exclure
+# d'.assetsignore évite qu'il soit aussi listé comme asset téléchargeable.)
+
+# === Fichiers .vcf de test éventuels ===
+*.vcf

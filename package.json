@@ -1,0 +1,28 @@
+{
+  "name": "pinkin",
+  "version": "1.0.0",
+  "description": "Épingle tes proches sur une carte.",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install-leaflet": "cp -r node_modules/leaflet/dist lib/leaflet",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:ui": "vitest --ui",
+    "test:coverage": "vitest run --coverage",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:report": "playwright show-report",
+    "test:all": "npm run test && npm run test:e2e",
+    "dev:pwa": "node pwa/dev-server.js",
+    "oauth:capture": "node scripts/oauth-profile.mjs"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.60.0",
+    "happy-dom": "^20.9.0",
+    "vitest": "^4.1.7"
+  }
+}

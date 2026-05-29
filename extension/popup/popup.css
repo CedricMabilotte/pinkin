@@ -1,0 +1,820 @@
+/* extension/popup/popup.css */
+/* Design system Pinkin — variables, états, carte, panel */
+/* Freechi-specific : palette pink activisme */
+/* Point d'extension fork : remplacer les variables :root */
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --pink:        #C2185B;
+  --pink-hot:    #E91E8C;
+  --pink-blush:  #FCE4EC;
+  --ink:         #1A1A2E;
+  --ink-soft:    #4A4A6A;
+  --surface:     #FFFFFF;
+  --surface-off: #FDF6F0;
+  --border:      #F0E0E8;
+  --radius:      12px;
+  --radius-sm:   8px;
+  --shadow:      0 4px 24px rgba(194,24,91,0.12);
+  --header-h:    44px;
+  --tabbar-h:    40px;
+}
+
+html, body {
+  width: 560px;
+  height: 500px;
+  overflow: hidden;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  font-size: 14px;
+  color: var(--ink);
+  background: var(--surface);
+}
+
+.hidden { display: none !important; }
+
+/* === HEADER === */
+#app-header {
+  position: relative;
+  z-index: 1000;
+  height: var(--header-h);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+#header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 800;
+  font-size: 16px;
+  color: var(--pink);
+  letter-spacing: -0.3px;
+}
+
+#header-logo img { border-radius: 4px; }
+
+#header-actions { display: flex; gap: 6px; }
+
+/* Boutons d'action : icône + libellé court. Le libellé (.btn-label) est masqué
+   sur écran étroit — voir la media query en bas de fichier. */
+#header-actions button {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 10px;
+  border: none;
+  background: transparent;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  color: var(--ink-soft);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.15s, color 0.15s;
+}
+
+.btn-label { white-space: nowrap; }
+
+#header-actions button:hover:not(:disabled) {
+  background: var(--pink-blush);
+  color: var(--pink);
+}
+
+/* État désactivé visible — boutons d'en-tête et onglets avant authentification
+   (R1 Lot 4 #7). Décision opérateur : « le montrer pour garder une interface
+   stable, mais le désactiver et le griser ». L'utilisateur voit qu'une
+   fonction existe sans pouvoir la cliquer ; le tooltip (title=) explique. */
+#header-actions button:disabled,
+#tab-bar .tab:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  /* Ne pas hériter du :hover, déjà filtré ci-dessus mais on ré-affirme. */
+  background: transparent;
+  color: var(--text-soft, inherit);
+}
+
+/* === BARRE D'ONGLETS (Étape 1b) ===
+   Navigation carte / carnet, sous l'en-tête. z-index 400 : sous les écrans
+   d'état (.app-state, z-index 500), qui la recouvrent tant que l'app charge. */
+#tab-bar {
+  position: absolute;
+  top: var(--header-h);
+  left: 0; right: 0;
+  height: var(--tabbar-h);
+  z-index: 400;
+  display: flex;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1;
+  border: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.tab:hover:not(.on) { color: var(--pink); }
+
+.tab.on {
+  color: var(--pink);
+  border-bottom-color: var(--pink);
+}
+
+/* === LE CARNET (Étape 3) ===
+   Vue liste, second onglet. Colonne : barre de filtre fixe + liste défilante. */
+#view-carnet {
+  position: absolute;
+  top: calc(var(--header-h) + var(--tabbar-h));
+  left: 0; right: 0; bottom: 0;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--surface);
+}
+
+#carnet-filter {
+  flex-shrink: 0;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+#carnet-search {
+  width: 100%;
+  height: 34px;
+  padding: 0 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  font-family: inherit;
+  font-size: 13px;
+  color: var(--ink);
+  background: var(--surface-off);
+}
+#carnet-search:focus { outline: none; border-color: var(--pink); }
+
+#carnet-seg {
+  display: flex;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.seg-btn {
+  flex: 1;
+  height: 30px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  border-radius: 99px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.seg-btn.on {
+  border-color: var(--pink);
+  background: var(--pink-blush);
+  color: var(--pink);
+}
+
+#carnet-list {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.carnet-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 12px;
+  border-bottom: 1px solid var(--border);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.carnet-row:hover { background: var(--surface-off); }
+
+.carnet-avatar,
+.carnet-initials {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.carnet-avatar { object-fit: cover; }
+.carnet-initials {
+  background: var(--pink-blush);
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carnet-identity { flex: 1; min-width: 0; }
+.carnet-name {
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.carnet-sub {
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+.carnet-badge {
+  flex-shrink: 0;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 99px;
+  white-space: nowrap;
+}
+.carnet-badge.located    { background: var(--pink-blush); color: var(--pink); }
+.carnet-badge.unresolved { background: #FBEAD6; color: #B5731B; }
+.carnet-badge.no-address { background: #ECEAF0; color: #6B6580; }
+
+.carnet-empty {
+  padding: 28px 16px;
+  text-align: center;
+  color: var(--ink-soft);
+  font-size: 13px;
+}
+
+/* === ÉTATS APP === */
+.app-state {
+  position: absolute;
+  inset: var(--header-h) 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  background: var(--surface-off);
+  z-index: 500;
+  padding: 32px;
+  text-align: center;
+  color: var(--ink-soft);
+}
+
+.btn-primary {
+  padding: 10px 24px;
+  background: var(--pink);
+  color: white;
+  border: none;
+  border-radius: 99px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.btn-primary:hover { background: var(--pink-hot); }
+.btn-primary:active { transform: scale(0.97); }
+
+/* Message d'échec de connexion, sous le bouton de l'écran d'accueil */
+.auth-error {
+  font-size: 13px;
+  line-height: 1.4;
+  color: var(--pink);
+  max-width: 300px;
+}
+
+/* === SPINNER === */
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--pink-blush);
+  border-top-color: var(--pink);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* === BANNER GÉOCODAGE === */
+.geocoding-banner {
+  position: absolute;
+  top: calc(var(--header-h) + var(--tabbar-h));
+  left: 0; right: 0;
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 12px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+.geocoding-progress {
+  flex: 1;
+  height: 3px;
+  background: var(--pink-blush);
+  border-radius: 99px;
+  overflow: hidden;
+}
+
+#geocoding-bar {
+  height: 100%;
+  background: var(--pink);
+  border-radius: 99px;
+  width: 0%;
+  transition: width 0.4s ease;
+}
+
+/* === CARTE === */
+#map {
+  position: absolute;
+  top: calc(var(--header-h) + var(--tabbar-h));
+  left: 0; right: 0; bottom: 0;
+  z-index: 1;
+}
+
+/* Marqueurs custom Leaflet */
+.pin-marker { background: none !important; border: none !important; }
+
+.pin-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2.5px solid var(--pink);
+  object-fit: cover;
+  box-shadow: 0 2px 8px rgba(194,24,91,0.25);
+  display: block;
+}
+
+.pin-initials {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 2.5px solid var(--pink);
+  background: var(--pink-blush);
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(194,24,91,0.2);
+}
+
+/* Tooltip Leaflet */
+.pin-tooltip {
+  background: var(--ink);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  padding: 4px 8px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+.pin-tooltip::before { border-top-color: var(--ink); }
+
+/* === ACTION PANEL === */
+#panel-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(26,26,46,0.3);
+  z-index: 1100;
+  backdrop-filter: blur(1px);
+}
+
+#contact-panel {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  width: 340px;
+  max-width: calc(100% - 28px);
+  max-height: calc(100% - 28px);
+  overflow-y: auto;
+  z-index: 1200;
+  background: var(--surface);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  animation: panelIn 0.2s ease;
+}
+
+@keyframes panelIn {
+  from { opacity: 0; transform: translate(-50%, -47%) scale(0.97); }
+  to   { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+}
+
+#panel-header {
+  position: relative;
+  padding: 20px 18px 17px;
+  background: var(--surface-off);
+}
+
+#panel-close {
+  position: absolute;
+  top: 13px; right: 13px;
+  width: 30px; height: 30px;
+  border: none;
+  background: var(--surface);
+  border-radius: 50%;
+  cursor: pointer;
+  color: var(--ink-soft);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.12);
+  transition: background 0.15s, color 0.15s;
+}
+#panel-close:hover { background: var(--pink-blush); color: var(--pink); }
+
+#panel-id {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  padding-right: 34px;
+}
+
+#panel-avatar-wrap { position: relative; flex-shrink: 0; }
+
+#panel-avatar {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  display: block;
+}
+
+#panel-avatar-initials {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  background: var(--pink-blush);
+  color: var(--pink);
+  font-weight: 700;
+  font-size: 21px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+
+#panel-identity { flex: 1; min-width: 0; }
+
+#panel-name {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--ink);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+#panel-sub {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 5px;
+}
+
+.panel-status {
+  flex-shrink: 0;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 99px;
+}
+.panel-status.located    { background: var(--pink-blush); color: var(--pink); }
+.panel-status.unresolved { background: #FBEAD6; color: #B5731B; }
+.panel-status.no-address { background: #ECEAF0; color: #6B6580; }
+
+#panel-location {
+  font-size: 12px;
+  color: var(--ink-soft);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Sections de la fiche — séparées par un filet, sauf la première. */
+.panel-sec { padding: 15px 18px; }
+.panel-sec + .panel-sec { border-top: 1px solid var(--border); }
+
+.panel-lab {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  margin-bottom: 12px;
+}
+
+/* === JOINDRE — moyens de contact en pastilles rondes === */
+#panel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.panel-empty { font-size: 13px; color: var(--ink-soft); }
+
+.chan {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  cursor: pointer;
+}
+.chan i {
+  width: 46px; height: 46px;
+  border-radius: 50%;
+  background: var(--pink-blush);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s;
+}
+.chan i svg { width: 19px; height: 19px; }
+.chan:hover i { background: #FAD4E3; }
+.chan span { font-size: 10.5px; color: var(--ink-soft); }
+
+/* Pastille-lien — canaux de la section « Mise à jour ». */
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 13px;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s;
+}
+.action-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+/* Rangée des canaux de demande de mise à jour. */
+.bridge-row {
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+}
+
+/* Pied de fiche — lien « Ouvrir dans Google Contacts ». */
+.panel-footer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 14px;
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+  border-radius: 0 0 22px 22px;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.panel-footer:hover { background: var(--surface-off); color: var(--pink); }
+
+/* === CONTRÔLE D'ÉCRITURE — bouton d'en-tête à état (refonte session #5) ===
+   Remplace l'ancien bandeau du bas. Le bouton vit dans #header-actions et hérite
+   de ses styles ; on n'ajoute ici que les marques d'état. */
+.write-ctl { position: relative; }
+.write-ctl.is-on { background: var(--pink-blush); color: var(--pink); }
+.write-ctl:disabled { cursor: default; }
+
+.write-ctl-pin { display: inline-flex; }
+
+/* Spinner « en cours », à la place de l'épingle quand l'écriture travaille. */
+.write-ctl-spin {
+  display: inline-block;
+  width: 14px; height: 14px;
+  border: 2px solid var(--pink-blush);
+  border-top-color: var(--pink);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+/* Pastille d'invite — discrète, sur le coin du bouton. */
+.write-ctl-dot {
+  position: absolute;
+  top: 3px; right: 5px;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: var(--pink-hot);
+  border: 1.5px solid var(--surface);
+}
+
+/* === POPOVERS D'EN-TÊTE — écriture, et confirmation de déconnexion (P3) === */
+.hd-popover {
+  position: absolute;
+  top: calc(var(--header-h) + 6px);
+  right: 12px;
+  width: 252px;
+  z-index: 1050;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 13px;
+}
+
+/* Petite flèche reliant le popover à son bouton. anchorPopover() règle
+   --arrow-x sur l'abscisse du centre du bouton, relative au popover. */
+.hd-popover::before {
+  content: "";
+  position: absolute;
+  top: -6px;
+  left: var(--arrow-x, 50%);
+  margin-left: -5.5px;            /* centre la flèche (11 px) sur --arrow-x */
+  width: 11px;
+  height: 11px;
+  background: var(--surface);
+  border-left: 1px solid var(--border);
+  border-top: 1px solid var(--border);
+  transform: rotate(45deg);
+}
+
+.hd-pop-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 3px;
+}
+
+.hd-pop-text {
+  font-size: 12.5px;
+  line-height: 1.4;
+  color: var(--ink-soft);
+}
+
+.hd-pop-actions {
+  display: flex;
+  gap: 7px;
+  margin-top: 11px;
+}
+
+.hd-pop-btn {
+  padding: 7px 13px;
+  border: 1.5px solid var(--border);
+  background: var(--surface);
+  border-radius: 99px;
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.hd-pop-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+.hd-pop-btn.primary {
+  background: var(--pink);
+  border-color: var(--pink);
+  color: white;
+}
+.hd-pop-btn.primary:hover { background: var(--pink-hot); border-color: var(--pink-hot); color: white; }
+
+.hd-pop-btn.danger {
+  background: #B5731B;
+  border-color: #B5731B;
+  color: white;
+}
+.hd-pop-btn.danger:hover { background: #9C6217; border-color: #9C6217; color: white; }
+
+/* Bloc d'invite de la Fiche, quand l'écriture n'est pas accordée (piste P2). */
+.address-locked p {
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--ink-soft);
+  margin-bottom: 9px;
+}
+
+.btn-write {
+  flex-shrink: 0;
+  padding: 6px 14px;
+  background: var(--pink);
+  color: white;
+  border: none;
+  border-radius: 99px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.btn-write:hover:not(:disabled) { background: var(--pink-hot); }
+.btn-write:disabled { opacity: 0.55; cursor: default; }
+
+/* === ADRESSE — affichage + outils (Phase D, Étape 4b) === */
+#panel-addr-text {
+  font-size: 13px;
+  color: var(--ink);
+  line-height: 1.45;
+  margin-bottom: 11px;
+}
+
+/* Rangée des outils d'adresse — « Corriger » et « Importer .vcf ». */
+#addr-tools {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.mini-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 12px;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  background: var(--surface);
+  color: var(--ink);
+  font-family: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.mini-btn:hover { border-color: var(--pink); color: var(--pink); }
+
+.address-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+/* Champs structurés du formulaire de correction d'adresse — empilés. */
+.addr-field {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  color: var(--ink);
+}
+.addr-field:focus { outline: none; border-color: var(--pink); }
+
+/* Boutons Enregistrer / Annuler, en ligne sous les champs. */
+.address-form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+.address-status {
+  margin-top: 6px;
+  font-size: 13px;
+  color: var(--ink-soft);
+}
+
+/* Bouton discret « Annuler » du formulaire d'adresse */
+.btn-ghost {
+  flex-shrink: 0;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1.5px solid var(--border);
+  border-radius: 99px;
+  font-size: 12px;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+.btn-ghost:hover { border-color: var(--pink); color: var(--pink); }
+
+/* Rotation de l'icône Synchroniser pendant l'opération (retour visuel) */
+.spinning svg { animation: spin 0.7s linear infinite; }
+
+/* === ACCESSIBILITÉ TACTILE — écrans étroits (PWA mobile) ===
+   La cible recommandée est 44×44 px. L'extension a une largeur fixe (560 px)
+   et n'est pas concernée ; seule la PWA sur mobile l'est. */
+@media (max-width: 480px) {
+  #header-actions          { gap: 8px; }
+  /* Écran étroit : libellés masqués, retour aux boutons icône carrés 44x44
+     (cible tactile). L'extension, large de 560 px, garde les libellés. */
+  #header-actions button   { width: 44px; height: 44px; padding: 0; justify-content: center; }
+  #header-actions .btn-label { display: none; }
+  #panel-close             { width: 44px; height: 44px; }
+  .btn-write,
+  .btn-ghost,
+  .action-btn,
+  .hd-pop-btn              { padding: 12px 16px; }
+  .btn-primary             { padding: 14px 24px; }
+}

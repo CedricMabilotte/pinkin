@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<!--
+  terms.html — Conditions d'utilisation de Pinkin.
+  ─────────────────────────────────────────────────────────────────────────────
+  Hébergée sur https://pinkin.org/terms — adresse référencée dans :
+    · l'écran de consentement OAuth (Google Cloud Console, projet pinkin) ;
+    · la fiche Chrome Web Store ;
+    · la fiche de l'app PWA (footer).
+
+  Trilingue fr / en / es — structure identique à privacy.html (article par
+  langue, switcher, footer riche, title+meta description adaptatifs).
+
+  Qualité Google validation OAuth scope sensible, ton geek libertaire
+  toléré — décision opérateur #8.
+
+  Page autonome : zéro dépendance, CSS+JS inline, palette Pinkin partagée
+  avec privacy.html et index.html.
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#C2185B">
+  <title>Conditions d'utilisation · Pinkin</title>
+  <meta name="description" content="Conditions d'utilisation de Pinkin — logiciel libre, usage personnel, fourni tel quel.">
+
+  <!-- Open Graph + Twitter Card -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pinkin">
+  <meta property="og:url" content="https://pinkin.org/terms">
+  <meta property="og:title" content="Conditions d'utilisation · Pinkin">
+  <meta property="og:description" content="Conditions d'utilisation de Pinkin — logiciel libre, usage personnel, fourni tel quel.">
+  <meta property="og:image" content="https://pinkin.org/assets/og/og-image.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Conditions d'utilisation · Pinkin">
+  <meta name="twitter:description" content="Pinkin — logiciel libre, fourni tel quel.">
+  <meta name="twitter:image" content="https://pinkin.org/assets/og/og-image.png">
+
+  <link rel="icon" href="/assets/icons/icon32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon128.png">
+
+  <!-- Titre + description adaptatifs (lus par le JS de bascule de langue) -->
+  <meta name="x-pinkin-title-fr" content="Conditions d'utilisation · Pinkin">
+  <meta name="x-pinkin-title-en" content="Terms of use · Pinkin">
+  <meta name="x-pinkin-title-es" content="Condiciones de uso · Pinkin">
+  <meta name="x-pinkin-desc-fr" content="Conditions d'utilisation de Pinkin — logiciel libre, usage personnel, fourni tel quel.">
+  <meta name="x-pinkin-desc-en" content="Pinkin terms of use — free software, personal use, provided as-is.">
+  <meta name="x-pinkin-desc-es" content="Condiciones de uso de Pinkin — software libre, uso personal, proporcionado tal cual.">
+
+  <style>
+    :root {
+      --rose: #C2185B;
+      --fuchsia: #E91E8C;
+      --blush: #FCE4EC;
+      --fond: #FDF6F0;
+      --texte: #1A1A2E;
+      --gris: #5a5a6e;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--texte);
+      background: var(--fond);
+    }
+    header.top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid var(--blush);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-weight: 700; font-size: 1.15rem; color: var(--rose);
+      text-decoration: none;
+    }
+    .brand img { width: 32px; height: 32px; }
+    .lang-switch button {
+      border: 1px solid var(--blush);
+      background: transparent;
+      color: var(--gris);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 0.2rem;
+    }
+    .lang-switch button.active {
+      background: var(--rose);
+      color: white;
+      border-color: var(--rose);
+    }
+    main.wrap { max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 4rem; }
+    article > header { padding-bottom: 1.5rem; border-bottom: 2px solid var(--blush); margin-bottom: 2rem; }
+    .nav-back { font-size: 0.9rem; margin-bottom: 1rem; }
+    .nav-back a { color: var(--rose); text-decoration: none; font-weight: 600; }
+    .nav-back a:hover { text-decoration: underline; }
+    h1 { color: var(--rose); font-size: 2rem; margin: 0 0 0.25rem; }
+    .updated { color: var(--gris); font-size: 0.9rem; }
+    h2 { color: var(--rose); font-size: 1.3rem; margin-top: 2.25rem; margin-bottom: 0.75rem; }
+    p { margin: 0.5rem 0 1rem; }
+    code, .code { font-family: 'Menlo', 'Consolas', monospace; background: var(--blush); padding: 0.1rem 0.35rem; border-radius: 3px; font-size: 0.92em; }
+    ul { padding-left: 1.5rem; }
+    li { margin-bottom: 0.4rem; }
+    .pillar {
+      background: var(--blush);
+      border-left: 4px solid var(--rose);
+      padding: 1rem 1.25rem;
+      border-radius: 4px;
+      margin: 1.5rem 0;
+    }
+    .pillar strong { color: var(--rose); }
+    a { color: var(--fuchsia); }
+    .small { font-size: 0.92rem; color: var(--gris); }
+    footer.bottom {
+      border-top: 2px solid var(--blush);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--gris);
+      font-size: 0.9rem;
+    }
+    footer.bottom a { font-weight: 600; text-decoration: none; }
+    footer.bottom a:hover { text-decoration: underline; }
+    .links { margin-bottom: 0.75rem; }
+    .links a { margin: 0 0.5rem; }
+    [data-lang] { display: none; }
+    body[lang="fr"] [data-lang="fr"],
+    body[lang="en"] [data-lang="en"],
+    body[lang="es"] [data-lang="es"] { display: revert; }
+    .lang-switch [data-lang] { display: inline-block; }
+  </style>
+</head>
+<body lang="fr">
+  <header class="top">
+    <a class="brand" href="/">
+      <img src="/assets/icons/icon32.png" alt="">
+      <span>pinkin</span>
+    </a>
+    <nav class="lang-switch" aria-label="Choix de langue">
+      <button type="button" data-set-lang="fr" class="active">FR</button>
+      <button type="button" data-set-lang="en">EN</button>
+      <button type="button" data-set-lang="es">ES</button>
+    </nav>
+  </header>
+
+  <main class="wrap">
+
+    <!-- ═════════════════════ FRANÇAIS ═════════════════════ -->
+    <article data-lang="fr">
+      <header>
+        <p class="nav-back"><a href="/">← pinkin</a></p>
+        <h1>Conditions d'utilisation</h1>
+        <p class="updated">Mise à jour : 28 mai 2026</p>
+      </header>
+
+      <p>
+        Pinkin est un logiciel libre, distribué sans frais, sans modèle
+        commercial, sans publicité. En l'utilisant tu acceptes les conditions
+        qui suivent — elles sont courtes et lisibles à dessein.
+      </p>
+
+      <div class="pillar">
+        <strong>L'esprit du contrat.</strong> Pinkin t'est offert tel quel.
+        Il fait ce qui est annoncé sur la boîte, et son code est ouvert pour
+        que tu vérifies par toi-même. Aucune garantie au-delà de cette
+        transparence ; aucune obligation au-delà de ce qui est légalement
+        due.
+      </div>
+
+      <h2>1. Qui fournit Pinkin</h2>
+      <p>
+        Pinkin est édité, maintenu et distribué par
+        <strong>Cédric Mabilotte</strong>, personne physique, joignable à
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+        Aucune société, aucune entité juridique, aucun co-éditeur : un
+        humain, un domaine (<code>pinkin.org</code>), un dépôt git public.
+      </p>
+
+      <h2>2. Ce que tu peux faire avec Pinkin</h2>
+      <ul>
+        <li>l'<strong>installer</strong> et l'<strong>utiliser</strong>
+          gratuitement, à des fins personnelles ou professionnelles ;</li>
+        <li>en <strong>étudier le code</strong>, le forker, le modifier, le
+          redistribuer dans le respect de la licence open source publiée à
+          côté du code source ;</li>
+        <li>signaler des bugs, proposer des améliorations, contribuer.</li>
+      </ul>
+
+      <h2>3. Ce qu'il t'est demandé de ne pas faire</h2>
+      <ul>
+        <li>te servir de Pinkin pour accéder à des données qui ne
+          t'appartiennent pas ou que tu n'as pas le droit de consulter ;</li>
+        <li>l'utiliser pour du démarchage commercial, du tracking, ou tout
+          usage incompatible avec la
+          <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a> ;</li>
+        <li>contourner les protections techniques de l'application ou du
+          navigateur dans lequel elle tourne ;</li>
+        <li>republier le logiciel sous un nom trompeur laissant croire qu'il
+          s'agit de la distribution officielle.</li>
+      </ul>
+
+      <h2>4. Ton compte Google et tes données</h2>
+      <p>
+        Pinkin fonctionne avec ton compte Google personnel. La politique
+        détaillée de traitement des données — quelles données sont touchées,
+        où elles vont, combien de temps elles vivent — est dans la
+        <a href="/privacy">Politique de confidentialité</a>. Le résumé :
+        <strong>aucune donnée ne quitte ton navigateur</strong> en dehors
+        des allers-retours nécessaires vers Google (People API) et
+        OpenStreetMap (géocodage + tuiles). Aucun serveur Pinkin n'existe
+        pour recevoir quoi que ce soit.
+      </p>
+
+      <h2>5. Disponibilité et évolutions</h2>
+      <p>
+        Pinkin est un projet personnel et bénévole. Aucun engagement de
+        disponibilité, aucun SLA, aucun support garanti. L'auteur s'efforce
+        d'être réactif et de maintenir le logiciel en état de marche, mais
+        n'est pas tenu de le faire selon un calendrier.
+      </p>
+      <p>
+        Le logiciel peut évoluer (corrections de bugs, ajout de
+        fonctionnalités, suppression d'une fonctionnalité jugée inutile ou
+        risquée). Les changements significatifs sont reflétés dans
+        l'historique du dépôt git public.
+      </p>
+
+      <h2>6. Services tiers</h2>
+      <p>
+        Pinkin dépend de services tiers que tu utilises <em>directement</em>
+        depuis ton navigateur, sans intermédiation par l'auteur :
+      </p>
+      <ul>
+        <li><strong>Google People API</strong> — soumis aux
+          <a href="https://policies.google.com/terms">conditions Google</a>
+          et à la
+          <a href="https://policies.google.com/privacy">politique de confidentialité Google</a> ;</li>
+        <li><strong>OpenStreetMap</strong> (tuiles cartographiques et
+          géocodage Nominatim) — soumis aux
+          <a href="https://operations.osmfoundation.org/policies/tiles/">policies OSM</a>
+          et à la
+          <a href="https://operations.osmfoundation.org/policies/nominatim/">policy Nominatim</a>.</li>
+      </ul>
+      <p>
+        Pinkin n'est pas affilié à Google ni à la fondation OpenStreetMap.
+        L'indisponibilité ou les changements de politique de ces tiers
+        peuvent affecter le fonctionnement de Pinkin, sans recours possible
+        contre l'auteur.
+      </p>
+
+      <h2>7. Garantie — la clause « tel quel »</h2>
+      <p class="small">
+        Le logiciel est fourni « tel quel », sans garantie d'aucune sorte,
+        expresse ou implicite, y compris mais sans s'y limiter les garanties
+        de qualité marchande, d'adéquation à un usage particulier ou
+        d'absence de contrefaçon. Dans la mesure permise par la loi,
+        l'auteur ne saurait être tenu responsable de toute perte de données,
+        perte financière, dommage direct ou indirect résultant de
+        l'utilisation ou de l'impossibilité d'utiliser Pinkin. Les droits
+        impératifs des consommateurs, en particulier en Union européenne,
+        restent réservés et ne sont pas affectés par cette clause.
+      </p>
+
+      <h2>8. Propriété intellectuelle</h2>
+      <p>
+        Le code source de Pinkin est publié sous une licence open source
+        dont le texte intégral accompagne le dépôt sur GitHub. Tu disposes
+        des droits que cette licence t'accorde — étude, modification,
+        redistribution — dans le respect de ses conditions (notamment :
+        conservation des mentions d'auteur et de licence).
+      </p>
+      <p>
+        Le nom « Pinkin », le logo (koala rose, badge militant circulaire)
+        et la palette graphique restent la propriété de l'auteur. Tu peux
+        les reproduire pour parler du logiciel ; tu ne peux pas t'en servir
+        pour faire croire qu'un fork est la distribution officielle.
+      </p>
+
+      <h2>9. Résiliation</h2>
+      <p>
+        Tu peux arrêter d'utiliser Pinkin à tout moment, sans formalité, en
+        désinstallant l'extension ou en vidant les données du site (PWA).
+        L'auteur peut, sans préavis, cesser de maintenir le logiciel ou en
+        modifier la distribution. Aucune indemnité d'aucune sorte n'est due
+        dans un cas comme dans l'autre.
+      </p>
+
+      <h2>10. Droit applicable et juridiction</h2>
+      <p>
+        Ces conditions sont régies par le <strong>droit français</strong>.
+        Tout litige qui ne pourrait pas être résolu à l'amiable relève des
+        tribunaux compétents du ressort du domicile de l'auteur. Si tu es
+        consommateur résidant dans l'Union européenne, tu conserves la
+        possibilité de saisir les tribunaux de ton lieu de résidence en
+        vertu des dispositions impératives de protection des consommateurs.
+      </p>
+
+      <h2>11. Si une clause est invalide</h2>
+      <p>
+        Si une clause de ces conditions est jugée invalide par un tribunal,
+        les autres clauses restent en vigueur. La clause invalide est
+        interprétée de la manière la plus proche possible de son intention,
+        dans les limites du droit applicable.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions, remarques, refus, contre-propositions :
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+      </p>
+    </article>
+
+    <!-- ═════════════════════ ENGLISH ═════════════════════ -->
+    <article data-lang="en">
+      <header>
+        <p class="nav-back"><a href="/">← pinkin</a></p>
+        <h1>Terms of use</h1>
+        <p class="updated">Last updated: 28 May 2026</p>
+      </header>
+
+      <p>
+        Pinkin is free software, distributed at no cost, with no business
+        model, no advertising. By using it you accept the terms that
+        follow — they are short and readable by design.
+      </p>
+
+      <div class="pillar">
+        <strong>The spirit of the contract.</strong> Pinkin is given to
+        you as-is. It does what it says on the tin, and its code is open
+        so you can verify it for yourself. No warranty beyond that
+        transparency; no obligation beyond what is legally due.
+      </div>
+
+      <h2>1. Who provides Pinkin</h2>
+      <p>
+        Pinkin is published, maintained and distributed by
+        <strong>Cédric Mabilotte</strong>, an individual, reachable at
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+        No company, no legal entity, no co-publisher: one human, one
+        domain (<code>pinkin.org</code>), one public git repository.
+      </p>
+
+      <h2>2. What you can do with Pinkin</h2>
+      <ul>
+        <li><strong>install</strong> and <strong>use</strong> it for free,
+          for personal or professional purposes;</li>
+        <li><strong>study the code</strong>, fork it, modify it, redistribute
+          it under the open source license published next to the source
+          code;</li>
+        <li>report bugs, suggest improvements, contribute.</li>
+      </ul>
+
+      <h2>3. What you are asked not to do</h2>
+      <ul>
+        <li>use Pinkin to access data that does not belong to you or that
+          you are not entitled to consult;</li>
+        <li>use it for commercial prospecting, tracking, or any use
+          incompatible with the
+          <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>;</li>
+        <li>bypass the technical protections of the application or of the
+          browser in which it runs;</li>
+        <li>republish the software under a misleading name suggesting it is
+          the official distribution.</li>
+      </ul>
+
+      <h2>4. Your Google account and your data</h2>
+      <p>
+        Pinkin runs against your personal Google account. The detailed
+        data handling policy — which data is touched, where it goes, how
+        long it lives — is in the <a href="/privacy">Privacy policy</a>.
+        Short version: <strong>no data leaves your browser</strong> apart
+        from the necessary round-trips to Google (People API) and
+        OpenStreetMap (geocoding + tiles). No Pinkin server exists to
+        receive anything whatsoever.
+      </p>
+
+      <h2>5. Availability and changes</h2>
+      <p>
+        Pinkin is a personal, volunteer project. No availability
+        commitment, no SLA, no guaranteed support. The author tries to be
+        responsive and keep the software in working order, but is not
+        required to do so on any schedule.
+      </p>
+      <p>
+        The software may change (bug fixes, feature additions, removal of
+        a feature deemed useless or risky). Significant changes are
+        reflected in the public git repository history.
+      </p>
+
+      <h2>6. Third-party services</h2>
+      <p>
+        Pinkin depends on third-party services that you use
+        <em>directly</em> from your browser, with no intermediation by
+        the author:
+      </p>
+      <ul>
+        <li><strong>Google People API</strong> — subject to
+          <a href="https://policies.google.com/terms">Google's Terms</a>
+          and to
+          <a href="https://policies.google.com/privacy">Google's Privacy Policy</a>;</li>
+        <li><strong>OpenStreetMap</strong> (map tiles and Nominatim
+          geocoding) — subject to the
+          <a href="https://operations.osmfoundation.org/policies/tiles/">OSM tile usage policy</a>
+          and to the
+          <a href="https://operations.osmfoundation.org/policies/nominatim/">Nominatim usage policy</a>.</li>
+      </ul>
+      <p>
+        Pinkin is not affiliated with Google or with the OpenStreetMap
+        Foundation. Unavailability or policy changes from these third
+        parties can affect Pinkin's operation, with no recourse against
+        the author.
+      </p>
+
+      <h2>7. Warranty — the "as-is" clause</h2>
+      <p class="small">
+        The software is provided "as is", without warranty of any kind,
+        express or implied, including but not limited to the warranties of
+        merchantability, fitness for a particular purpose, or
+        non-infringement. To the extent permitted by law, the author shall
+        not be liable for any loss of data, financial loss, or direct or
+        indirect damage arising from the use of or the inability to use
+        Pinkin. Mandatory consumer rights, in particular in the European
+        Union, remain reserved and are not affected by this clause.
+      </p>
+
+      <h2>8. Intellectual property</h2>
+      <p>
+        Pinkin's source code is published under an open source license
+        whose full text accompanies the repository on GitHub. You have the
+        rights granted by that license — study, modification,
+        redistribution — under its conditions (notably: preservation of
+        author and license notices).
+      </p>
+      <p>
+        The name "Pinkin", the logo (pink koala, circular activist badge)
+        and the graphic palette remain the property of the author. You
+        may reproduce them to talk about the software; you may not use
+        them to make a fork look like the official distribution.
+      </p>
+
+      <h2>9. Termination</h2>
+      <p>
+        You may stop using Pinkin at any time, without formality, by
+        uninstalling the extension or clearing the site data (PWA). The
+        author may, without notice, stop maintaining the software or
+        modify its distribution. No compensation of any kind is due in
+        either case.
+      </p>
+
+      <h2>10. Governing law and jurisdiction</h2>
+      <p>
+        These terms are governed by <strong>French law</strong>. Any
+        dispute that cannot be resolved amicably falls within the
+        jurisdiction of the courts of the author's domicile. If you are a
+        consumer residing in the European Union, you retain the option to
+        bring proceedings before the courts of your place of residence
+        under mandatory consumer protection rules.
+      </p>
+
+      <h2>11. If a clause is invalid</h2>
+      <p>
+        If a clause of these terms is held invalid by a court, the other
+        clauses remain in force. The invalid clause is interpreted as
+        closely as possible to its original intent, within the limits of
+        applicable law.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions, remarks, refusals, counter-proposals:
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+      </p>
+    </article>
+
+    <!-- ═════════════════════ ESPAÑOL ═════════════════════ -->
+    <article data-lang="es">
+      <header>
+        <p class="nav-back"><a href="/">← pinkin</a></p>
+        <h1>Condiciones de uso</h1>
+        <p class="updated">Última actualización: 28 de mayo de 2026</p>
+      </header>
+
+      <p>
+        Pinkin es software libre, distribuido sin coste, sin modelo
+        comercial, sin publicidad. Al usarlo aceptas las condiciones que
+        siguen — son cortas y legibles a propósito.
+      </p>
+
+      <div class="pillar">
+        <strong>El espíritu del contrato.</strong> Pinkin se te ofrece tal
+        cual. Hace lo que está anunciado en la caja, y su código es abierto
+        para que puedas verificarlo tú mismo. Ninguna garantía más allá de
+        esa transparencia; ninguna obligación más allá de lo que es
+        legalmente debido.
+      </div>
+
+      <h2>1. Quién provee Pinkin</h2>
+      <p>
+        Pinkin es editado, mantenido y distribuido por
+        <strong>Cédric Mabilotte</strong>, persona física, contactable en
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+        Ninguna sociedad, ninguna entidad jurídica, ningún coeditor: un
+        humano, un dominio (<code>pinkin.org</code>), un repositorio git
+        público.
+      </p>
+
+      <h2>2. Lo que puedes hacer con Pinkin</h2>
+      <ul>
+        <li><strong>instalarlo</strong> y <strong>usarlo</strong> gratis,
+          con fines personales o profesionales;</li>
+        <li><strong>estudiar el código</strong>, bifurcarlo, modificarlo,
+          redistribuirlo respetando la licencia abierta publicada junto al
+          código fuente;</li>
+        <li>reportar bugs, proponer mejoras, contribuir.</li>
+      </ul>
+
+      <h2>3. Lo que se te pide no hacer</h2>
+      <ul>
+        <li>usar Pinkin para acceder a datos que no te pertenecen o que no
+          tienes derecho a consultar;</li>
+        <li>usarlo para prospección comercial, tracking o cualquier uso
+          incompatible con la
+          <a href="https://developers.google.com/terms/api-services-user-data-policy">Google API Services User Data Policy</a>;</li>
+        <li>esquivar las protecciones técnicas de la aplicación o del
+          navegador donde corre;</li>
+        <li>republicar el software bajo un nombre engañoso que sugiera que
+          se trata de la distribución oficial.</li>
+      </ul>
+
+      <h2>4. Tu cuenta Google y tus datos</h2>
+      <p>
+        Pinkin funciona con tu cuenta Google personal. La política
+        detallada de tratamiento de datos — qué datos se tocan, adónde
+        van, cuánto tiempo viven — está en la
+        <a href="/privacy">Política de privacidad</a>. El resumen:
+        <strong>ningún dato sale de tu navegador</strong> aparte de los
+        viajes necesarios a Google (People API) y OpenStreetMap
+        (geocodificación + tiles). Ningún servidor Pinkin existe para
+        recibir nada.
+      </p>
+
+      <h2>5. Disponibilidad y evoluciones</h2>
+      <p>
+        Pinkin es un proyecto personal y voluntario. Ningún compromiso de
+        disponibilidad, ningún SLA, ningún soporte garantizado. El autor
+        se esfuerza por ser receptivo y mantener el software en
+        funcionamiento, pero no está obligado a hacerlo según un
+        calendario.
+      </p>
+      <p>
+        El software puede evolucionar (correcciones de bugs, añadidos de
+        funcionalidades, eliminación de una funcionalidad considerada
+        inútil o arriesgada). Los cambios significativos quedan
+        reflejados en el historial del repositorio git público.
+      </p>
+
+      <h2>6. Servicios de terceros</h2>
+      <p>
+        Pinkin depende de servicios de terceros que usas
+        <em>directamente</em> desde tu navegador, sin intermediación del
+        autor:
+      </p>
+      <ul>
+        <li><strong>Google People API</strong> — sujeto a las
+          <a href="https://policies.google.com/terms">condiciones Google</a>
+          y a la
+          <a href="https://policies.google.com/privacy">política de privacidad Google</a>;</li>
+        <li><strong>OpenStreetMap</strong> (tiles cartográficos y
+          geocodificación Nominatim) — sujeto a las
+          <a href="https://operations.osmfoundation.org/policies/tiles/">policies OSM</a>
+          y a la
+          <a href="https://operations.osmfoundation.org/policies/nominatim/">policy Nominatim</a>.</li>
+      </ul>
+      <p>
+        Pinkin no está afiliado a Google ni a la fundación OpenStreetMap.
+        La indisponibilidad o los cambios de política de estos terceros
+        pueden afectar el funcionamiento de Pinkin, sin recurso posible
+        contra el autor.
+      </p>
+
+      <h2>7. Garantía — la cláusula « tal cual »</h2>
+      <p class="small">
+        El software se proporciona « tal cual », sin garantía de ningún
+        tipo, expresa o implícita, incluidas pero sin limitarse a las
+        garantías de comerciabilidad, idoneidad para un fin particular o
+        ausencia de infracción. En la medida permitida por la ley, el
+        autor no será responsable de pérdida de datos, pérdida financiera,
+        daño directo o indirecto que resulte del uso o de la imposibilidad
+        de usar Pinkin. Los derechos imperativos de los consumidores, en
+        particular en la Unión Europea, quedan reservados y no se ven
+        afectados por esta cláusula.
+      </p>
+
+      <h2>8. Propiedad intelectual</h2>
+      <p>
+        El código fuente de Pinkin se publica bajo una licencia abierta
+        cuyo texto íntegro acompaña al repositorio en GitHub. Dispones de
+        los derechos que esa licencia te concede — estudio, modificación,
+        redistribución — respetando sus condiciones (especialmente:
+        conservación de las menciones de autor y licencia).
+      </p>
+      <p>
+        El nombre « Pinkin », el logo (koala rosa, insignia militante
+        circular) y la paleta gráfica permanecen como propiedad del autor.
+        Puedes reproducirlos para hablar del software; no puedes usarlos
+        para hacer creer que un fork es la distribución oficial.
+      </p>
+
+      <h2>9. Resolución</h2>
+      <p>
+        Puedes dejar de usar Pinkin en cualquier momento, sin formalidad,
+        desinstalando la extensión o vaciando los datos del sitio (PWA).
+        El autor puede, sin previo aviso, dejar de mantener el software o
+        modificar su distribución. Ninguna indemnización de ningún tipo
+        es debida en ninguno de los dos casos.
+      </p>
+
+      <h2>10. Derecho aplicable y jurisdicción</h2>
+      <p>
+        Estas condiciones se rigen por el <strong>derecho francés</strong>.
+        Cualquier litigio que no pueda resolverse amistosamente compete a
+        los tribunales del domicilio del autor. Si eres consumidor
+        residente en la Unión Europea, conservas la posibilidad de acudir
+        a los tribunales de tu lugar de residencia en virtud de las
+        disposiciones imperativas de protección al consumidor.
+      </p>
+
+      <h2>11. Si una cláusula es inválida</h2>
+      <p>
+        Si una cláusula de estas condiciones es declarada inválida por un
+        tribunal, las demás cláusulas permanecen en vigor. La cláusula
+        inválida se interpreta de la forma más cercana posible a su
+        intención original, dentro de los límites del derecho aplicable.
+      </p>
+
+      <h2>Contacto</h2>
+      <p>
+        Preguntas, observaciones, rechazos, contrapropuestas:
+        <a href="mailto:cedric.mabilotte@gmail.com">cedric.mabilotte@gmail.com</a>.
+      </p>
+    </article>
+
+  </main>
+
+  <footer class="bottom">
+    <div class="links">
+      <a href="/privacy">
+        <span data-lang="fr">Confidentialité</span>
+        <span data-lang="en">Privacy</span>
+        <span data-lang="es">Privacidad</span>
+      </a>
+      <a href="/terms">
+        <span data-lang="fr">Conditions</span>
+        <span data-lang="en">Terms</span>
+        <span data-lang="es">Condiciones</span>
+      </a>
+      <a href="https://github.com/CedricMabilotte/pinkin">
+        <span data-lang="fr">Code source</span>
+        <span data-lang="en">Source code</span>
+        <span data-lang="es">Código fuente</span>
+      </a>
+      <a href="mailto:cedric.mabilotte@gmail.com">
+        <span data-lang="fr">Contact</span>
+        <span data-lang="en">Contact</span>
+        <span data-lang="es">Contacto</span>
+      </a>
+    </div>
+    <p>
+      <span data-lang="fr">Projet libre, sans modèle commercial. Une carte et tes proches dessus.</span>
+      <span data-lang="en">Free software project, no business model. A map and your loved ones on it.</span>
+      <span data-lang="es">Proyecto libre, sin modelo comercial. Un mapa y tus seres queridos sobre él.</span>
+    </p>
+  </footer>
+
+  <script>
+    (function () {
+      var SUPPORTED = ['fr', 'en', 'es'];
+      var KEY = 'pinkin_landing_lang';
+      function getMeta(name) {
+        var m = document.querySelector('meta[name="' + name + '"]');
+        return m ? m.getAttribute('content') : null;
+      }
+      function detect() {
+        try {
+          var saved = localStorage.getItem(KEY);
+          if (saved && SUPPORTED.indexOf(saved) >= 0) return saved;
+        } catch (_) {}
+        var nav = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+        return SUPPORTED.indexOf(nav) >= 0 ? nav : 'fr';
+      }
+      function setLang(lang) {
+        document.body.lang = lang;
+        document.documentElement.lang = lang;
+        try { localStorage.setItem(KEY, lang); } catch (_) {}
+        var t = getMeta('x-pinkin-title-' + lang);
+        if (t) document.title = t;
+        var d = getMeta('x-pinkin-desc-' + lang);
+        var descEl = document.querySelector('meta[name="description"]');
+        if (d && descEl) descEl.setAttribute('content', d);
+        var btns = document.querySelectorAll('.lang-switch button[data-set-lang]');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle('active', btns[i].dataset.setLang === lang);
+        }
+      }
+      setLang(detect());
+      document.querySelectorAll('.lang-switch button[data-set-lang]').forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.dataset.setLang); });
+      });
+    })();
+  </script>
+</body>
+</html>

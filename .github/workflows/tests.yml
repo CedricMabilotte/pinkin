@@ -1,0 +1,67 @@
+# .github/workflows/tests.yml
+# ─────────────────────────────────────────────────────────────────────────────
+# CI Pinkin — session #6.
+#
+# OBJET. Faire tourner la suite de tests à chaque push et pull request sur
+# `main`, pour attraper toute régression avant qu'elle n'atteigne le code
+# déployé. Critère de sortie V0.2 #4 : « CI verte sur la dernière main, sans
+# skip » (cf. PLAN_TESTS_V0.2.md).
+#
+# DEUX JOBS PARALLÈLES.
+#   - `unit` : vitest run, sortie en ~quelques secondes. Aucun browser requis.
+#   - `e2e`  : playwright test (PWA non-authentifiée). Installe chromium côté
+#     CI (le Chrome système n'est pas dispo en runner GitHub). Le serveur
+#     `dev:pwa` est démarré automatiquement par Playwright via webServer.
+#
+# ARTEFACTS. Rapport HTML Playwright uploadé en sortie d'echec — permet de
+# rouvrir trace + screenshot sans rejouer localement.
+# ─────────────────────────────────────────────────────────────────────────────
+
+name: tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  unit:
+    name: Unit & DOM (Vitest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - run: npm test
+
+  e2e:
+    name: E2E PWA (Playwright)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      # Le runner GitHub n'a pas Google Chrome installé — on télécharge
+      # chromium maintenu par Playwright (~150 Mo, cache npm + cache binaire
+      # géré par Playwright dans ~/.cache/ms-playwright).
+      - name: Install Playwright chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run Playwright tests
+        run: npm run test:e2e
+      # Rapport HTML toujours uploadé — utile en cas d'échec ET en succès
+      # (regarder les screenshots/traces des tests verts pour comprendre ce
+      # qui s'est passé).
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 14

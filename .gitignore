@@ -1,0 +1,28 @@
+# Dépendances npm — Leaflet est vendu dans lib/ (bundle local requis par MV3),
+# pas installé via npm ; node_modules n'a donc pas à être versionné.
+node_modules/
+
+# Cruft système
+.DS_Store
+
+# Tests (session #6) — sorties générées, ne pas committer
+# Playwright produit un rapport HTML + des artefacts (screenshots, traces) à
+# chaque exécution. Reproductibles, donc ignorés.
+playwright-report/
+test-results/
+# Vitest peut générer coverage/ avec --coverage.
+coverage/
+# Auth state Playwright (session #6 task #10) — token chiffré utilisateur, jamais versionné.
+e2e/.auth/
+
+# Empaquetage extension (session #8 task #13) — sortie de scripts/pack-extension.sh.
+# Le zip est reproductible depuis le code source ; pas de raison de le versionner.
+dist/
+
+# Secrets OAuth (session #9-ter voie γ — repo passe en public, secrets sortent
+# du code suivi). Le fichier secrets.js est créé manuellement à partir de
+# secrets.example.js. Il contient les valeurs CLIENT_ID + CLIENT_SECRET côté
+# extension. Côté PWA, le secret vit comme env var Cloudflare (worker.js
+# l'expose via /api/oauth-config).
+extension/background/secrets.js
+.wrangler/

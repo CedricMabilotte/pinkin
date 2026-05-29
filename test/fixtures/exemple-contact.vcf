@@ -1,0 +1,8 @@
+BEGIN:VCARD
+VERSION:3.0
+FN:Camille Exemple
+N:Exemple;Camille;;;
+EMAIL;TYPE=HOME:camille.exemple@example.org
+TEL;TYPE=CELL:+33612345678
+ADR;TYPE=HOME:;;24 rue de la République;Lyon;Rhône;69002;France
+END:VCARD

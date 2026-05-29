@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Pinkin",
+  "version": "1.0.0",
+  "description": "Épingle tes proches sur une carte.",
+  "homepage_url": "https://pinkin.org",
+  "minimum_chrome_version": "116",
+
+  "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvaYfVDERWr/SBQJyxT4Mg/DpMNc4QELnkEQBxEGBiBihiL7T1LdZBysWk+usEUHX+0Xu0Bg9ZXPQIWjNL0vmQwUh+I29dnL15cDOpJqIiM9x5AP3RNOwr+TRI3gUkj18GvfnGOUUqKWNxuvtTqH7Su+rYvBGJGXpDoD929HOs759/MnkIs8xeXfUHhMHdZze1KRsGKPNBRiCC4ehTjauLRvijnIVWl4aFGPqLSrgqYLjOPKFB9hlCKpQSO3T72Q6kNUWgLjvFoZk065F1K5lYux0ATj1MsFQj1LfarSu+XcDiFP7bazd79aGpa1WKee5rEpAixygbBghuxqxdJfeMwIDAQAB",
+
+  "action": {
+    "default_icon": {
+      "16":  "assets/icons/icon16.png",
+      "32":  "assets/icons/icon32.png",
+      "48":  "assets/icons/icon48.png"
+    }
+  },
+
+  "icons": {
+    "16":  "assets/icons/icon16.png",
+    "32":  "assets/icons/icon32.png",
+    "48":  "assets/icons/icon48.png",
+    "128": "assets/icons/icon128.png"
+  },
+
+  "background": {
+    "service_worker": "extension/background/service-worker.js",
+    "type": "module"
+  },
+
+  "permissions": [
+    "storage",
+    "identity"
+  ],
+
+  "host_permissions": [
+    "https://people.googleapis.com/*",
+    "https://oauth2.googleapis.com/*",
+    "https://nominatim.openstreetmap.org/*",
+    "https://*.tile.openstreetmap.org/*"
+  ],
+
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

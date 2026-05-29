@@ -1,0 +1,44 @@
+# wrangler.toml — configuration Cloudflare Worker pinkin.org
+# ─────────────────────────────────────────────────────────────────────────────
+# Décision opérateur :
+#   - S9-bis : hébergeur PWA = Cloudflare Pages depuis repo GitHub privé
+#     (pour préserver les CLIENT_SECRET en clair dans le code).
+#   - S9-ter : la nouvelle UI Cloudflare crée un Worker (pas Pages). Pivot
+#     en Workers Static Assets « assets-only ».
+#   - S9-ter (voie γ, ce fichier) : repo passe en public. Les CLIENT_SECRET
+#     sortent du code suivi. Le secret PWA vit comme env var Cloudflare et
+#     est exposé via /api/oauth-config par worker.js. → Mode « Worker JS +
+#     assets binding » (au lieu de « assets-only »).
+#
+# COMMENT ÇA MARCHE.
+#   `main = "worker.js"` : entry point qui intercepte CHAQUE requête.
+#   Pour /api/oauth-config, worker.js construit la réponse JSON depuis env.
+#   Pour tout le reste, il délègue à `env.ASSETS.fetch(request)` — les assets
+#   statiques sont donc servis comme avant, avec les rewrites de `_redirects`
+#   (notamment /auth/callback → /pwa/index.html) et les exclusions de
+#   `.assetsignore` toujours actifs.
+#
+# DEPLOY COMMAND CÔTÉ UI CLOUDFLARE : `npx wrangler deploy` (sans `pages`).
+
+name = "pinkin-org"
+main = "worker.js"
+compatibility_date = "2026-05-29"
+
+[assets]
+directory = "./"
+binding = "ASSETS"
+# `binding` est requis quand `main` est défini, pour que le Worker puisse
+# déléguer aux assets via env.ASSETS.fetch().
+
+[vars]
+# Public — visible à toute personne qui ouvre l'écran de consentement Google
+# de toute façon. OK en clair dans le code public.
+PINKIN_PWA_CLIENT_ID = "915913862394-h2oldnp0ss4skevi0jo1d8qjtr2m2qkl.apps.googleusercontent.com"
+
+# PINKIN_PWA_CLIENT_SECRET est une SECRET VARIABLE (encrypted at rest côté
+# Cloudflare), configurée séparément via :
+#   - dashboard : Workers & Pages → pinkin-org → Settings → Variables
+#                 → "Add variable" → cocher "Encrypt" → coller la valeur
+#   - OU CLI    : `wrangler secret put PINKIN_PWA_CLIENT_SECRET`
+#   - OU API    : POST /accounts/{id}/workers/scripts/pinkin-org/secrets
+# NE PAS la déclarer ici (sinon elle est en clair dans wrangler.toml committé).

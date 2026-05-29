@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!--
+  index.html — Page d'accueil pinkin.org (landing).
+  ─────────────────────────────────────────────────────────────────────────────
+  Servie à la racine de https://pinkin.org/ via Cloudflare Workers (assets
+  + handler JS) depuis le repo GitHub. Décision opérateur S9-ter (voie γ) :
+  le repo passe en public pour honorer les claims « open source » des
+  pages publiques. Les CLIENT_SECRET OAuth ont été sortis du code suivi
+  (cf. extension/background/secrets.example.js et worker.js).
+
+  Trilingue fr / en / es, cohérent avec i18n/{fr,en,es}.js de l'app. Bascule
+  par bouton ; détection initiale via navigator.language ; mémorisation
+  localStorage.
+
+  Liens sortants :
+    · /pwa/                              — la PWA (essai navigateur)
+    · CWS                                — vide tant que la fiche n'est pas publiée
+    · /privacy, /terms                   — pages légales statiques trilingues
+    · github.com/CedricMabilotte/pinkin  — code source (repo public)
+
+  Page autonome : zéro dépendance, CSS inline, JS inline (~30 lignes),
+  palette Pinkin (--rose, --fuchsia, --blush, --fond) cohérente avec
+  privacy.html et terms.html. Pas de tracker, pas de pixel, pas d'analytics.
+
+  DÉPLOIEMENT CLOUDFLARE PAGES :
+    1. Compte Cloudflare (gratuit).
+    2. Pages → Connect to Git → app GitHub installée → repo `pinkin`
+       (privé OK).
+    3. Build settings : Framework preset None, Build command vide,
+       Output directory `/`.
+    4. Custom domain `pinkin.org` → CNAME chez Gandi vers
+       `pinkin-org.pages.dev`.
+    5. Push main → Cloudflare déploie en ~30 s. HTTPS auto.
+-->
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#C2185B">
+  <title>Pinkin — épingle tes proches sur la carte</title>
+  <meta name="description" content="Pinkin épingle tes contacts Google sur une carte OpenStreetMap. Extension Chrome et PWA. Zéro serveur, zéro tracker, open source.">
+
+  <!-- Open Graph + Twitter Card -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Pinkin">
+  <meta property="og:url" content="https://pinkin.org/">
+  <meta property="og:title" content="Pinkin — épingle tes proches sur la carte">
+  <meta property="og:description" content="Pinkin épingle tes contacts Google sur une carte OpenStreetMap. Extension Chrome et PWA. Zéro serveur, zéro tracker, open source.">
+  <meta property="og:image" content="https://pinkin.org/assets/og/og-image.png">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:locale:alternate" content="es_ES">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Pinkin — pin your loved ones on the map">
+  <meta name="twitter:description" content="Pin your Google Contacts on a map. Chrome extension + PWA. Zero servers, zero trackers.">
+  <meta name="twitter:image" content="https://pinkin.org/assets/og/og-image.png">
+
+  <link rel="icon" href="/assets/icons/icon32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon128.png">
+
+  <!-- Titre + description adaptatifs (lus par le JS de bascule de langue) -->
+  <meta name="x-pinkin-title-fr" content="Pinkin — épingle tes proches sur la carte">
+  <meta name="x-pinkin-title-en" content="Pinkin — pin your loved ones on the map">
+  <meta name="x-pinkin-title-es" content="Pinkin — fija a tus seres queridos en el mapa">
+  <meta name="x-pinkin-desc-fr" content="Pinkin épingle tes contacts Google sur une carte OpenStreetMap. Extension Chrome et PWA. Zéro serveur, zéro tracker, open source.">
+  <meta name="x-pinkin-desc-en" content="Pinkin pins your Google Contacts on an OpenStreetMap. Chrome extension and PWA. Zero servers, zero trackers, open source.">
+  <meta name="x-pinkin-desc-es" content="Pinkin fija a tus contactos de Google en un mapa OpenStreetMap. Extensión Chrome y PWA. Cero servidores, cero trackers, código abierto.">
+  <style>
+    :root {
+      --rose: #C2185B;
+      --fuchsia: #E91E8C;
+      --blush: #FCE4EC;
+      --fond: #FDF6F0;
+      --texte: #1A1A2E;
+      --gris: #5a5a6e;
+      --carte: #ffffff;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+      line-height: 1.6;
+      color: var(--texte);
+      background: var(--fond);
+    }
+    a { color: var(--rose); }
+    a:hover { color: var(--fuchsia); }
+
+    /* En-tête */
+    header.top {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 1.5rem;
+      border-bottom: 2px solid var(--blush);
+    }
+    .brand {
+      display: flex; align-items: center; gap: 0.6rem;
+      font-weight: 700; font-size: 1.15rem; color: var(--rose);
+      text-decoration: none;
+    }
+    .brand img { width: 32px; height: 32px; }
+    .lang-switch button {
+      border: 1px solid var(--blush);
+      background: transparent;
+      color: var(--gris);
+      padding: 0.3rem 0.6rem;
+      font-size: 0.85rem;
+      font-weight: 600;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-left: 0.2rem;
+    }
+    .lang-switch button.active {
+      background: var(--rose);
+      color: white;
+      border-color: var(--rose);
+    }
+
+    /* Hero */
+    section.hero {
+      max-width: 760px; margin: 0 auto;
+      padding: 3.5rem 1.5rem 2.5rem;
+      text-align: center;
+    }
+    section.hero img.logo { width: 96px; height: 96px; margin-bottom: 1rem; }
+    h1 {
+      font-size: 2.4rem; margin: 0.5rem 0 1rem;
+      color: var(--rose);
+    }
+    p.tagline { font-size: 1.15rem; color: var(--gris); margin: 0 0 2rem; }
+    .cta { display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center; }
+    .cta a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      padding: 0.75rem 1.25rem;
+      border-radius: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      font-size: 1rem;
+    }
+    .cta .primary {
+      background: var(--rose);
+      color: white;
+    }
+    .cta .primary:hover { background: var(--fuchsia); }
+    .cta .primary.disabled {
+      background: var(--gris); cursor: not-allowed; opacity: 0.6;
+    }
+    .cta .secondary {
+      background: transparent;
+      color: var(--rose);
+      border: 2px solid var(--rose);
+    }
+    .cta .secondary:hover { background: var(--blush); }
+
+    /* Features */
+    section.features {
+      max-width: 960px; margin: 0 auto;
+      padding: 2.5rem 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+    .feature {
+      background: var(--carte);
+      border: 1px solid var(--blush);
+      border-radius: 8px;
+      padding: 1.25rem;
+    }
+    .feature h3 {
+      color: var(--rose);
+      margin: 0 0 0.5rem;
+      font-size: 1.1rem;
+    }
+    .feature p { margin: 0; color: var(--gris); font-size: 0.95rem; }
+
+    /* Comment ça marche */
+    section.how {
+      max-width: 760px; margin: 0 auto;
+      padding: 2rem 1.5rem 3rem;
+    }
+    section.how h2 {
+      color: var(--rose); font-size: 1.4rem; margin: 0 0 1rem;
+    }
+    section.how ol { padding-left: 1.4rem; }
+    section.how li { margin-bottom: 0.6rem; }
+
+    /* Footer */
+    footer.bottom {
+      border-top: 2px solid var(--blush);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      color: var(--gris);
+      font-size: 0.9rem;
+    }
+    footer.bottom a { font-weight: 600; text-decoration: none; }
+    footer.bottom a:hover { text-decoration: underline; }
+    .links { margin-bottom: 0.75rem; }
+    .links a { margin: 0 0.5rem; }
+
+    /* Affichage langue : un seul bloc visible à la fois */
+    [data-lang] { display: none; }
+    body[lang="fr"] [data-lang="fr"],
+    body[lang="en"] [data-lang="en"],
+    body[lang="es"] [data-lang="es"] { display: revert; }
+
+    /* Variantes spécifiques au sélecteur (toujours visibles) */
+    .lang-switch [data-lang] { display: inline-block; }
+  </style>
+</head>
+<body lang="fr">
+  <header class="top">
+    <a class="brand" href="/">
+      <img src="/assets/icons/icon32.png" alt="">
+      <span>pinkin</span>
+    </a>
+    <nav class="lang-switch" aria-label="Choix de langue">
+      <button type="button" data-set-lang="fr" class="active">FR</button>
+      <button type="button" data-set-lang="en">EN</button>
+      <button type="button" data-set-lang="es">ES</button>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <img class="logo" src="/assets/icons/icon128.png" alt="Pinkin">
+      <h1>
+        <span data-lang="fr">pinkin</span>
+        <span data-lang="en">pinkin</span>
+        <span data-lang="es">pinkin</span>
+      </h1>
+      <p class="tagline">
+        <span data-lang="fr">Épingle tes proches sur la carte.</span>
+        <span data-lang="en">Pin your loved ones on the map.</span>
+        <span data-lang="es">Fija a tus seres queridos en el mapa.</span>
+      </p>
+      <div class="cta">
+        <a class="primary disabled" href="#" aria-disabled="true" title="Bientôt sur Chrome Web Store">
+          <span data-lang="fr">Installer pour Chrome (bientôt)</span>
+          <span data-lang="en">Install for Chrome (soon)</span>
+          <span data-lang="es">Instalar para Chrome (pronto)</span>
+        </a>
+        <a class="secondary" href="/pwa/">
+          <span data-lang="fr">Essayer dans le navigateur</span>
+          <span data-lang="en">Try in the browser</span>
+          <span data-lang="es">Probar en el navegador</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="features">
+      <div class="feature">
+        <h3>
+          <span data-lang="fr">Zéro serveur</span>
+          <span data-lang="en">Zero servers</span>
+          <span data-lang="es">Cero servidores</span>
+        </h3>
+        <p>
+          <span data-lang="fr">L'application tourne entièrement dans ton navigateur. Tes contacts ne quittent jamais ton appareil.</span>
+          <span data-lang="en">The app runs entirely in your browser. Your contacts never leave your device.</span>
+          <span data-lang="es">La aplicación funciona enteramente en tu navegador. Tus contactos nunca salen de tu dispositivo.</span>
+        </p>
+      </div>
+      <div class="feature">
+        <h3>
+          <span data-lang="fr">Zéro tracker</span>
+          <span data-lang="en">Zero trackers</span>
+          <span data-lang="es">Cero trackers</span>
+        </h3>
+        <p>
+          <span data-lang="fr">Aucun analytics, aucun cookie tiers, aucune télémétrie. Pas de pub.</span>
+          <span data-lang="en">No analytics, no third-party cookies, no telemetry. No ads.</span>
+          <span data-lang="es">Sin analytics, sin cookies de terceros, sin telemetría. Sin publicidad.</span>
+        </p>
+      </div>
+      <div class="feature">
+        <h3>
+          <span data-lang="fr">Code ouvert</span>
+          <span data-lang="en">Open source</span>
+          <span data-lang="es">Código abierto</span>
+        </h3>
+        <p>
+          <span data-lang="fr">Le code est public et auditable. Tu peux le lire, le forker, le modifier.</span>
+          <span data-lang="en">The code is public and auditable. Read it, fork it, change it.</span>
+          <span data-lang="es">El código es público y auditable. Léelo, bifúrcalo, modifícalo.</span>
+        </p>
+      </div>
+      <div class="feature">
+        <h3>
+          <span data-lang="fr">Trilingue</span>
+          <span data-lang="en">Trilingual</span>
+          <span data-lang="es">Trilingüe</span>
+        </h3>
+        <p>
+          <span data-lang="fr">Français, anglais, espagnol — détectés automatiquement.</span>
+          <span data-lang="en">French, English, Spanish — auto-detected.</span>
+          <span data-lang="es">Francés, inglés, español — detección automática.</span>
+        </p>
+      </div>
+    </section>
+
+    <section class="how">
+      <h2>
+        <span data-lang="fr">Comment ça marche</span>
+        <span data-lang="en">How it works</span>
+        <span data-lang="es">Cómo funciona</span>
+      </h2>
+      <ol>
+        <li>
+          <span data-lang="fr">Tu connectes ton compte Google Contacts — lecture seule au départ.</span>
+          <span data-lang="en">You connect your Google Contacts account — read-only by default.</span>
+          <span data-lang="es">Conectas tu cuenta de Google Contacts — solo lectura por defecto.</span>
+        </li>
+        <li>
+          <span data-lang="fr">Pinkin géocode les adresses postales via OpenStreetMap (Nominatim) et place un pin par contact.</span>
+          <span data-lang="en">Pinkin geocodes postal addresses via OpenStreetMap (Nominatim) and drops a pin per contact.</span>
+          <span data-lang="es">Pinkin geocodifica las direcciones postales con OpenStreetMap (Nominatim) y coloca un pin por contacto.</span>
+        </li>
+        <li>
+          <span data-lang="fr">Tu cliques un pin : sa fiche s'ouvre, et tu joins la personne par email, appel, SMS, WhatsApp ou Signal.</span>
+          <span data-lang="en">You click a pin: the contact card opens, and you reach the person by email, call, SMS, WhatsApp or Signal.</span>
+          <span data-lang="es">Haces clic en un pin: la ficha del contacto se abre y contactas a la persona por email, llamada, SMS, WhatsApp o Signal.</span>
+        </li>
+        <li>
+          <span data-lang="fr">Sur opt-in, Pinkin peut enregistrer la position dans le champ GEO standard du contact (RFC 6350) — la prochaine ouverture est instantanée.</span>
+          <span data-lang="en">On opt-in, Pinkin can save the location into the contact's standard GEO field (RFC 6350) — the next opening is instant.</span>
+          <span data-lang="es">Con opt-in, Pinkin puede guardar la posición en el campo GEO estándar del contacto (RFC 6350) — la próxima apertura es instantánea.</span>
+        </li>
+      </ol>
+    </section>
+  </main>
+
+  <footer class="bottom">
+    <div class="links">
+      <a href="/privacy">
+        <span data-lang="fr">Confidentialité</span>
+        <span data-lang="en">Privacy</span>
+        <span data-lang="es">Privacidad</span>
+      </a>
+      <a href="/terms">
+        <span data-lang="fr">Conditions</span>
+        <span data-lang="en">Terms</span>
+        <span data-lang="es">Condiciones</span>
+      </a>
+      <a href="https://github.com/CedricMabilotte/pinkin">
+        <span data-lang="fr">Code source</span>
+        <span data-lang="en">Source code</span>
+        <span data-lang="es">Código fuente</span>
+      </a>
+      <a href="mailto:cedric.mabilotte@gmail.com">
+        <span data-lang="fr">Contact</span>
+        <span data-lang="en">Contact</span>
+        <span data-lang="es">Contacto</span>
+      </a>
+    </div>
+    <p>
+      <span data-lang="fr">Projet libre, sans modèle commercial. Une carte et tes proches dessus.</span>
+      <span data-lang="en">Free software project, no business model. A map and your loved ones on it.</span>
+      <span data-lang="es">Proyecto libre, sin modelo comercial. Un mapa y tus seres queridos sobre él.</span>
+    </p>
+  </footer>
+
+  <script>
+    // i18n minimal : 3 langues, sélection persistée, fallback navigator.language.
+    // Cohérent avec la convention de l'app (cf. i18n/index.js : 'fr' / 'en' / 'es').
+    (function () {
+      var SUPPORTED = ['fr', 'en', 'es'];
+      var KEY = 'pinkin_landing_lang';
+
+      function detect() {
+        try {
+          var saved = localStorage.getItem(KEY);
+          if (saved && SUPPORTED.indexOf(saved) >= 0) return saved;
+        } catch (_) { /* localStorage indisponible : fallback navigator */ }
+        var nav = (navigator.language || 'fr').slice(0, 2).toLowerCase();
+        return SUPPORTED.indexOf(nav) >= 0 ? nav : 'fr';
+      }
+
+      function getMeta(name) {
+        var m = document.querySelector('meta[name="' + name + '"]');
+        return m ? m.getAttribute('content') : null;
+      }
+
+      function setLang(lang) {
+        document.body.lang = lang;
+        document.documentElement.lang = lang;
+        try { localStorage.setItem(KEY, lang); } catch (_) {}
+        var t = getMeta('x-pinkin-title-' + lang);
+        if (t) document.title = t;
+        var d = getMeta('x-pinkin-desc-' + lang);
+        var descEl = document.querySelector('meta[name="description"]');
+        if (d && descEl) descEl.setAttribute('content', d);
+        var btns = document.querySelectorAll('.lang-switch button[data-set-lang]');
+        for (var i = 0; i < btns.length; i++) {
+          btns[i].classList.toggle('active', btns[i].dataset.setLang === lang);
+        }
+      }
+
+      setLang(detect());
+
+      document.querySelectorAll('.lang-switch button[data-set-lang]').forEach(function (b) {
+        b.addEventListener('click', function () { setLang(b.dataset.setLang); });
+      });
+    })();
+  </script>
+</body>
+</html>

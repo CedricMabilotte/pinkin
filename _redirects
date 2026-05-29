@@ -1,0 +1,18 @@
+# _redirects — réécritures Cloudflare Workers Static Assets (pinkin.org)
+# ─────────────────────────────────────────────────────────────────────────────
+# Syntaxe Cloudflare Pages / Workers Assets : <source> <dest> <status>
+# - status=200  : REWRITE (le serveur retourne le contenu de dest, l'URL ne change pas)
+# - status=301/302/307/308 : REDIRECT (le navigateur change d'URL)
+#
+# Cf. https://developers.cloudflare.com/pages/configuration/redirects/
+
+# OAuth callback PWA — Google redirige vers /auth/callback?code=...&state=...
+# On sert le HTML de la PWA SANS changer l'URL (rewrite), pour que pwa/main.js
+# puisse lire ?code et faire l'échange. main.js fera ensuite history.replaceState
+# pour pousser l'URL vers /pwa/.
+#
+# Cible /pwa/ (sans index.html) : Cloudflare retire .html et /index
+# automatiquement, donc utiliser /pwa/index.html ici crée une « infinite loop »
+# détectée par wrangler. /pwa/ pointe vers le même contenu, sans la boucle.
+/auth/callback           /pwa/  200
+/auth/callback/*         /pwa/  200

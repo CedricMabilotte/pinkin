@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pinkin — maquette : contrôle d'écriture</title>
+<style>
+  /* Design system Pinkin — repris de extension/popup/popup.css */
+  :root{
+    --pink:#C2185B; --pink-hot:#E91E8C; --pink-blush:#FCE4EC;
+    --ink:#1A1A2E; --ink-soft:#4A4A6A;
+    --surface:#FFFFFF; --surface-off:#FDF6F0; --border:#F0E0E8;
+    --radius:12px; --radius-sm:8px; --shadow:0 4px 24px rgba(194,24,91,.12);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+    background:var(--surface-off); color:var(--ink); line-height:1.5;
+    padding:32px 20px 64px;
+  }
+  .wrap{max-width:1040px;margin:0 auto;}
+  h1{font-size:22px;color:var(--pink);letter-spacing:-.3px;}
+  h2{font-size:15px;margin:34px 0 4px;color:var(--ink);
+     border-bottom:2px solid var(--pink-blush);padding-bottom:5px;}
+  .lede{color:var(--ink-soft);font-size:14px;max-width:720px;margin-top:6px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(440px,1fr));gap:22px;margin-top:18px;}
+
+  /* Cadre d'app — reproduit la fenêtre Pinkin */
+  figure{margin:0;}
+  .app{
+    position:relative; height:230px; background:var(--surface);
+    border:1px solid var(--border); border-radius:var(--radius);
+    overflow:hidden; box-shadow:0 2px 12px rgba(26,26,46,.06);
+  }
+  /* en-tête */
+  .hd{
+    height:44px; display:flex; align-items:center; justify-content:space-between;
+    padding:0 12px; background:var(--surface); border-bottom:1px solid var(--border);
+    position:relative; z-index:5;
+  }
+  .logo{display:flex;align-items:center;gap:7px;font-weight:800;font-size:15px;color:var(--pink);}
+  .logo .dot{width:18px;height:18px;border-radius:5px;background:var(--pink);}
+  .acts{display:flex;gap:6px;}
+  .hbtn{
+    display:flex;align-items:center;gap:6px;height:32px;padding:0 10px;border:none;
+    background:transparent;border-radius:var(--radius-sm);cursor:pointer;
+    color:var(--ink-soft);font:600 12px inherit;font-family:inherit;position:relative;
+  }
+  .hbtn svg{width:15px;height:15px;}
+  /* le contrôle Écriture, à état */
+  .wctl.on{background:var(--pink-blush);color:var(--pink);}
+  .wctl.busy{opacity:.7;}
+  .wctl .att{
+    position:absolute;top:3px;right:5px;width:7px;height:7px;border-radius:50%;
+    background:var(--pink-hot);border:1.5px solid var(--surface);
+  }
+  .spin{
+    width:13px;height:13px;border:2px solid var(--pink-blush);
+    border-top-color:var(--pink);border-radius:50%;animation:s .7s linear infinite;
+  }
+  @keyframes s{to{transform:rotate(360deg);}}
+  /* barre d'onglets */
+  .tabs{height:36px;display:flex;border-bottom:1px solid var(--border);}
+  .tabs span{flex:1;display:flex;align-items:center;justify-content:center;
+    font:600 13px inherit;font-family:inherit;color:var(--ink-soft);
+    border-bottom:2px solid transparent;}
+  .tabs span.on{color:var(--pink);border-bottom-color:var(--pink);}
+  /* fond carte */
+  .canvas{position:absolute;left:0;right:0;top:80px;bottom:0;
+    background:
+      repeating-linear-gradient(0deg,#EEF2F0 0 39px,#E4EAE6 39px 40px),
+      repeating-linear-gradient(90deg,#EEF2F0 0 39px,#E4EAE6 39px 40px);
+    opacity:.7;}
+
+  /* POPOVER ancré sous le contrôle Écriture */
+  .pop{
+    position:absolute; top:50px; right:48px; width:250px; z-index:8;
+    background:var(--surface); border:1px solid var(--border);
+    border-radius:var(--radius); box-shadow:var(--shadow); padding:13px;
+  }
+  .pop::before{
+    content:""; position:absolute; top:-7px; right:64px; width:12px;height:12px;
+    background:var(--surface); border-left:1px solid var(--border);
+    border-top:1px solid var(--border); transform:rotate(45deg);
+  }
+  .pop p{font-size:12.5px;color:var(--ink-soft);}
+  .pop .ttl{font-weight:700;color:var(--ink);font-size:12.5px;margin-bottom:3px;}
+  .pop .row{display:flex;gap:7px;margin-top:11px;}
+  .bw{
+    padding:7px 13px;background:var(--pink);color:#fff;border:none;border-radius:99px;
+    font:600 12px inherit;font-family:inherit;cursor:pointer;
+  }
+  .bg{
+    padding:7px 12px;background:transparent;border:1.5px solid var(--border);
+    border-radius:99px;color:var(--ink-soft);font:500 12px inherit;font-family:inherit;cursor:pointer;
+  }
+  .bw.danger{background:#B5731B;}
+
+  /* bandeau bas — l'AVANT */
+  .oldbanner{
+    position:absolute;left:12px;right:12px;bottom:12px;z-index:8;
+    display:flex;align-items:center;gap:10px;padding:10px 12px;
+    background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);box-shadow:var(--shadow);
+    font-size:12.5px;color:var(--ink-soft);
+  }
+  .oldbanner span{flex:1;line-height:1.35;}
+
+  figcaption{margin-top:9px;font-size:13px;color:var(--ink-soft);}
+  figcaption b{color:var(--ink);}
+  .uc{display:inline-block;background:var(--pink-blush);color:var(--pink);
+    font-weight:700;font-size:11px;padding:2px 8px;border-radius:99px;margin-right:6px;}
+  .note{background:var(--surface);border:1px solid var(--border);
+    border-radius:var(--radius);padding:14px 16px;margin-top:14px;font-size:13px;color:var(--ink-soft);}
+  .note b{color:var(--ink);}
+  table{border-collapse:collapse;width:100%;margin-top:10px;font-size:12.5px;}
+  td,th{border:1px solid var(--border);padding:6px 9px;text-align:left;vertical-align:top;}
+  th{background:var(--pink-blush);color:var(--pink);font-size:11px;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <h1>Pinkin — contrôle d'écriture</h1>
+  <p class="lede">Maquette de décision, session #5. Le bandeau d'écriture du bas
+  est remplacé par un <b>contrôle d'en-tête à état</b> + un <b>popover ancré</b>.
+  Même machine à états, mêmes textes — rendus là où on agit. Le bandeau de
+  géocodage (strip supérieur) ne change pas : autre catégorie.</p>
+
+  <!-- ─────────────────────────── AVANT ─────────────────────────── -->
+  <h2>Avant — le bandeau du bas</h2>
+  <div class="grid">
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="oldbanner">
+          <span>Autorise Pinkin à écrire dans Google Contacts — pour y enregistrer les positions et corriger des adresses.</span>
+          <button class="bw">Autoriser l'écriture</button>
+        </div>
+      </div>
+      <figcaption>Le bandeau flotte en bas, à ~450 px de son foyer (le bouton
+      Écriture, en haut). Il surgit à chaque synchro, et disparaît au changement
+      d'onglet sans se rétablir.</figcaption>
+    </figure>
+  </div>
+
+  <!-- ─────────────────────────── APRÈS ─────────────────────────── -->
+  <h2>Après — le contrôle d'en-tête à état</h2>
+  <div class="grid">
+
+    <!-- UC1 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl"><span class="att"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="pop">
+          <p class="ttl">Écrire dans Google Contacts</p>
+          <p>Pour y enregistrer les positions et corriger des adresses. Réversible à tout moment.</p>
+          <div class="row"><button class="bw">Autoriser l'écriture</button><button class="bg">Plus tard</button></div>
+        </div>
+      </div>
+      <figcaption><span class="uc">UC1</span><b>Première fois.</b> Le bouton
+      porte une pastille d'attention discrète. Le popover, ouvert au clic, porte
+      l'explication — jamais imposé.</figcaption>
+    </figure>
+
+    <!-- UC10 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+      </div>
+      <figcaption><span class="uc">UC10</span><b>Après une synchro.</b> Le bouton
+      reflète l'état (ici actif, teinté) — et <b>rien ne surgit</b>. Le défaut
+      central est réglé : une synchro ne déclenche plus d'appel à écrire.</figcaption>
+    </figure>
+
+    <!-- UC4 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl busy"><span class="spin"></span>Inscription…</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+      </div>
+      <figcaption><span class="uc">UC4</span><b>Publication en cours.</b> La
+      progression vit dans le bouton lui-même — spinner + libellé. Pas de
+      bandeau.</figcaption>
+    </figure>
+
+    <!-- UC5 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="pop">
+          <p class="ttl">263 contacts inscrits</p>
+          <p>12 ignorés — localisation trop imprécise.</p>
+          <div class="row"><button class="bg">Fermer</button></div>
+        </div>
+      </div>
+      <figcaption><span class="uc">UC5</span><b>Résultat.</b> Le décompte
+      s'affiche dans le popover — exception assumée : il s'ouvre seul, mais
+      seulement pour montrer le résultat d'une action que l'utilisateur vient de
+      déclencher.</figcaption>
+    </figure>
+
+    <!-- UC7 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="pop">
+          <p class="ttl">Écriture active</p>
+          <p>Les localisations sont inscrites dans Google Contacts.</p>
+          <div class="row"><button class="bg">Retirer</button><button class="bg">Fermer</button></div>
+        </div>
+      </div>
+      <figcaption><span class="uc">UC7</span><b>État géré.</b> Au clic sur le
+      bouton actif : transparence (« c'est inscrit ») et réversibilité
+      (« Retirer »).</figcaption>
+    </figure>
+
+    <!-- UC8 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl on"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="pop">
+          <p class="ttl">Retirer les localisations ?</p>
+          <p>Elles seront effacées de Google Contacts — et resteront sur ta carte.</p>
+          <div class="row"><button class="bw danger">Confirmer le retrait</button><button class="bg">Annuler</button></div>
+        </div>
+      </div>
+      <figcaption><span class="uc">UC8</span><b>Retrait — confirmation.</b>
+      Confirmation en deux temps, dans le popover (le 1ᵉʳ clic « Retirer » arme).</figcaption>
+    </figure>
+
+    <!-- UC9 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="pop">
+          <p class="ttl">Localisations retirées</p>
+          <p>Elles ne sont plus dans Google Contacts.</p>
+          <div class="row"><button class="bw">Réinscrire dans Google</button><button class="bg">Fermer</button></div>
+        </div>
+      </div>
+      <figcaption><span class="uc">UC9</span><b>Retiré — réinscription.</b> Le
+      bouton revient au repos ; le popover propose la réinscription.</figcaption>
+    </figure>
+
+    <!-- UC6 -->
+    <figure>
+      <div class="app">
+        <div class="hd">
+          <div class="logo"><span class="dot"></span>pinkin</div>
+          <div class="acts">
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 4v6h-6M1 20v-6h6"/><path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/></svg>Synchroniser</button>
+            <button class="hbtn wctl"><span class="att"></span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>Écriture</button>
+            <button class="hbtn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/></svg>Déconnexion</button>
+          </div>
+        </div>
+        <div class="tabs"><span class="on">Carte</span><span>Carnet</span></div>
+        <div class="canvas"></div>
+        <div class="pop">
+          <p class="ttl">Échec de l'opération</p>
+          <p>L'écriture dans Google Contacts n'a pas abouti.</p>
+          <div class="row"><button class="bw">Réessayer</button><button class="bg">Fermer</button></div>
+        </div>
+      </div>
+      <figcaption><span class="uc">UC6</span><b>Erreur.</b> Le bouton porte la
+      pastille d'attention ; le popover propose de réessayer.</figcaption>
+    </figure>
+
+  </div>
+
+  <!-- ─────────────── correspondance des cas d'usage ─────────────── -->
+  <h2>Tous les cas d'usage — couverture</h2>
+  <div class="note">
+  <table>
+    <tr><th>Cas d'usage</th><th>État du bouton</th><th>Popover</th></tr>
+    <tr><td>UC1 — jamais accordé (1ʳᵉ fois)</td><td>repos + pastille d'attention</td><td>au clic : explication + « Autoriser »</td></tr>
+    <tr><td>UC2 — consentement refusé/annulé</td><td>repos + pastille</td><td>au clic : « réessaie » + « Autoriser »</td></tr>
+    <tr><td>UC3 — accordé, géocodage en cours</td><td>repos (neutre)</td><td>au clic : « position en cours de calcul »</td></tr>
+    <tr><td>UC4 — publication groupée en cours</td><td>spinner « Inscription… »</td><td>—</td></tr>
+    <tr><td>UC5 — publication réussie</td><td>actif</td><td>s'ouvre seul : décompte inscrits/ignorés + « Fermer »</td></tr>
+    <tr><td>UC6 — échec d'écriture</td><td>repos + pastille</td><td>au clic : « Réessayer »</td></tr>
+    <tr><td>UC7 — déjà publié</td><td>actif (teinté)</td><td>au clic : « inscrit » + « Retirer »</td></tr>
+    <tr><td>UC8 — retrait</td><td>actif → spinner « Retrait… »</td><td>confirmation en deux temps</td></tr>
+    <tr><td>UC9 — retiré précédemment</td><td>repos</td><td>au clic : « Réinscrire dans Google »</td></tr>
+    <tr><td>UC10 — synchro / chargement</td><td>reflète l'état, sans plus</td><td><b>aucun</b> — ne surgit jamais</td></tr>
+    <tr><td>UC11 — correction d'adresse (fiche contact)</td><td colspan="2">la fiche, si l'écriture n'est pas accordée, renvoie désormais vers le <b>bouton Écriture en haut</b> (et non « le bandeau en bas »)</td></tr>
+  </table>
+  </div>
+
+  <div class="note">
+  <b>Ce que ça touche, à l'implémentation —</b> <code>ui/orchestrator.js</code>
+  (la machine à états <code>showWriteBanner</code> devient un rendu de popover ;
+  <code>checkWriteState</code> ne s'auto-affiche plus, sauf résultat d'action) ·
+  <code>ui/shell.js</code> (le bouton d'en-tête et le popover) ·
+  <code>extension/popup/popup.css</code> (styles du contrôle et du popover, à la
+  place de <code>.write-banner</code>) · <code>ui/contact-panel.js</code> (la
+  phrase « bandeau en bas de la carte » → « bouton Écriture en haut »). Le
+  bandeau de géocodage reste inchangé.
+  </div>
+
+</div>
+</body>
+</html>

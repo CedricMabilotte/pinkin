@@ -1,0 +1,16 @@
+{
+  "name": "Pinkin",
+  "short_name": "Pinkin",
+  "description": "Épingle tes proches sur une carte.",
+  "start_url": "/pwa/",
+  "display": "standalone",
+  "background_color": "#FFFFFF",
+  "theme_color": "#C2185B",
+  "orientation": "portrait-primary",
+  "icons": [
+    { "src": "/assets/icons/icon16.png",  "sizes": "16x16",   "type": "image/png" },
+    { "src": "/assets/icons/icon32.png",  "sizes": "32x32",   "type": "image/png" },
+    { "src": "/assets/icons/icon48.png",  "sizes": "48x48",   "type": "image/png" },
+    { "src": "/assets/icons/icon128.png", "sizes": "128x128", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

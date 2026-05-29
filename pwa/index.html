@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' https: data:; connect-src 'self' https://people.googleapis.com https://oauth2.googleapis.com https://nominatim.openstreetmap.org; object-src 'none'; base-uri 'none'">
+  <meta name="referrer" content="no-referrer">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#C2185B">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Pinkin">
+  <title>Pinkin</title>
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="icon" href="/assets/icons/icon32.png">
+  <link rel="apple-touch-icon" href="/assets/icons/icon128.png">
+  <link rel="stylesheet" href="/lib/leaflet/leaflet.css">
+  <link rel="stylesheet" href="/extension/popup/popup.css">
+  <style>
+    /* PWA overrides — plein écran, pas de taille fixe popup */
+    html, body {
+      width: 100vw;
+      height: 100dvh;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Point de montage unique — balisage injecté par ui/shell.js (cf. ce module). -->
+  <div id="app"></div>
+
+  <script src="/lib/leaflet/leaflet.js"></script>
+  <!-- main.js DOIT être chargé : il traite le callback OAuth (?code=). -->
+  <script src="/pwa/main.js" type="module"></script>
+  <script src="/pwa/app.js" type="module"></script>
+</body>
+</html>

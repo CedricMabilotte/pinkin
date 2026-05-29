@@ -1,0 +1,129 @@
+<svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg" font-family="sans-serif">
+
+  <!-- Background présentation -->
+  <rect width="600" height="600" fill="#FDF6F0"/>
+
+  <!-- === VERSION PRINCIPALE 400px === -->
+  <g transform="translate(100,80)">
+
+    <!-- Ombre douce -->
+    <circle cx="200" cy="204" r="162" fill="#C2185B" opacity="0.12"/>
+
+    <!-- Fond blanc badge -->
+    <circle cx="200" cy="200" r="162" fill="#FFFFFF"/>
+
+    <!-- Anneau extérieur activisme -->
+    <circle cx="200" cy="200" r="162" fill="none" stroke="#C2185B" stroke-width="28"/>
+
+    <!-- Anneau intérieur fin sérigraphie -->
+    <circle cx="200" cy="200" r="138" fill="none" stroke="#C2185B" stroke-width="3" opacity="0.4"/>
+
+    <!-- Oreille gauche extérieur -->
+    <ellipse cx="118" cy="118" rx="40" ry="36" fill="#C2185B"/>
+    <!-- Oreille gauche intérieur -->
+    <ellipse cx="118" cy="118" rx="24" ry="21" fill="#FCE4EC"/>
+
+    <!-- Oreille droite extérieur -->
+    <ellipse cx="282" cy="118" rx="40" ry="36" fill="#C2185B"/>
+    <!-- Oreille droite intérieur -->
+    <ellipse cx="282" cy="118" rx="24" ry="21" fill="#FCE4EC"/>
+
+    <!-- Tête -->
+    <circle cx="200" cy="200" r="98" fill="#C2185B"/>
+
+    <!-- Museau -->
+    <ellipse cx="200" cy="222" rx="46" ry="34" fill="#FCE4EC"/>
+
+    <!-- Nez -->
+    <ellipse cx="200" cy="207" rx="20" ry="14" fill="#1A1A2E"/>
+    <ellipse cx="194" cy="203" rx="6" ry="4" fill="#FFFFFF" opacity="0.35"/>
+
+    <!-- Yeux blancs -->
+    <circle cx="168" cy="178" r="18" fill="#FFFFFF"/>
+    <circle cx="232" cy="178" r="18" fill="#FFFFFF"/>
+
+    <!-- Iris -->
+    <circle cx="171" cy="180" r="11" fill="#1A1A2E"/>
+    <circle cx="235" cy="180" r="11" fill="#1A1A2E"/>
+
+    <!-- Reflets -->
+    <circle cx="166" cy="175" r="4" fill="#FFFFFF"/>
+    <circle cx="230" cy="175" r="4" fill="#FFFFFF"/>
+
+    <!-- Sourire -->
+    <path d="M186,233 Q200,244 214,233" fill="none" stroke="#C2185B" stroke-width="3" stroke-linecap="round"/>
+
+    <!-- Attache badge -->
+    <circle cx="308" cy="308" r="14" fill="none" stroke="#C2185B" stroke-width="4"/>
+    <line x1="308" y1="322" x2="308" y2="348" stroke="#C2185B" stroke-width="4" stroke-linecap="round"/>
+
+  </g>
+
+  <!-- === DÉCLINAISONS === -->
+  <text x="30" y="524" fill="#C2185B" font-size="11" opacity="0.5" font-weight="600" letter-spacing="2">DÉCLINAISONS</text>
+
+  <!-- 64px icône Chrome/OAuth -->
+  <g transform="translate(30,534)">
+    <circle cx="32" cy="32" r="30" fill="#FFFFFF"/>
+    <circle cx="32" cy="32" r="30" fill="none" stroke="#C2185B" stroke-width="5"/>
+    <ellipse cx="17" cy="17" rx="8" ry="7" fill="#C2185B"/>
+    <ellipse cx="17" cy="17" rx="5" ry="4" fill="#FCE4EC"/>
+    <ellipse cx="47" cy="17" rx="8" ry="7" fill="#C2185B"/>
+    <ellipse cx="47" cy="17" rx="5" ry="4" fill="#FCE4EC"/>
+    <circle cx="32" cy="32" r="19" fill="#C2185B"/>
+    <ellipse cx="32" cy="36" rx="9" ry="6.5" fill="#FCE4EC"/>
+    <ellipse cx="32" cy="33" rx="4" ry="2.8" fill="#1A1A2E"/>
+    <circle cx="26" cy="28" r="3.5" fill="#FFFFFF"/>
+    <circle cx="38" cy="28" r="3.5" fill="#FFFFFF"/>
+    <circle cx="26.8" cy="28.5" r="2.1" fill="#1A1A2E"/>
+    <circle cx="38.8" cy="28.5" r="2.1" fill="#1A1A2E"/>
+    <circle cx="26" cy="27" r="0.9" fill="#FFFFFF"/>
+    <circle cx="38" cy="27" r="0.9" fill="#FFFFFF"/>
+    <text x="32" y="74" text-anchor="middle" fill="#C2185B" font-size="9" opacity="0.6">64px</text>
+  </g>
+
+  <!-- 32px favicon -->
+  <g transform="translate(130,534)">
+    <circle cx="16" cy="16" r="15" fill="#FFFFFF"/>
+    <circle cx="16" cy="16" r="15" fill="none" stroke="#C2185B" stroke-width="3"/>
+    <ellipse cx="7.5" cy="7.5" rx="4.5" ry="4" fill="#C2185B"/>
+    <ellipse cx="24.5" cy="7.5" rx="4.5" ry="4" fill="#C2185B"/>
+    <circle cx="16" cy="16" r="9.5" fill="#C2185B"/>
+    <ellipse cx="16" cy="18" rx="4.5" ry="3.2" fill="#FCE4EC"/>
+    <ellipse cx="16" cy="16.5" rx="2" ry="1.4" fill="#1A1A2E"/>
+    <circle cx="12.5" cy="14" r="1.8" fill="#FFFFFF"/>
+    <circle cx="19.5" cy="14" r="1.8" fill="#FFFFFF"/>
+    <circle cx="13" cy="14.2" r="1" fill="#1A1A2E"/>
+    <circle cx="20" cy="14.2" r="1" fill="#1A1A2E"/>
+    <text x="16" y="42" text-anchor="middle" fill="#C2185B" font-size="9" opacity="0.6">32px</text>
+  </g>
+
+  <!-- Version dark -->
+  <g transform="translate(210,528)">
+    <circle cx="40" cy="40" r="36" fill="#1A1A2E"/>
+    <circle cx="40" cy="40" r="36" fill="none" stroke="#E91E8C" stroke-width="6"/>
+    <circle cx="40" cy="40" r="27" fill="none" stroke="#E91E8C" stroke-width="1.5" opacity="0.4"/>
+    <ellipse cx="22" cy="20" rx="10" ry="9" fill="#E91E8C"/>
+    <ellipse cx="22" cy="20" rx="6" ry="5.5" fill="#1A1A2E"/>
+    <ellipse cx="58" cy="20" rx="10" ry="9" fill="#E91E8C"/>
+    <ellipse cx="58" cy="20" rx="6" ry="5.5" fill="#1A1A2E"/>
+    <circle cx="40" cy="40" r="22" fill="#E91E8C"/>
+    <ellipse cx="40" cy="45" rx="10" ry="7.5" fill="#1A1A2E"/>
+    <ellipse cx="40" cy="41" rx="4.5" ry="3.2" fill="#E91E8C" opacity="0.5"/>
+    <circle cx="33" cy="35" r="4" fill="#FFFFFF"/>
+    <circle cx="47" cy="35" r="4" fill="#FFFFFF"/>
+    <circle cx="34" cy="35.5" r="2.3" fill="#1A1A2E"/>
+    <circle cx="48" cy="35.5" r="2.3" fill="#1A1A2E"/>
+    <circle cx="33" cy="34" r="1" fill="#FFFFFF" opacity="0.8"/>
+    <circle cx="47" cy="34" r="1" fill="#FFFFFF" opacity="0.8"/>
+    <text x="40" y="88" text-anchor="middle" fill="#C2185B" font-size="9" opacity="0.6">dark</text>
+  </g>
+
+  <!-- Wordmark -->
+  <g transform="translate(340,540)">
+    <text x="0" y="30" fill="#C2185B" font-size="38" font-weight="900" letter-spacing="-1">pin</text>
+    <text x="64" y="30" fill="#1A1A2E" font-size="38" font-weight="900" letter-spacing="-1">kin</text>
+    <text x="0" y="50" fill="#C2185B" font-size="11" font-weight="400" letter-spacing="3" opacity="0.6">pin · kin · org</text>
+  </g>
+
+</svg>

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pinkin #3 — Fiche : jeu d'actions proposé</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#EFEDE8;color:#1A1A2E;min-height:100vh;display:flex;flex-direction:column;align-items:center;gap:18px;padding:34px 18px}
+.title{font-size:14px;color:#4A4A6A;text-align:center;max-width:420px;line-height:1.5}
+.card{--pink:#C2185B;--blush:#FCE4EC;--ink:#1A1A2E;--ins:#4A4A6A;--bd:#F0E0E8;--so:#FDF6F0;
+width:392px;background:#fff;border-radius:18px 18px 14px 14px;border:1px solid rgba(0,0,0,.12);box-shadow:0 14px 40px rgba(194,24,91,.16);padding:12px 18px 20px}
+.handle{width:36px;height:4px;background:var(--bd);border-radius:99px;margin:0 auto 14px}
+.head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+.av{width:48px;height:48px;border-radius:50%;background:var(--blush);color:var(--pink);font-size:17px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.nm{font-size:16px;font-weight:700}
+.loc{font-size:12px;color:var(--ins);margin-top:2px}
+.x{width:30px;height:30px;border:none;background:var(--so);border-radius:50%;color:var(--ins);margin-left:auto;flex-shrink:0;font-size:14px;cursor:default}
+.sec{margin-top:15px;padding-top:13px;border-top:1px solid var(--bd)}
+.lab{display:flex;align-items:center;gap:7px;font-size:11px;font-weight:700;color:var(--ins);letter-spacing:.4px;text-transform:uppercase;margin-bottom:9px}
+.row{display:flex;gap:7px;flex-wrap:wrap}
+.act{display:inline-flex;align-items:center;gap:6px;padding:7px 12px;border:1.5px solid var(--bd);border-radius:99px;font-size:12px;font-weight:500;color:var(--ink);background:#fff}
+.full{display:flex;align-items:center;justify-content:center;gap:7px;width:100%;padding:10px;border:1.5px solid var(--bd);border-radius:10px;font-size:13px;font-weight:600;color:var(--ink);background:#fff;margin-top:2px}
+.bridge{display:flex;flex-direction:column;align-items:center;width:100%;padding:9px;border:1.5px dashed var(--pink);border-radius:10px;color:var(--pink);font-size:12px;font-weight:600;background:var(--so);margin-top:2px}
+.bridge small{font-weight:400;font-size:11px;color:var(--ins);margin-top:2px}
+.future{width:100%;padding:11px;border:1.5px dashed var(--bd);border-radius:10px;color:var(--ins);font-size:12px;font-style:italic;text-align:center;background:#fff;margin-top:2px}
+.note{font-size:11px;color:var(--ins);margin-top:6px;font-style:italic}
+.tag{font-size:9.5px;font-weight:700;padding:2px 7px;border-radius:99px;letter-spacing:.3px}
+.t-now{background:#ECEAF0;color:#5A5570}
+.t-e3{background:#FCE4EC;color:#C2185B}
+.t-e4{background:#E2EEF6;color:#2C6E9C}
+.t-e5{background:#F1EFE8;color:#7A756A}
+.legend{width:392px;background:#fff;border-radius:12px;border:1px solid rgba(0,0,0,.1);padding:14px 16px;font-size:12px;color:#4A4A6A;line-height:1.7}
+.legend b{color:#1A1A2E}
+.legend .tag{margin-right:4px}
+svg{flex-shrink:0}
+</style>
+</head>
+<body>
+
+<p class="title"><b>Pinkin #3 — Fiche contact, jeu d'actions proposé.</b> Approche : déléguer l'édition à Google Contacts plutôt que des boutons CRUD natifs.</p>
+
+<div class="card">
+  <div class="handle"></div>
+  <div class="head">
+    <div class="av">AD</div>
+    <div>
+      <div class="nm">Awa Diallo</div>
+      <div class="loc">Dakar, Sénégal</div>
+    </div>
+    <button class="x">&#10005;</button>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Joindre <span class="tag t-now">actuel</span></div>
+    <div class="row">
+      <span class="act"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C2185B" stroke-width="2"><path d="M4 5h16v14H4z"/><path d="M4 6l8 7 8-7"/></svg>E-mail</span>
+      <span class="act"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C2185B" stroke-width="2"><path d="M5 4h4l2 5-3 2a13 13 0 006 6l2-3 5 2v4a2 2 0 01-2 2A16 16 0 014 6 2 2 0 015 4z"/></svg>Appeler</span>
+      <span class="act"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C2185B" stroke-width="2"><path d="M4 5h16v11H8l-4 4z"/></svg>SMS</span>
+      <span class="act">WhatsApp</span>
+      <span class="act">Signal</span>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Position &amp; fiche <span class="tag t-e3">Étape 3</span></div>
+    <div class="row">
+      <span class="act"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#C2185B" stroke-width="2"><path d="M3 7l6-3 6 3 6-3v13l-6 3-6-3-6 3z"/><path d="M9 4v13M15 7v13"/></svg>Itinéraire</span>
+    </div>
+    <button class="full">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C2185B" stroke-width="2"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>
+      Ouvrir dans Google Contacts
+    </button>
+    <p class="note">Donne accès à toutes les fonctions (renommer, photo, groupes, supprimer…) dans l'interface de Google, avec tes droits réels. Aucun nouveau scope.</p>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Adresse <span class="tag t-now">actuel</span></div>
+    <button class="full">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C2185B" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
+      Corriger l'adresse
+    </button>
+    <p class="note">Nécessite l'autorisation d'écriture — se verrouille proprement sinon. Seule action « écriture » de la Fiche.</p>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Mise à jour <span class="tag t-e4">Étape 4</span></div>
+    <div class="bridge">
+      Demander à Awa de mettre à jour sa fiche
+      <small>e-mail prérempli — sans compte, sans serveur</small>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="lab">Lien <span class="tag t-e5">Étape 5</span></div>
+    <div class="future">Gestion de relation — zone réservée, à qualifier</div>
+  </div>
+</div>
+
+<div class="legend">
+  <div><span class="tag t-now">actuel</span> déjà présent dans la Fiche</div>
+  <div><span class="tag t-e3">Étape 3</span> ajouté maintenant — délègue l'édition à Google Contacts</div>
+  <div><span class="tag t-e4">Étape 4</span> demande de mise à jour par e-mail</div>
+  <div><span class="tag t-e5">Étape 5</span> emplacement réservé, sans logique</div>
+  <div style="margin-top:8px"><b>Ce qui n'est PAS dans Pinkin</b> : renommer, supprimer, créer un contact, éditer tél/e-mail. Tout cela passe par « Ouvrir dans Google Contacts » — l'édition reste chez la source de vérité.</div>
+</div>
+
+</body>
+</html>
