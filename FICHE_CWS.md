@@ -10,7 +10,7 @@ fois) et empaquetage `.zip` via `scripts/pack-extension.sh`.*
 
 | Champ | Valeur |
 |---|---|
-| **Nom** | Pinkin — pin your loved ones on the map |
+| **Nom** | Pinkin — Where are your loved ones on the map? |
 | **Identifiant Chrome Web Store** | (assigné par Google à la première publication) |
 | **Identifiant interne extension** | déjà figé par le `key` du `manifest.json` — survit chargement non empaqueté → magasin |
 | **Catégorie principale** | *Productivité* (Productivity) |
@@ -27,10 +27,10 @@ fois) et empaquetage `.zip` via `scripts/pack-extension.sh`.*
 
 ## Description courte (132 caractères max)
 
-> Épingle tes contacts Google sur une carte OpenStreetMap. Zéro serveur,
-> zéro tracker — tout reste dans ton navigateur.
+> Où sont tes proches sur la carte ? Tes contacts Google sur OpenStreetMap.
+> Zéro serveur, zéro tracker, open source.
 
-*128 caractères, sous le plafond.*
+*131 caractères, sous le plafond.*
 
 ---
 
@@ -39,9 +39,10 @@ fois) et empaquetage `.zip` via `scripts/pack-extension.sh`.*
 ### Texte prêt à coller
 
 ```
-Pinkin épingle tes contacts Google sur une carte OpenStreetMap. Tu vois
-d'un coup d'œil qui habite où, tu cliques sur un pin, tu écris, tu
-appelles, tu ouvres WhatsApp ou Signal en deux clics.
+Où sont tes proches sur la carte ? Pinkin met tes contacts Google sur
+une carte OpenStreetMap. Tu vois d'un coup d'œil qui habite où, tu
+cliques sur un pin, tu écris, tu appelles, tu ouvres WhatsApp ou Signal
+en deux clics.
 
 — Zéro serveur. L'application tourne entièrement dans ton navigateur.
   Tes contacts ne quittent jamais ton appareil. Aucune donnée n'est
@@ -78,9 +79,9 @@ Code source : https://github.com/CedricMabilotte/
 #### English
 
 ```
-Pinkin pins your Google Contacts on an OpenStreetMap. See at a glance
-who lives where, click a pin to email, call, or open WhatsApp / Signal
-in two clicks.
+Where are your loved ones on the map? Pinkin puts your Google Contacts
+on an OpenStreetMap. See at a glance who lives where, click a pin to
+email, call, or open WhatsApp / Signal in two clicks.
 
 — Zero servers. The app runs entirely in your browser. Your contacts
   never leave your device. No data is sent to Pinkin or any third party,
@@ -112,9 +113,10 @@ Source: https://github.com/CedricMabilotte/
 #### Español
 
 ```
-Pinkin fija a tus contactos de Google en un mapa OpenStreetMap. Ves de
-un vistazo quién vive dónde, haces clic en un pin, escribes, llamas,
-abres WhatsApp o Signal con dos clics.
+¿Dónde están tus seres queridos en el mapa? Pinkin fija a tus contactos
+de Google en un mapa OpenStreetMap. Ves de un vistazo quién vive dónde,
+haces clic en un pin, escribes, llamas, abres WhatsApp o Signal con dos
+clics.
 
 — Cero servidores. La aplicación funciona enteramente en tu navegador.
   Tus contactos nunca salen de tu dispositivo. Ningún dato se envía a

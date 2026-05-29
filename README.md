@@ -2,7 +2,7 @@
 
 **Où sont tes proches sur la carte ?**
 
-Extension Chrome + PWA qui épingle tes contacts Google sur OpenStreetMap.
+Extension Chrome + PWA qui montre tes contacts Google sur OpenStreetMap.
 Zéro serveur, zéro tracker, code consultable.
 
 [![Tests](https://github.com/CedricMabilotte/pinkin/actions/workflows/tests.yml/badge.svg)](https://github.com/CedricMabilotte/pinkin/actions/workflows/tests.yml)
