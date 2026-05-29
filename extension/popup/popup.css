@@ -58,6 +58,36 @@ html, body {
 
 #header-logo img { border-radius: 4px; }
 
+/* Sélecteur de langue — 3 micro-boutons (FR/EN/ES) à droite du logo.
+   Discrets, n'attirent pas l'œil hors interaction. */
+#lang-switch {
+  display: flex;
+  gap: 2px;
+  margin-left: 8px;
+}
+#lang-switch button {
+  height: 22px;
+  min-width: 28px;
+  padding: 0 6px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--ink-soft);
+  font-size: 11px;
+  font-weight: 600;
+  font-family: inherit;
+  border-radius: 3px;
+  cursor: pointer;
+  line-height: 1;
+}
+#lang-switch button.active {
+  background: var(--pink);
+  color: white;
+  border-color: var(--pink);
+}
+#lang-switch button:hover:not(.active) {
+  background: var(--surface-soft);
+}
+
 #header-actions { display: flex; gap: 6px; }
 
 /* Boutons d'action : icône + libellé court. Le libellé (.btn-label) est masqué

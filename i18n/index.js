@@ -28,8 +28,17 @@ import es from './es.js';
 
 const LANGS = { fr, en, es };
 
+const STORAGE_KEY = 'pinkin_user_lang';
+
 function detectLang() {
-  // En environnement non-navigateur (tests, SSR éventuel), pas de navigator.
+  // 1. Choix explicite de l'utilisateur (mémorisé via setLang).
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const saved = localStorage.getItem(STORAGE_KEY);
+      if (saved && saved in LANGS) return saved;
+    } catch (_) { /* localStorage indisponible */ }
+  }
+  // 2. Préférence navigateur — fallback.
   if (typeof navigator === 'undefined' || !navigator.language) return 'fr';
   const code = navigator.language.slice(0, 2).toLowerCase();
   return code in LANGS ? code : 'fr';
@@ -42,7 +51,12 @@ export function getLang() {
 }
 
 export function setLang(lang) {
-  if (lang in LANGS) _lang = lang;
+  if (lang in LANGS) {
+    _lang = lang;
+    if (typeof localStorage !== 'undefined') {
+      try { localStorage.setItem(STORAGE_KEY, lang); } catch (_) {}
+    }
+  }
 }
 
 /**

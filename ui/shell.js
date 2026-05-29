@@ -19,7 +19,7 @@
 // Une langue inconnue retombe sur fr (cf. i18n/index.js, fallback).
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { t } from '../i18n/index.js';
+import { t, setLang, getLang } from '../i18n/index.js';
 
 // Injecte la coquille de l'app dans le conteneur de montage.
 //
@@ -40,6 +40,11 @@ export function renderShell(mount, { assetBase }) {
       <div id="header-logo">
         <img src="${assetBase}assets/icons/icon32.png" alt="Pinkin" width="20" height="20">
         <span>${t('header.appName')}</span>
+        <nav id="lang-switch" aria-label="Language">
+          <button type="button" data-set-lang="fr" class="${getLang()==='fr'?'active':''}">FR</button>
+          <button type="button" data-set-lang="en" class="${getLang()==='en'?'active':''}">EN</button>
+          <button type="button" data-set-lang="es" class="${getLang()==='es'?'active':''}">ES</button>
+        </nav>
       </div>
       <div id="header-actions">
         <button id="btn-sync" title="${t('header.sync.title')}" aria-label="${t('header.sync.ariaLabel')}" disabled>
@@ -221,6 +226,18 @@ export function renderShell(mount, { assetBase }) {
       </a>
     </div>
   `;
+
+  // Sélecteur de langue — wiring. Au clic, on sauvegarde dans localStorage via
+  // setLang() et on recharge la page : tous les t() ont été appelés au render,
+  // donc seul un reload re-traduit l'UI complète sans avoir à rerunner
+  // renderShell + tous les init listeners. Coût: 200 ms de reload, sans état
+  // utilisateur perdu (auth survit, contacts cache survit).
+  mount.querySelectorAll('#lang-switch button[data-set-lang]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      setLang(btn.dataset.setLang);
+      window.location.reload();
+    });
+  });
 }
 
 // État de l'onglet courant — 'carte' (défaut) ou 'carnet'. Cet état vit dans la
