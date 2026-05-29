@@ -26,3 +26,8 @@ dist/
 # l'expose via /api/oauth-config).
 extension/background/secrets.js
 .wrangler/
+
+# Captures d'écran et médias de production (CWS, fiche, blog).
+# Les originaux vivent hors repo (MediaProd/) ; l'upload CWS est manuel.
+# Évite que des fichiers ~3 Mo polluent le repo open source.
+assets/prints/
