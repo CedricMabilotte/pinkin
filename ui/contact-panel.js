@@ -116,9 +116,9 @@ function _fillLocation(contact) {
 function _fillStatus(contact) {
   const el = document.getElementById('panel-status');
   const meta = {
-    located:      ['Sur la carte', 'located'],
-    unresolved:   ['À localiser',  'unresolved'],
-    'no-address': ['Sans adresse', 'no-address'],
+    located:      [t('carnet.statusLocated'),    'located'],
+    unresolved:   [t('carnet.statusUnresolved'), 'unresolved'],
+    'no-address': [t('carnet.statusNoAddress'),  'no-address'],
   }[contactStatus(contact).status];
   el.textContent = meta[0];
   el.className   = 'panel-status ' + meta[1];
@@ -431,12 +431,12 @@ function _fillInvite(contact) {
   const row = document.createElement('div');
   row.className = 'bridge-row';
   if (email) {
-    row.appendChild(_channelLink('E-mail', _buildUpdateMailto(contact, email, firstName), false));
+    row.appendChild(_channelLink(t('panel.actionEmail'), _buildUpdateMailto(contact, email, firstName), false));
   }
   if (phone) {
     const msg = encodeURIComponent(_shortRequest(firstName));
-    row.appendChild(_channelLink('SMS', `sms:${phone}?body=${msg}`, false));
-    row.appendChild(_channelLink('WhatsApp', `https://wa.me/${phone.replace(/^\+/, '')}?text=${msg}`, true));
+    row.appendChild(_channelLink(t('panel.actionSms'), `sms:${phone}?body=${msg}`, false));
+    row.appendChild(_channelLink(t('panel.actionWhatsapp'), `https://wa.me/${phone.replace(/^\+/, '')}?text=${msg}`, true));
   }
   section.appendChild(row);
 }
@@ -453,38 +453,37 @@ function _channelLink(label, href, external) {
 
 // Message court (SMS / WhatsApp) — variante condensée du gabarit e-mail.
 function _shortRequest(firstName) {
-  return `Salut ${firstName} ! Je mets à jour mon carnet d’adresses — `
-       + `peux-tu m’envoyer ton adresse postale, ou partager ta fiche de contact ? Merci !`;
+  return t(‘invite.smsBody’, { firstName });
 }
 
 // Construit l'URL mailto: — destinataire, objet, corps prérempli. Le corps
 // inclut l'adresse que Pinkin connaît déjà, pour que le contact confirme ou
 // corrige plutôt que de tout ressaisir.
 function _buildUpdateMailto(contact, email, firstName) {
-  const subject = 'Mon carnet d’adresses — peux-tu me confirmer la tienne ?';
+  const subject = t(‘invite.mailSubject’);
 
   const addr  = contact.addresses?.[0];
   const known = addr
     ? (addr.formattedValue
        || [addr.streetAddress, addr.postalCode, addr.city, addr.region, addr.country]
-            .filter(Boolean).join(', '))
-    : '';
+            .filter(Boolean).join(‘, ‘))
+    : ‘’;
 
   const lines = [
-    `Bonjour ${firstName},`,
-    '',
-    'Je mets à jour mon carnet d’adresses et j’aimerais être sûr d’avoir la bonne adresse postale pour toi.',
-    '',
+    t(‘invite.mailGreeting’, { firstName }),
+    ‘’,
+    t(‘invite.mailIntro’),
+    ‘’,
   ];
   if (known) {
-    lines.push('Voici ce que j’ai actuellement :', known, '');
+    lines.push(t(‘invite.mailKnown’), known, ‘’);
   } else {
-    lines.push('Il me manque ton adresse postale.', '');
+    lines.push(t(‘invite.mailUnknown’), ‘’);
   }
   lines.push(
-    'Le plus simple pour me répondre : depuis ton téléphone, « Partager le contact » et envoie-moi le fichier en réponse. Sinon, écris-moi simplement la bonne adresse.',
-    '',
-    'Merci !'
+    t(‘invite.mailInstructions’),
+    ‘’,
+    t(‘invite.mailThanks’)
   );
 
   // Destinataire non encodé (forme mailto usuelle) ; objet et corps encodés —

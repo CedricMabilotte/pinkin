@@ -175,39 +175,39 @@ export function renderShell(mount, { assetBase }) {
 
       <!-- Joindre — moyens de contact, en pastilles rondes -->
       <div class="panel-sec">
-        <div class="panel-lab">Joindre</div>
+        <div class="panel-lab">${t(‘panel.join’)}</div>
         <div id="panel-actions"></div>
       </div>
 
       <!-- Adresse — correction (Phase D) et import .vcf (Étape 4b) -->
       <div id="panel-address" class="panel-sec hidden">
-        <div class="panel-lab">Adresse</div>
+        <div class="panel-lab">${t(‘panel.address’)}</div>
         <p id="panel-addr-text"></p>
         <div id="addr-tools">
           <button id="btn-address-edit" class="mini-btn">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg>
-            Corriger
+            ${t(‘panel.edit’)}
           </button>
           <button id="btn-address-import" class="mini-btn">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v5h5"/><path d="M14 3H6v18h12V8z"/></svg>
-            Importer .vcf
+            ${t(‘panel.importVcf’)}
           </button>
         </div>
         <input id="vcf-input" type="file" accept=".vcf,text/vcard,text/x-vcard" hidden>
         <div id="address-form" class="address-form hidden">
-          <input id="addr-street"  class="addr-field" type="text" placeholder="Rue et numéro"  aria-label="Rue et numéro" />
-          <input id="addr-postal"  class="addr-field" type="text" placeholder="Code postal"    aria-label="Code postal" />
-          <input id="addr-city"    class="addr-field" type="text" placeholder="Ville"          aria-label="Ville" />
-          <input id="addr-region"  class="addr-field" type="text" placeholder="Région / État"  aria-label="Région ou État" />
-          <input id="addr-country" class="addr-field" type="text" placeholder="Pays"           aria-label="Pays" />
+          <input id="addr-street"  class="addr-field" type="text" placeholder="${t(‘panel.addr.streetPlaceholder’)}"  aria-label="${t(‘panel.addr.streetLabel’)}" />
+          <input id="addr-postal"  class="addr-field" type="text" placeholder="${t(‘panel.addr.postalPlaceholder’)}"  aria-label="${t(‘panel.addr.postalLabel’)}" />
+          <input id="addr-city"    class="addr-field" type="text" placeholder="${t(‘panel.addr.cityPlaceholder’)}"    aria-label="${t(‘panel.addr.cityLabel’)}" />
+          <input id="addr-region"  class="addr-field" type="text" placeholder="${t(‘panel.addr.regionPlaceholder’)}"  aria-label="${t(‘panel.addr.regionLabel’)}" />
+          <input id="addr-country" class="addr-field" type="text" placeholder="${t(‘panel.addr.countryPlaceholder’)}" aria-label="${t(‘panel.addr.countryLabel’)}" />
           <div class="address-form-actions">
-            <button id="btn-address-save" class="btn-write">Enregistrer dans Google</button>
-            <button id="btn-address-cancel" class="btn-ghost">Annuler</button>
+            <button id="btn-address-save" class="btn-write">${t(‘panel.saveToGoogle’)}</button>
+            <button id="btn-address-cancel" class="btn-ghost">${t(‘panel.cancel’)}</button>
           </div>
         </div>
         <div id="address-locked" class="address-locked hidden">
-          <p>Pour corriger ou importer une adresse, autorise Pinkin à écrire dans Google Contacts.</p>
-          <button id="btn-address-unlock" class="mini-btn">Autoriser l’écriture</button>
+          <p>${t(‘panel.writeRequired’)}</p>
+          <button id="btn-address-unlock" class="mini-btn">${t(‘panel.authorizeWrite’)}</button>
         </div>
         <p id="address-status" class="address-status"></p>
       </div>
@@ -222,7 +222,7 @@ export function renderShell(mount, { assetBase }) {
       <!-- Pied de fiche — délégation à Google Contacts (Étape 3) -->
       <a id="btn-google" class="panel-footer" target="_blank" rel="noopener noreferrer">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 4h6v6"/><path d="M20 4l-9 9"/><path d="M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/></svg>
-        Ouvrir dans Google Contacts
+        ${t(‘panel.openInGoogle’)}
       </a>
     </div>
   `;

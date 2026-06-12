@@ -270,7 +270,7 @@ function setWriteButton(state, label) {
   dot.classList.toggle('hidden',  state !== 'attn');
   spin.classList.toggle('hidden', state !== 'busy');
   pin.classList.toggle('hidden',  state === 'busy');
-  lab.textContent = state === 'busy' ? (label || 'Écriture…') : 'Écriture';
+  lab.textContent = state === 'busy' ? (label || t('writePopover.busyLabel')) : t('writePopover.idleLabel');
 }
 
 // Ancre un popover d'en-tête CENTRÉ sous son bouton déclencheur. Mesuré à
@@ -329,66 +329,66 @@ function renderWritePopover(state, result) {
     return b;
   };
 
-  if (state === 'optin' || state === 'optin-failed') {
-    title.textContent = 'Écrire dans Google Contacts';
+  if (state === ‘optin’ || state === ‘optin-failed’) {
+    title.textContent = t(‘writePopover.titleRequest’);
     // La copie nomme la PERMISSION et ses deux usages (publier les positions,
     // corriger des adresses) : un même scope OAuth débloque les deux.
-    text.textContent = state === 'optin-failed'
-      ? 'L’autorisation n’a pas pu être confirmée — réessaie.'
-      : 'Pour y enregistrer les positions et corriger des adresses. Réversible à tout moment.';
-    action('Autoriser l’écriture', requestWriteScope, 'primary');
+    text.textContent = state === ‘optin-failed’
+      ? t(‘writePopover.errorRetry’)
+      : t(‘writePopover.textRequest’);
+    action(t(‘panel.authorizeWrite’), requestWriteScope, ‘primary’);
   }
-  else if (state === 'pending') {
-    title.textContent = 'Écriture autorisée';
-    text.textContent  = 'Les positions seront inscrites dans Google Contacts dès la fin du géocodage.';
+  else if (state === ‘pending’) {
+    title.textContent = t(‘writePopover.titleGranted’);
+    text.textContent  = t(‘writePopover.textGranted’);
   }
-  else if (state === 'publishing') {
-    title.textContent = 'Inscription…';
-    text.textContent  = 'Inscription des positions dans Google Contacts.';
+  else if (state === ‘publishing’) {
+    title.textContent = t(‘writePopover.publishing’);
+    text.textContent  = t(‘writePopover.textPublishing’);
   }
-  else if (state === 'done') {
+  else if (state === ‘done’) {
     const n = result?.written ?? 0, s = result?.skipped ?? 0;
-    title.textContent = `${n} contact${n > 1 ? 's' : ''} inscrit${n > 1 ? 's' : ''}`;
+    title.textContent = `${n} contact${n > 1 ? ‘s’ : ‘’} inscrit${n > 1 ? ‘s’ : ‘’}`;
     text.textContent  = s
-      ? `${s} ignoré${s > 1 ? 's' : ''} — localisation trop imprécise.`
-      : 'Positions inscrites dans Google Contacts.';
-    action('Fermer', closeWritePopover);
+      ? `${s} ignoré${s > 1 ? ‘s’ : ‘’} — localisation trop imprécise.`
+      : t(‘writePopover.textDone’);
+    action(t(‘panel.close’), closeWritePopover);
   }
-  else if (state === 'manage') {
-    title.textContent = 'Écriture active';
-    text.textContent  = 'Les localisations sont inscrites dans Google Contacts.';
+  else if (state === ‘manage’) {
+    title.textContent = t(‘writePopover.titleActive’);
+    text.textContent  = t(‘writePopover.textActive’);
     // Confirmation en deux temps : le 1er clic arme, le 2e exécute.
     let armed = false;
-    const rm = action('Retirer', () => {
+    const rm = action(t(‘writePopover.actionRemove’), () => {
       if (!armed) {
         armed = true;
-        rm.textContent = 'Confirmer le retrait';
-        rm.classList.add('danger');
+        rm.textContent = t(‘writePopover.confirmRemove’);
+        rm.classList.add(‘danger’);
         return;
       }
       runRemove();
     });
-    action('Fermer', closeWritePopover);
+    action(t(‘panel.close’), closeWritePopover);
   }
-  else if (state === 'removing') {
-    title.textContent = 'Retrait…';
-    text.textContent  = 'Retrait des localisations de Google Contacts.';
+  else if (state === ‘removing’) {
+    title.textContent = t(‘writePopover.removing’);
+    text.textContent  = t(‘writePopover.textRemoving’);
   }
-  else if (state === 'removed') {
+  else if (state === ‘removed’) {
     const c = result?.cleared ?? 0;
-    title.textContent = `${c} localisation${c > 1 ? 's' : ''} retirée${c > 1 ? 's' : ''}`;
-    text.textContent  = 'Elles ne sont plus dans Google Contacts — elles restent sur ta carte.';
-    action('Fermer', closeWritePopover);
+    title.textContent = `${c} localisation${c > 1 ? ‘s’ : ‘’} retirée${c > 1 ? ‘s’ : ‘’}`;
+    text.textContent  = t(‘writePopover.textRemoved’);
+    action(t(‘panel.close’), closeWritePopover);
   }
-  else if (state === 'republish') {
-    title.textContent = 'Localisations retirées';
-    text.textContent  = 'Elles ne sont plus dans Google Contacts.';
-    action('Réinscrire dans Google', () => runPublish(), 'primary');
+  else if (state === ‘republish’) {
+    title.textContent = t(‘writePopover.titleRepublish’);
+    text.textContent  = t(‘writePopover.textRepublish’);
+    action(t(‘writePopover.actionRepublish’), () => runPublish(), ‘primary’);
   }
-  else if (state === 'error') {
-    title.textContent = 'Échec de l’opération';
-    text.textContent  = 'L’écriture dans Google Contacts n’a pas abouti.';
-    action('Réessayer', () => evaluateWrite({ open: true }), 'primary');
+  else if (state === ‘error’) {
+    title.textContent = t(‘writePopover.titleError’);
+    text.textContent  = t(‘writePopover.textError’);
+    action(t(‘writePopover.actionRetry’), () => evaluateWrite({ open: true }), ‘primary’);
   }
 
   openWritePopover();
@@ -397,7 +397,7 @@ function renderWritePopover(state, result) {
 // Demande le scope écriture. SEAM DE SURFACE (extension vs PWA), inchangé depuis
 // la session #2.
 async function requestWriteScope() {
-  setWriteButton('busy', 'Autorisation…');
+  setWriteButton('busy', t('writePopover.authorizingLabel'));
 
   if (cfg.interactiveAuthRedirects) {
     // PWA : upgradeScope() redirige la page entière. L'exécution ne revient
