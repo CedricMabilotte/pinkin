@@ -14,6 +14,7 @@
 import { Platform } from '../core/platform.js';
 import { PWAAuth } from './platform-pwa.js';
 import { startApp } from '../ui/orchestrator.js';
+import { t } from '../i18n/index.js';
 
 // Injection plateforme — DOIT précéder tout appel core, donc startApp().
 Platform.auth = PWAAuth;
@@ -41,7 +42,7 @@ const authCallback = window.__pinkinAuthCallback
 startApp({
   // La PWA est servie depuis la racine du domaine -> assetBase '/'.
   assetBase: '/',
-  connectMessage: 'Redirection vers Google…',
+  connectMessage: t('loading.connect'),
   // L'auth interactive PWA redirige la page entière vers Google.
   interactiveAuthRedirects: true,
   // Promise résolue quand pwa/main.js a fini d'échanger le code, ou null si on

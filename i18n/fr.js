@@ -44,6 +44,7 @@ export default {
     contacts: 'Chargement des contacts…',
     auth: 'Finalisation de la connexion…',
     connect: 'Connexion à Google…',
+    connectExtension: 'Connexion… une fenêtre Google va s’ouvrir.',
   },
   logoutPopover: {
     title: 'Se déconnecter ?',

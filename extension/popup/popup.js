@@ -13,6 +13,7 @@
 import { Platform } from '../../core/platform.js';
 import { ExtensionAuth } from '../platform-extension.js';
 import { startApp } from '../../ui/orchestrator.js';
+import { t } from '../../i18n/index.js';
 
 // Injection plateforme — DOIT précéder tout appel core, donc startApp().
 Platform.auth = ExtensionAuth;
@@ -20,7 +21,7 @@ Platform.auth = ExtensionAuth;
 startApp({
   // L'extension est imbriquée de deux niveaux (extension/popup/) -> '../../'.
   assetBase: '../../',
-  connectMessage: 'Connexion… une fenêtre Google va s’ouvrir.',
+  connectMessage: t(‘loading.connectExtension’),
   // launchWebAuthFlow résout dans le même contexte : l'auth interactive ne
   // quitte pas la page. Pas de callback OAuth à attendre non plus.
   interactiveAuthRedirects: false

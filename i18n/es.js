@@ -45,6 +45,7 @@ export default {
     contacts: 'Cargando los contactos…',
     auth: 'Finalizando la conexión…',
     connect: 'Conectando con Google…',
+    connectExtension: 'Conectando… se abrirá una ventana de Google.',
   },
   logoutPopover: {
     title: '¿Cerrar sesión?',
