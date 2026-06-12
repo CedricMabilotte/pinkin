@@ -541,23 +541,22 @@ function showAuthError(err) {
   const denied = /denied|refus/i.test(err?.message || '');
   const el = document.getElementById('auth-error');
   el.textContent = denied
-    ? 'Connexion annulée — Pinkin a besoin de tes contacts Google pour fonctionner.'
-    : 'Connexion impossible — vérifie ta connexion internet, puis réessaie.';
+    ? t('error.authDenied')
+    : t('error.authFailed');
   el.classList.remove('hidden');
 }
 
 // Écran d'erreur de chargement, avec bouton Réessayer (cf. showState 'error').
 function showLoadError() {
-  setLoadingMessage('Impossible de charger tes contacts — vérifie ta connexion internet.');
+  setLoadingMessage(t('error.loadFailed'));
   showState('error');
 }
 
 // Écran « rien à afficher » — distingue carnet vide et contacts sans adresse.
 function showEmpty(totalContacts) {
-  document.getElementById('empty-message').textContent = totalContacts === 0
-    ? 'Aucun contact dans ton compte Google.'
-    : 'Aucun de tes contacts n’a d’adresse. Ajoute une adresse postale dans '
-      + 'Google Contacts pour les localiser ici.';
+  document.getElementById(‘empty-message’).textContent = totalContacts === 0
+    ? t(‘empty.noContacts’)
+    : t(‘empty.noAddresses’);
   showState('empty');
 }
 

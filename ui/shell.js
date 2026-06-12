@@ -83,7 +83,7 @@ export function renderShell(mount, { assetBase }) {
          par ui/orchestrator.js. write-popover : machine à états de l'écriture.
          logout-popover : confirmation de déconnexion (remplace le confirm()
          natif — piste P3). -->
-    <div id="write-popover" class="hd-popover hidden" role="dialog" aria-label="Écriture dans Google Contacts">
+    <div id="write-popover" class="hd-popover hidden" role="dialog" aria-label="${t('header.write.ariaLabel')}">
       <p id="write-pop-title" class="hd-pop-title"></p>
       <p id="write-pop-text" class="hd-pop-text" aria-live="polite"></p>
       <div id="write-pop-actions" class="hd-pop-actions"></div>
@@ -119,8 +119,8 @@ export function renderShell(mount, { assetBase }) {
     <!-- État : chargement / erreur (spinner masqué + bouton Réessayer en erreur) -->
     <div id="state-loading" class="app-state hidden">
       <div class="spinner"></div>
-      <p id="loading-message" aria-live="polite">Chargement des contacts…</p>
-      <button id="btn-retry" class="btn-primary hidden">Réessayer</button>
+      <p id="loading-message" aria-live="polite">${t('loading.contacts')}</p>
+      <button id="btn-retry" class="btn-primary hidden">${t('error.retry')}</button>
     </div>
 
     <!-- État : aucun contact à localiser -->
@@ -134,7 +134,7 @@ export function renderShell(mount, { assetBase }) {
       <div class="geocoding-progress">
         <div id="geocoding-bar"></div>
       </div>
-      <span id="geocoding-label">Localisation en cours…</span>
+      <span id="geocoding-label">${t('geocoding.inProgress')}</span>
     </div>
 
     <!-- Carte Leaflet -->

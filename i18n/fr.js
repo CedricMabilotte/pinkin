@@ -150,4 +150,14 @@ export default {
     mailThanks:       'Merci !',
     smsBody:          'Salut {firstName} ! Je mets à jour mon carnet d’adresses — peux-tu m’envoyer ton adresse postale, ou partager ta fiche de contact ? Merci !',
   },
+  error: {
+    authDenied: 'Connexion annulée — Pinkin a besoin de tes contacts Google pour fonctionner.',
+    authFailed: 'Connexion impossible — vérifie ta connexion internet, puis réessaie.',
+    loadFailed: 'Impossible de charger tes contacts — vérifie ta connexion internet.',
+    retry: 'Réessayer',
+  },
+  empty: {
+    noContacts: 'Aucun contact dans ton compte Google.',
+    noAddresses: 'Aucun de tes contacts n’a d’adresse. Ajoute une adresse postale dans Google Contacts pour les localiser ici.',
+  },
 };

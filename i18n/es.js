@@ -151,4 +151,14 @@ export default {
     mailThanks:       '¡Gracias!',
     smsBody:          '¡Hola {firstName}! Estoy actualizando mi agenda — ¿puedes enviarme tu dirección postal o compartir tu contacto? ¡Gracias!',
   },
+  error: {
+    authDenied: 'Conexión cancelada — Pinkin necesita tus contactos de Google para funcionar.',
+    authFailed: 'Conexión fallida — verifica tu conexión a internet e inténtalo de nuevo.',
+    loadFailed: 'No se pudieron cargar tus contactos — verifica tu conexión a internet.',
+    retry: 'Reintentar',
+  },
+  empty: {
+    noContacts: 'Ningún contacto en tu cuenta de Google.',
+    noAddresses: 'Ninguno de tus contactos tiene dirección. Añade una dirección postal en Google Contacts para localizarlos aquí.',
+  },
 };

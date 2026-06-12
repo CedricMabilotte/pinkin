@@ -151,4 +151,14 @@ export default {
     mailThanks:       'Thanks!',
     smsBody:          'Hey {firstName}! I\'m updating my address book — could you send me your postal address or share your contact? Thanks!',
   },
+  error: {
+    authDenied: 'Connection cancelled — Pinkin needs your Google contacts to work.',
+    authFailed: 'Connection failed — check your internet connection and try again.',
+    loadFailed: 'Could not load your contacts — check your internet connection.',
+    retry: 'Retry',
+  },
+  empty: {
+    noContacts: 'No contacts in your Google account.',
+    noAddresses: 'None of your contacts have an address. Add a postal address in Google Contacts to pin them here.',
+  },
 };
