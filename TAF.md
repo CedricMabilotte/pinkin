@@ -1,6 +1,16 @@
 # TAF — pinkin
 Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAUDE.md).
 
+## À faire — S10 P0 (à ouvrir en priorité)
+
+- **Compléter l'i18n des interfaces app** — référence : `BRIEF_S10_I18N.md`.
+  Signalé S9-ter par l'opérateur : « les menus de l'app ne sont pas
+  traduits ». Header/onglets/welcome déjà i18n, mais panneau fiche + form
+  adresse + popovers d'écriture + mail invite = hardcoded FR. Bonne
+  nouvelle : la plupart des clés `panel.*` existent déjà dans
+  `i18n/{fr,en,es}.js`, travail principalement de plomberie. Estimé 1 h.
+  Bloque rien côté CWS mais bloque la cohérence trilingue.
+
 ## À faire — V1.0 actions opérateur RESTANTES (chemin critique submission)
 
 - **Désactiver les anciens CLIENT_SECRET côté Google Cloud Console.** Tu
