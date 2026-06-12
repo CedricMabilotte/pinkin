@@ -329,66 +329,66 @@ function renderWritePopover(state, result) {
     return b;
   };
 
-  if (state === ‘optin’ || state === ‘optin-failed’) {
-    title.textContent = t(‘writePopover.titleRequest’);
+  if (state === 'optin' || state === 'optin-failed') {
+    title.textContent = t('writePopover.titleRequest');
     // La copie nomme la PERMISSION et ses deux usages (publier les positions,
     // corriger des adresses) : un même scope OAuth débloque les deux.
-    text.textContent = state === ‘optin-failed’
-      ? t(‘writePopover.errorRetry’)
-      : t(‘writePopover.textRequest’);
-    action(t(‘panel.authorizeWrite’), requestWriteScope, ‘primary’);
+    text.textContent = state === 'optin-failed'
+      ? t('writePopover.errorRetry')
+      : t('writePopover.textRequest');
+    action(t('panel.authorizeWrite'), requestWriteScope, 'primary');
   }
-  else if (state === ‘pending’) {
-    title.textContent = t(‘writePopover.titleGranted’);
-    text.textContent  = t(‘writePopover.textGranted’);
+  else if (state === 'pending') {
+    title.textContent = t('writePopover.titleGranted');
+    text.textContent  = t('writePopover.textGranted');
   }
-  else if (state === ‘publishing’) {
-    title.textContent = t(‘writePopover.publishing’);
-    text.textContent  = t(‘writePopover.textPublishing’);
+  else if (state === 'publishing') {
+    title.textContent = t('writePopover.publishing');
+    text.textContent  = t('writePopover.textPublishing');
   }
-  else if (state === ‘done’) {
+  else if (state === 'done') {
     const n = result?.written ?? 0, s = result?.skipped ?? 0;
-    title.textContent = `${n} contact${n > 1 ? ‘s’ : ‘’} inscrit${n > 1 ? ‘s’ : ‘’}`;
+    title.textContent = `${n} contact${n > 1 ? 's' : ''} inscrit${n > 1 ? 's' : ''}`;
     text.textContent  = s
-      ? `${s} ignoré${s > 1 ? ‘s’ : ‘’} — localisation trop imprécise.`
-      : t(‘writePopover.textDone’);
-    action(t(‘panel.close’), closeWritePopover);
+      ? `${s} ignoré${s > 1 ? 's' : ''} — localisation trop imprécise.`
+      : t('writePopover.textDone');
+    action(t('panel.close'), closeWritePopover);
   }
-  else if (state === ‘manage’) {
-    title.textContent = t(‘writePopover.titleActive’);
-    text.textContent  = t(‘writePopover.textActive’);
+  else if (state === 'manage') {
+    title.textContent = t('writePopover.titleActive');
+    text.textContent  = t('writePopover.textActive');
     // Confirmation en deux temps : le 1er clic arme, le 2e exécute.
     let armed = false;
-    const rm = action(t(‘writePopover.actionRemove’), () => {
+    const rm = action(t('writePopover.actionRemove'), () => {
       if (!armed) {
         armed = true;
-        rm.textContent = t(‘writePopover.confirmRemove’);
-        rm.classList.add(‘danger’);
+        rm.textContent = t('writePopover.confirmRemove');
+        rm.classList.add('danger');
         return;
       }
       runRemove();
     });
-    action(t(‘panel.close’), closeWritePopover);
+    action(t('panel.close'), closeWritePopover);
   }
-  else if (state === ‘removing’) {
-    title.textContent = t(‘writePopover.removing’);
-    text.textContent  = t(‘writePopover.textRemoving’);
+  else if (state === 'removing') {
+    title.textContent = t('writePopover.removing');
+    text.textContent  = t('writePopover.textRemoving');
   }
-  else if (state === ‘removed’) {
+  else if (state === 'removed') {
     const c = result?.cleared ?? 0;
-    title.textContent = `${c} localisation${c > 1 ? ‘s’ : ‘’} retirée${c > 1 ? ‘s’ : ‘’}`;
-    text.textContent  = t(‘writePopover.textRemoved’);
-    action(t(‘panel.close’), closeWritePopover);
+    title.textContent = `${c} localisation${c > 1 ? 's' : ''} retirée${c > 1 ? 's' : ''}`;
+    text.textContent  = t('writePopover.textRemoved');
+    action(t('panel.close'), closeWritePopover);
   }
-  else if (state === ‘republish’) {
-    title.textContent = t(‘writePopover.titleRepublish’);
-    text.textContent  = t(‘writePopover.textRepublish’);
-    action(t(‘writePopover.actionRepublish’), () => runPublish(), ‘primary’);
+  else if (state === 'republish') {
+    title.textContent = t('writePopover.titleRepublish');
+    text.textContent  = t('writePopover.textRepublish');
+    action(t('writePopover.actionRepublish'), () => runPublish(), 'primary');
   }
-  else if (state === ‘error’) {
-    title.textContent = t(‘writePopover.titleError’);
-    text.textContent  = t(‘writePopover.textError’);
-    action(t(‘writePopover.actionRetry’), () => evaluateWrite({ open: true }), ‘primary’);
+  else if (state === 'error') {
+    title.textContent = t('writePopover.titleError');
+    text.textContent  = t('writePopover.textError');
+    action(t('writePopover.actionRetry'), () => evaluateWrite({ open: true }), 'primary');
   }
 
   openWritePopover();
@@ -554,9 +554,9 @@ function showLoadError() {
 
 // Écran « rien à afficher » — distingue carnet vide et contacts sans adresse.
 function showEmpty(totalContacts) {
-  document.getElementById(‘empty-message’).textContent = totalContacts === 0
-    ? t(‘empty.noContacts’)
-    : t(‘empty.noAddresses’);
+  document.getElementById('empty-message').textContent = totalContacts === 0
+    ? t('empty.noContacts')
+    : t('empty.noAddresses');
   showState('empty');
 }
 

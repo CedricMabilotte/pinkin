@@ -453,37 +453,37 @@ function _channelLink(label, href, external) {
 
 // Message court (SMS / WhatsApp) — variante condensée du gabarit e-mail.
 function _shortRequest(firstName) {
-  return t(‘invite.smsBody’, { firstName });
+  return t('invite.smsBody', { firstName });
 }
 
 // Construit l'URL mailto: — destinataire, objet, corps prérempli. Le corps
 // inclut l'adresse que Pinkin connaît déjà, pour que le contact confirme ou
 // corrige plutôt que de tout ressaisir.
 function _buildUpdateMailto(contact, email, firstName) {
-  const subject = t(‘invite.mailSubject’);
+  const subject = t('invite.mailSubject');
 
   const addr  = contact.addresses?.[0];
   const known = addr
     ? (addr.formattedValue
        || [addr.streetAddress, addr.postalCode, addr.city, addr.region, addr.country]
-            .filter(Boolean).join(‘, ‘))
-    : ‘’;
+            .filter(Boolean).join(', '))
+    : '';
 
   const lines = [
-    t(‘invite.mailGreeting’, { firstName }),
-    ‘’,
-    t(‘invite.mailIntro’),
-    ‘’,
+    t('invite.mailGreeting', { firstName }),
+    '',
+    t('invite.mailIntro'),
+    '',
   ];
   if (known) {
-    lines.push(t(‘invite.mailKnown’), known, ‘’);
+    lines.push(t('invite.mailKnown'), known, '');
   } else {
-    lines.push(t(‘invite.mailUnknown’), ‘’);
+    lines.push(t('invite.mailUnknown'), '');
   }
   lines.push(
-    t(‘invite.mailInstructions’),
-    ‘’,
-    t(‘invite.mailThanks’)
+    t('invite.mailInstructions'),
+    '',
+    t('invite.mailThanks')
   );
 
   // Destinataire non encodé (forme mailto usuelle) ; objet et corps encodés —

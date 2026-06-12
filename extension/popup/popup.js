@@ -21,7 +21,7 @@ Platform.auth = ExtensionAuth;
 startApp({
   // L'extension est imbriquée de deux niveaux (extension/popup/) -> '../../'.
   assetBase: '../../',
-  connectMessage: t(‘loading.connectExtension’),
+  connectMessage: t('loading.connectExtension'),
   // launchWebAuthFlow résout dans le même contexte : l'auth interactive ne
   // quitte pas la page. Pas de callback OAuth à attendre non plus.
   interactiveAuthRedirects: false
