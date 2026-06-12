@@ -91,12 +91,16 @@ function _fillIdentity(contact) {
     avatar.src           = contact.photo;
     avatar.style.display = 'block';
     initials.style.display = 'none';
+    avatar.classList.add('has-photo');
 
     avatar.onerror = () => {
       avatar.style.display   = 'none';
+      avatar.classList.remove('has-photo');
       initials.style.display = 'flex';
       initials.textContent   = contact.getInitials();
     };
+
+    avatar.onclick = () => _openPhotoLightbox(contact.photo, contact.displayName);
   } else {
     avatar.style.display   = 'none';
     initials.style.display = 'flex';
@@ -216,6 +220,30 @@ function _buildActions(contact) {
   // La délégation à Google Contacts n'est PLUS une action ici : elle a son
   // propre bouton en pied de fiche (cf. _fillGoogleLink).
   return actions;
+}
+
+// Ouvre un overlay plein-écran avec la photo agrandie. Ferme au clic ou Échap.
+function _openPhotoLightbox(src, name) {
+  const existing = document.getElementById('photo-lightbox');
+  if (existing) existing.remove();
+
+  const lb = document.createElement('div');
+  lb.id = 'photo-lightbox';
+  lb.setAttribute('role', 'dialog');
+  lb.setAttribute('aria-label', name);
+
+  const img = document.createElement('img');
+  img.src = src;
+  img.alt = name;
+  lb.appendChild(img);
+
+  const close = () => lb.remove();
+  lb.addEventListener('click', close);
+
+  const onKey = (e) => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } };
+  document.addEventListener('keydown', onKey);
+
+  document.body.appendChild(lb);
 }
 
 function _svgIcon(path) {

@@ -225,6 +225,11 @@ export function renderShell(mount, { assetBase }) {
         ${t('panel.openInGoogle')}
       </a>
     </div>
+
+    <!-- Footer app — version + lien site -->
+    <footer id="app-footer">
+      <a href="https://pinkin.org" target="_blank" rel="noopener noreferrer">v1.0 · pinkin.org</a>
+    </footer>
   `;
 
   // Sélecteur de langue — wiring. Au clic, on sauvegarde dans localStorage via
