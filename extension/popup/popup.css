@@ -519,7 +519,11 @@ html, body {
   justify-content: center;
   padding: 24px;
   cursor: default;
-  animation: panelIn 0.2s ease;
+  animation: lb-frame-in 0.18s ease;
+}
+@keyframes lb-frame-in {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
 }
 #photo-lightbox img {
   width: 100%;
