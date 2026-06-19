@@ -222,7 +222,8 @@ function _buildActions(contact) {
   return actions;
 }
 
-// Ouvre un overlay plein-écran avec la photo agrandie. Ferme au clic ou Échap.
+// Ouvre un overlay avec la photo dans un cadre format "téléphone".
+// Ferme en cliquant sur le fond (pas sur la photo) ou Échap.
 function _openPhotoLightbox(src, name) {
   const existing = document.getElementById('photo-lightbox');
   if (existing) existing.remove();
@@ -232,18 +233,24 @@ function _openPhotoLightbox(src, name) {
   lb.setAttribute('role', 'dialog');
   lb.setAttribute('aria-label', name);
 
+  const frame = document.createElement('div');
+  frame.id = 'photo-lightbox-frame';
+
   const img = document.createElement('img');
   img.src = src;
   img.alt = name;
-  lb.appendChild(img);
 
-  const close = () => lb.remove();
+  frame.appendChild(img);
+  lb.appendChild(frame);
+
+  const close = () => { lb.remove(); document.removeEventListener('keydown', onKey); };
   lb.addEventListener('click', close);
+  frame.addEventListener('click', e => e.stopPropagation()); // clic photo ne ferme pas
 
-  const onKey = (e) => { if (e.key === 'Escape') { close(); document.removeEventListener('keydown', onKey); } };
+  const onKey = (e) => { if (e.key === 'Escape') close(); };
   document.addEventListener('keydown', onKey);
 
-  document.body.appendChild(lb);
+  document.getElementById('app').appendChild(lb);
 }
 
 function _svgIcon(path) {
