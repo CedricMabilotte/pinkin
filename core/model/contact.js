@@ -10,8 +10,11 @@ export class Contact {
     // Seule une URL https est acceptée : une URL de photo forgée (autre schéma)
     // ne doit pas atterrir telle quelle dans un attribut src.
     const photoUrl    = raw.photos?.[0]?.url;
+    // Google renvoit par défaut =s100 (100 px). On demande =s400 pour la
+    // résolution dans la fiche + lightbox sans aller chercher une taille
+    // démesuree. Le paramètre =sXXX est propre à lh3.googleusercontent.com.
     this.photo        = (typeof photoUrl === 'string' && photoUrl.startsWith('https://'))
-                          ? photoUrl : null;
+                          ? photoUrl.replace(/=s\d+(-c)?$/, '=s400$1') : null;
     this.emails       = raw.emailAddresses ?? [];
     this.phones       = raw.phoneNumbers ?? [];
     this.addresses    = raw.addresses ?? [];

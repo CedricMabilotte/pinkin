@@ -19,6 +19,7 @@
   --shadow:      0 4px 24px rgba(194,24,91,0.12);
   --header-h:    44px;
   --tabbar-h:    40px;
+  --footer-h:    28px;
 }
 
 html, body {
@@ -168,7 +169,7 @@ html, body {
 #view-carnet {
   position: absolute;
   top: calc(var(--header-h) + var(--tabbar-h));
-  left: 0; right: 0; bottom: 0;
+  left: 0; right: 0; bottom: var(--footer-h);
   z-index: 1;
   display: flex;
   flex-direction: column;
@@ -292,7 +293,7 @@ html, body {
 /* === ÉTATS APP === */
 .app-state {
   position: absolute;
-  inset: var(--header-h) 0 0 0;
+  inset: var(--header-h) 0 var(--footer-h) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -375,7 +376,7 @@ html, body {
 #map {
   position: absolute;
   top: calc(var(--header-h) + var(--tabbar-h));
-  left: 0; right: 0; bottom: 0;
+  left: 0; right: 0; bottom: var(--footer-h);
   z-index: 1;
 }
 
@@ -505,8 +506,10 @@ html, body {
   animation: lb-in 0.15s ease;
 }
 #photo-lightbox img {
-  max-width: min(320px, 90vw);
-  max-height: min(320px, 90vh);
+  max-width: min(480px, 90vw);
+  max-height: min(480px, 90vh);
+  width: min(480px, 90vw);
+  height: min(480px, 90vw);
   border-radius: 50%;
   object-fit: cover;
   box-shadow: 0 8px 40px rgba(0,0,0,0.5);
@@ -880,10 +883,17 @@ html, body {
 
 /* ── Footer app ─────────────────────────────────────────────────────────── */
 #app-footer {
-  text-align: center;
-  padding: 8px 0 10px;
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: var(--footer-h);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
   font-size: 11px;
-  color: var(--ink-faint, #aaa);
+  color: var(--ink-faint, #bbb);
 }
 #app-footer a {
   color: inherit;
@@ -891,4 +901,5 @@ html, body {
 }
 #app-footer a:hover {
   text-decoration: underline;
+  color: var(--pink);
 }
