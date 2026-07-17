@@ -1,5 +1,13 @@
 # HANDOFF — Session #5 : tests V0.2, audit des interactions, refonte d'ergonomie
 
+> **⚠️ Superseded — n'est PLUS le point de reprise — [VÉRIFIÉ] 2026-07-16
+> (revue de durcissement, voir `AUDIT_DURCISSEMENT.md`).** La chaîne de
+> handoffs continue S6→S7→S8→S9→S9-ter→S10 ; le point de reprise courant est
+> `HANDOFF_S10.md` (ou `etat-projet-pinkin.md` pour l'état courant condensé).
+> Ce fichier liste comme « ouverts » plusieurs points depuis résolus (PWA
+> entière, correctif OAuth, tests e2e authentifiés) — ne pas les traiter comme
+> acquis en l'état.
+
 Dernier point de reprise. La session #6 lit `BRIEF_PINKIN.md`, puis `HANDOFF_S4.md`,
 puis ce fichier. À lire en complément : `AUDIT_INTERACTIONS.md` (neuf de cette
 session), `PLAN_PHASE_E.md`, `TEST_V0.2.md`.

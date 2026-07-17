@@ -1,5 +1,14 @@
 # Plan — Phase E : distribution de Pinkin
 
+> **⚠️ Historique — Phase E entièrement exécutée et dépassée — [VÉRIFIÉ]
+> 2026-07-16 (revue de durcissement, voir `AUDIT_DURCISSEMENT.md`).** Ce plan
+> décrit une Phase E encore « à exécuter » ; en réalité la mise en magasin,
+> la validation OAuth et l'hébergement PWA ont depuis été menés à bien
+> (V1.0 publiée). Pour l'état courant : `etat-projet-pinkin.md` +
+> `HANDOFF_S9-ter.md` (choix hébergeur, OAuth, packaging réels — souvent
+> différents de ce qui est envisagé ci-dessous). Conservé comme trace
+> historique de la qualification initiale, pas comme plan d'exécution.
+
 *Point de reprise prêt à exécuter. Issu de la qualification menée en session #4.*
 
 ---

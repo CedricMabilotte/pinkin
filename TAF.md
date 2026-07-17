@@ -1,16 +1,6 @@
 # TAF — pinkin
 Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAUDE.md).
 
-## À faire — S10 P0 (à ouvrir en priorité)
-
-- **Compléter l'i18n des interfaces app** — référence : `BRIEF_S10_I18N.md`.
-  Signalé S9-ter par l'opérateur : « les menus de l'app ne sont pas
-  traduits ». Header/onglets/welcome déjà i18n, mais panneau fiche + form
-  adresse + popovers d'écriture + mail invite = hardcoded FR. Bonne
-  nouvelle : la plupart des clés `panel.*` existent déjà dans
-  `i18n/{fr,en,es}.js`, travail principalement de plomberie. Estimé 1 h.
-  Bloque rien côté CWS mais bloque la cohérence trilingue.
-
 ## À faire — V1.0 actions opérateur RESTANTES (chemin critique submission)
 
 - **Désactiver les anciens CLIENT_SECRET côté Google Cloud Console.** Tu
@@ -116,6 +106,26 @@ Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAU
   Leaflet. Passage attendu ~1 Mo. Mineur, CWS accepte largement plus. Trouvé S9 (b).
 
 ## Fait
+
+### Session #10
+
+- **Compléter l'i18n des interfaces app** — clos #10. Référence :
+  `BRIEF_S10_I18N.md`. Toutes les chaînes hardcodées de `ui/shell.js`,
+  `ui/orchestrator.js`, `ui/contact-panel.js` remplacées par `t()`. Nouveaux
+  blocs i18n FR/EN/ES (`panel.addr.*`, `writePopover.*`, `invite.*`,
+  `error.*`, `empty.*`, `loading.connectExtension`). Garde-fou :
+  `npm test` 120/120, parité FR/EN/ES vérifiée par `test/i18n.test.js`.
+  Incident en cours de route : guillemets typographiques introduits par
+  l'outil d'édition dans des appels `t()` → écran blanc navigateur natif,
+  corrigé + durci (voir lecons-pinkin.md L19). Voir `etat-projet-pinkin.md`
+  pour l'état détaillé (source de vérité courante du projet).
+
+- **UX photo et footer** — clos #10. Lightbox photo au clic sur l'avatar,
+  qualité photo Google `=s100` → `=s400`, footer `v1.0 · pinkin.org` visible.
+
+- **Packaging V1.0** — clos #10. `dist/pinkin-v1.0.0.zip` généré, prêt pour
+  soumission Chrome Web Store (soumission elle-même : action opérateur,
+  toujours ouverte ci-dessus).
 
 ### Session #9
 

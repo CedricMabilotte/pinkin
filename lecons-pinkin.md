@@ -274,3 +274,24 @@ session multi-étapes est interrompue à n'importe quel point intermédiaire.
 
 Verdict : *consignée comme procédure*. Statut : **clos** — pattern
 réutilisable pour toute rotation de secret futur.
+
+**L19 — Un outil d'édition peut substituer des guillemets typographiques aux
+délimiteurs de chaîne JS, sans erreur de build visible.** Incident S10 :
+lors du passage i18n complet des chaînes d'`ui/shell.js`, `ui/orchestrator.js`,
+`ui/contact-panel.js` en appels `t('...')`, l'outil d'édition a remplacé des
+guillemets droits (U+0027) par des guillemets typographiques (U+2018/U+2019)
+DANS certains appels `t()` — pas dans le texte affiché (ça, c'est légitime en
+français), mais dans les délimiteurs de la chaîne elle-même. Symptôme : écran
+blanc dans le navigateur natif, aucune erreur exploitable en sandbox Cowork
+(pas de rendu réel testable côté agent). Corrigé par remplacement en masse.
+
+Cassure évitée pour la prochaine fois : durci par
+`scripts/check-smart-quotes.mjs` (`npm run check:quotes`, câblé dans le job
+`unit` de `.github/workflows/tests.yml` — revue de durcissement, voir
+AUDIT_DURCISSEMENT.md) : scanne `core/ ui/ extension/ pwa/` pour les quatre
+caractères typographiques, échoue si trouvé. `i18n/*.js` est explicitement
+exclu du scan — les guillemets typographiques y sont légitimes, ils font
+partie du TEXTE traduit affiché à l'utilisateur, pas des délimiteurs de code.
+
+Verdict : *incident réel avec effet visible (écran blanc), désormais
+détecté automatiquement à la prochaine régression*. Statut : **clos**.

@@ -1,7 +1,12 @@
 # Audit méta des interactions — Pinkin
 
-*Session #5. Demande de l'opérateur : remettre en cause toute la gestion des
-clics et des interactions de l'interface.*
+> **ℹ️ Historique — recommandations déjà implémentées — [VÉRIFIÉ] 2026-07-16
+> (revue de durcissement, voir `AUDIT_DURCISSEMENT.md`).** Les pistes P1-P4
+> qualifiées ici ont été exécutées dans les sessions #5-#7 (refonte
+> d'ergonomie, boutons désactivés avant auth, popover d'écriture, etc. — voir
+> `HANDOFF_S6.md`/`HANDOFF_S7.md`). Conservé comme trace du diagnostic
+> d'origine, pas comme liste de travail restant à faire — pour ça, voir
+> `TAF.md`.
 
 ---
 

@@ -1,6 +1,13 @@
 # Note de concept — Pinkin multi-carnets
 
-*Ouverture de Pinkin aux carnets d'adresses communautaires.*
+> **ℹ️ Conception différée, pas périmée — [VÉRIFIÉ] 2026-07-16 (revue de
+> durcissement, voir `AUDIT_DURCISSEMENT.md`).** Ce concept vise la Phase D2,
+> explicitement différée après V1.0 (cf. `TAF.md`, section « confort futur »)
+> — il reste la référence de conception pour ce chantier futur. Mais Pinkin a
+> depuis dépassé V1.0 (publiée, voir `etat-projet-pinkin.md`) : toute mention
+> d'état produit ici (ce qui est « déjà fait » vs « à faire » côté V1) doit
+> être re-vérifiée contre `etat-projet-pinkin.md` avant d'être prise pour
+> acquise, la conception multi-carnets elle-même n'a pas besoin d'être refaite.
 
 ---
 

@@ -1,5 +1,15 @@
 # Brief Pinkin — Contexte projet pour Cowork
 
+> **⚠️ État produit périmé — [VÉRIFIÉ] 2026-07-16 (revue de durcissement, voir
+> `AUDIT_DURCISSEMENT.md`).** Ce brief date d'avant les sessions #6-S10 : le
+> tableau « État des phases » et toute mention d'OAuth « mode test » ne
+> reflètent plus la réalité — Pinkin est en **V1.0 publiée**, Phase E déjà
+> exécutée et dépassée. Pour l'état courant du produit, lire
+> `etat-projet-pinkin.md` (source de vérité courante) puis `HANDOFF_S9-ter.md`
+> et `HANDOFF_S10.md`. Le reste de ce fichier (mode de travail, conventions)
+> peut rester valide — à vérifier au cas par cas plutôt que d'être pris comme
+> acquis.
+
 ## Mode de travail
 
 Mode conceptuel, critique et stratégique.
