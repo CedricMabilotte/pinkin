@@ -44,6 +44,8 @@ jobs:
           cache: 'npm'
       - run: npm ci
       - run: npm test
+      - name: Garde-fou guillemets typographiques (régression L19)
+        run: npm run check:quotes
 
   e2e:
     name: E2E PWA (Playwright — manual)

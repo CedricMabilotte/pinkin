@@ -39,6 +39,37 @@ const PORT = Number(process.env.PORT) || 3000;
 // Racine servie = racine du dépôt, soit le dossier PARENT de pwa/.
 const REPO_ROOT = fileURLToPath(new URL('..', import.meta.url));
 
+// DURCISSEMENT (revue de durcissement — voir AUDIT_DURCISSEMENT.md). Ce
+// serveur sert TOUT fichier lisible sous REPO_ROOT (seule protection avant
+// ce correctif : la garde anti-traversée `../`). Deux conséquences non
+// souhaitées en l'état : (1) `server.listen(PORT)` sans hôte explicite bind
+// sur toutes les interfaces réseau, joignable depuis l'extérieur si la
+// machine de dev est sur un réseau partagé ou derrière un tunnel ; (2)
+// `GET /extension/background/secrets.js` ou `GET /.git/config` seraient
+// servis tels quels, exposant le CLIENT_SECRET OAuth local et l'historique
+// git complet. Les deux sont corrigés ci-dessous ; ce serveur reste dev-only
+// (jamais dans le chemin de déploiement Cloudflare, cf. HEBERGEUR_PWA.md).
+// 'localhost' (pas '127.0.0.1' en dur) : c'est l'hôte déjà utilisé par
+// PWA_BASE_URL dans playwright.config.js et par l'URI de redirection OAuth
+// autorisée côté Google — on garde la même résolution DNS des deux côtés
+// plutôt que de risquer un mismatch IPv4/IPv6 avec les clients de test/CI.
+const DEV_HOST = process.env.HOST || 'localhost';
+
+// Préfixes de chemin jamais servis, même sous la racine du dépôt.
+const DENYLIST_PREFIXES = [
+  '/.git/',
+  '/.git',
+  '/node_modules/',
+  '/extension/background/secrets.js',
+  '/extension/background/secrets.example.js',
+  '/.env',
+  '/scripts/',
+];
+
+function isDenied(pathname) {
+  return DENYLIST_PREFIXES.some(prefix => pathname === prefix || pathname.startsWith(prefix));
+}
+
 // Page unique de la PWA — rendue à la fois sur « / » et « /auth/callback ».
 const INDEX = join(REPO_ROOT, 'pwa', 'index.html');
 
@@ -99,6 +130,13 @@ const server = createServer(async (req, res) => {
     return;
   }
 
+  // Liste noire — avant toute résolution de chemin : secrets, .git, tooling.
+  if (isDenied(pathname)) {
+    console.log(`403  ${pathname}  (liste noire)`);
+    res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+    return res.end('403 — interdit\n');
+  }
+
   // Tout le reste : un fichier du dépôt. Garde anti-traversée de répertoire —
   // le chemin résolu doit rester SOUS la racine du dépôt, jamais au-dessus.
   const absPath = normalize(join(REPO_ROOT, pathname));
@@ -117,9 +155,10 @@ const server = createServer(async (req, res) => {
   }
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, DEV_HOST, () => {
   console.log(`Pinkin — serveur de dev PWA`);
   console.log(`  racine servie : ${REPO_ROOT}`);
+  console.log(`  écoute        : http://${DEV_HOST}:${PORT} (HOST env var pour changer)`);
   console.log(`  ouvrir        : http://localhost:${PORT}`);
   console.log(`  arrêter       : Ctrl+C`);
 });

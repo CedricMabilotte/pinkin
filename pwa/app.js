@@ -49,3 +49,20 @@ startApp({
   // n'arrive pas d'un consentement.
   authCallback
 });
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Enregistrement du service worker (durcissement — voir AUDIT_DURCISSEMENT.md).
+// pwa/service-worker-pwa.js existait déjà mais n'était jamais enregistré :
+// le cache offline qu'il implémente ne prenait donc jamais effet. `scope:
+// '/pwa/'` correspond au `start_url`/`scope` implicite du manifest.webmanifest
+// et n'excède pas ce que le fichier, servi depuis /pwa/, peut de toute façon
+// contrôler par défaut. Feature-detect + catch : l'absence de support (ou un
+// échec en dev, où dev-server.js ne sert pas forcément les bons en-têtes)
+// dégrade silencieusement vers le comportement sans SW, jamais bloquant.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker
+      .register('/pwa/service-worker-pwa.js', { scope: '/pwa/' })
+      .catch(err => console.warn('Pinkin: enregistrement du service worker échoué —', err));
+  });
+}
