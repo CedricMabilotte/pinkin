@@ -3,6 +3,11 @@ Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAU
 
 ## À faire — V1.0 actions opérateur RESTANTES (chemin critique submission)
 
+> **Voir `CHECKLIST_LANCEMENT.md`** (nouveau, 2026-07-17) pour la version
+> consolidée et dans l'ordre d'exécution de ces items — cette section garde
+> le détail narratif, mais les items en double des sections « mise en
+> magasin » / « validation OAuth » plus bas ont été dédupliqués là-bas.
+
 - **Désactiver les anciens CLIENT_SECRET côté Google Cloud Console.** Tu
   as ajouté de nouveaux secrets en S9-ter mais les anciens restent
   marqués comme actifs. À désactiver pour propreté. (5 sec côté UI.)
@@ -21,7 +26,8 @@ Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAU
 - **Dev local : fallback `/api/oauth-config` dans `pwa/dev-server.js`.**
   Sinon `npm run dev:pwa` ne peut plus tester l'OAuth depuis localhost
   après le refactor S9-ter. Petit pattern : lire un `pwa/.secrets-dev.js`
-  gitignored, ou env var au démarrage du dev-server.
+  gitignored, ou env var au démarrage du dev-server. Non bloquant pour la
+  soumission CWS — affecte seulement le confort de dev local.
 
 - **Re-tester Cloudflare auto-deploy webhook** maintenant que le repo est
   public. Si toujours cassé : soit reconnecter la GitHub app côté
@@ -47,19 +53,30 @@ Trucs à faire plus tard. Capture rapide via `taf:` (convention : ~/.claude/CLAU
 
 ## À faire — V1.0 mise en magasin (actions opérateur)
 
+> **[VÉRIFIÉ] 2026-07-17 — section corrigée.** Les deux items hébergement
+> ci-dessous décrivaient le plan S9-bis (Cloudflare Pages, repo privé,
+> CNAME Gandi) — **supplanté par la voie γ de S9-ter** (repo passé public,
+> migration NS Gandi→Cloudflare, Cloudflare Worker `pinkin-org` avec
+> `wrangler.toml`/`worker.js`, custom domain bindé directement, pas de CNAME
+> `pages.dev`). Voir `HANDOFF_S9-ter.md`. **Fait**, pas à refaire — laissé en
+> l'état ci-dessous comme trace narrative uniquement.
+
 - **Compte développeur Chrome Web Store.** ✅ Payé (S9-bis, opérateur).
   Reste à uploader le `.zip` et soumettre — cf. plus bas.
 
-- **Configurer Cloudflare Pages depuis le repo privé** (revirement S9-bis,
-  cf. HEBERGEUR_PWA.md « Choix retenu »). Repo `pinkin` reste privé pour
-  préserver la posture sécurité #5 (CLIENT_SECRET en clair dans le code).
-  Compte Cloudflare gratuit → Pages → Connect to Git → app GitHub installée →
-  repo `pinkin` → build settings vide → output `/` → custom domain `pinkin.org`.
+- ~~**Configurer Cloudflare Pages depuis le repo privé**~~ **fait, sous une
+  forme différente** — Cloudflare Worker (Workers Static Assets), repo
+  public, `wrangler deploy`. (Ancien texte S9-bis : « repo `pinkin` reste
+  privé pour préserver la posture sécurité #5 » — ce choix a été inversé en
+  S9-ter, voie γ.)
 
-- **CNAME chez Gandi** : `pinkin.org` → `pinkin-org.pages.dev` (Cloudflare).
+- ~~**CNAME chez Gandi** : `pinkin.org` → `pinkin-org.pages.dev`~~ **fait,
+  sous une forme différente** — zone DNS migrée Gandi→Cloudflare, domaine
+  bindé directement au Worker (pas de `pages.dev`).
 
-- **Vérifier le domaine `pinkin.org`** dans Google Search Console (TXT DNS
-  ou fichier HTML) — préalable à la validation OAuth.
+- **Vérifier le domaine `pinkin.org`** dans Google Search Console — **fait**
+  (`googleb0fa4240435923ef.html` présent à la racine, `HANDOFF_S9-ter.md`
+  le liste en [VÉRIFIÉ]).
 
 - **Captures d'écran fiche CWS** (5 captures, 1280×800). Plan dans
   `FICHE_CWS.md` (`01-carte.png` à `05-multi-langue.png`).
