@@ -17,28 +17,24 @@
 //   - cache absent + getAccessToken échoue : on JETTE (impossible de servir).
 //   - clearCache : prochain appel sera un refetch.
 //
-// MOCKS. Platform en mémoire + google-people.fetchAllContacts stubbé +
+// MOCKS. Platform en mémoire (helpers/mock-platform.js, usage 2 —
+// substitution de module) + google-people.fetchAllContacts stubbé +
 // auth.getAccessToken stubbé.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { beforeEach, afterEach, describe, test, expect, vi } from 'vitest';
 
-const mockStore = new Map();
-vi.mock('../core/platform.js', () => ({
-  Platform: {
-    async get(key) { return mockStore.has(key) ? mockStore.get(key) : null; },
-    async set(key, value) {
-      if (value === null) mockStore.delete(key);
-      else mockStore.set(key, value);
-    },
-    async del(key) { mockStore.delete(key); },
-    auth: null,
-  },
-}));
+vi.mock('../core/platform.js', async () => {
+  const { makeMemoryPlatform } = await import('./helpers/mock-platform.js');
+  return { Platform: makeMemoryPlatform() };
+});
 
 vi.mock('../core/api/google-people.js', () => ({
   fetchAllContacts: vi.fn(),
 }));
+
+const { Platform } = await import('../core/platform.js');
+const mockStore = Platform._store; // Map interne du mock — reset + inspection
 
 const { syncContacts, clearCache } = await import('../core/services/contacts-sync.js');
 const googleApi = await import('../core/api/google-people.js');

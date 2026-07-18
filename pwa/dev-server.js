@@ -6,8 +6,14 @@
 // domaine : index.html et ses modules emploient des chemins absolus (/pwa/...,
 // /core/..., /ui/..., /lib/..., /assets/...), et l'URI de retour OAuth est
 // /auth/callback. Un serveur de fichiers ordinaire ne suffit donc pas — il faut
-// DEUX règles de routage :
-//   - « / »              -> pwa/index.html  (la PWA vit à la racine) ;
+// TROIS règles de routage :
+//   - « / »              -> pwa/index.html  (confort de dev, racine du dépôt) ;
+//   - « /pwa/ » et « /pwa » -> pwa/index.html  (le VRAI point d'entrée prod —
+//                           `start_url` du manifest et scope d'enregistrement
+//                           du service worker sont tous deux `/pwa/` ; sans
+//                           cette règle le chemin qui reflète fidèlement la
+//                           prod renvoyait une 404 en dev, cf. AUDIT_DURCISSEMENT.md
+//                           / échec initial de e2e/pwa/offline.spec.js) ;
 //   - « /auth/callback »  -> pwa/index.html  (page de retour du consentement
 //                           Google ; sans cette règle, Google renverrait sur
 //                           une 404 et le ?code= ne serait jamais traité).
@@ -119,8 +125,9 @@ const server = createServer(async (req, res) => {
     return send404(res, req.url);
   }
 
-  // Les deux routes qui rendent la PWA elle-même.
-  if (pathname === '/' || pathname === '/auth/callback') {
+  // Les routes qui rendent la PWA elle-même : racine (confort dev), point
+  // d'entrée prod réel (/pwa/, /pwa — scope du service worker), et retour OAuth.
+  if (pathname === '/' || pathname === '/pwa/' || pathname === '/pwa' || pathname === '/auth/callback') {
     try {
       await sendFile(res, INDEX);
     } catch {

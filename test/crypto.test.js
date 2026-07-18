@@ -12,26 +12,14 @@
 // mais les invariants à protéger restent forts : aller-retour fidèle,
 // non-réutilisation d'IV, clé re-générée proprement si stockage corrompu.
 //
-// MOCKS. Platform-like en mémoire — getMasterKey reçoit une plateforme par
-// argument, on passe le nôtre directement. ZÉRO mock du module crypto.
+// MOCKS. Platform-like en mémoire (helpers/mock-platform.js, usage 1 —
+// injection par argument) : getMasterKey reçoit une plateforme par argument,
+// on passe le mock directement. ZÉRO mock du module crypto.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { beforeEach, describe, test, expect, vi } from 'vitest';
 import { getMasterKey, encrypt, decrypt } from '../core/crypto.js';
-
-// Platform minimal (signature get/set/del) en mémoire.
-function makePlatform() {
-  const store = new Map();
-  return {
-    async get(key) { return store.has(key) ? store.get(key) : null; },
-    async set(key, value) {
-      if (value === null) store.delete(key);
-      else store.set(key, value);
-    },
-    async del(key) { store.delete(key); },
-    _store: store, // pour les inspections
-  };
-}
+import { makeMemoryPlatform as makePlatform } from './helpers/mock-platform.js';
 
 // Réinitialiser le cache mémoire du module ENTRE chaque test : `_cachedKey`
 // est une variable de module, donc partagée entre tests s'ils s'exécutent

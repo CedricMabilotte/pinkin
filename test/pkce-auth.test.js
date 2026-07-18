@@ -21,29 +21,27 @@
 //   - createTokenStore : aller-retour chiffré via Platform, et JSON corrompu
 //     traité comme une absence (re-auth) plutôt qu'une exception qui plante l'app.
 //
-// MOCKS. `global.fetch` stubbé par test. `core/platform.js` mocké par un
-// stockage en mémoire (même pattern que test/contacts-sync.test.js) : le
-// module réel s'appuie sur `localStorage`/`chrome.storage`, deux globals
-// absents de l'environnement Node de Vitest ('unit' project) — le mock évite
-// une dépendance à un polyfill implicite. Le chiffrement (WebCrypto,
+// MOCKS. `global.fetch` stubbé par test (helpers/mock-fetch.js).
+// `core/platform.js` substitué par le mock mémoire partagé
+// (helpers/mock-platform.js, usage 2 — substitution de module) : le module
+// réel s'appuie sur `localStorage`/`chrome.storage`, deux globals absents de
+// l'environnement Node de Vitest ('unit' project) — le mock évite une
+// dépendance à un polyfill implicite. Le chiffrement (WebCrypto,
 // core/crypto.js) lui n'est PAS mocké : il tourne pour de vrai, comme dans
 // test/crypto.test.js.
 // ─────────────────────────────────────────────────────────────────────────────
 
 import { beforeEach, afterEach, describe, test, expect, vi } from 'vitest';
+import { jsonResponse, mockFetchOnce } from './helpers/mock-fetch.js';
 
-const mockStore = new Map();
-vi.mock('../core/platform.js', () => ({
-  Platform: {
-    async get(key) { return mockStore.has(key) ? mockStore.get(key) : null; },
-    async set(key, value) {
-      if (value === null) mockStore.delete(key);
-      else mockStore.set(key, value);
-    },
-    async del(key) { mockStore.delete(key); },
-    auth: null,
-  },
-}));
+vi.mock('../core/platform.js', async () => {
+  const { makeMemoryPlatform } = await import('./helpers/mock-platform.js');
+  return { Platform: makeMemoryPlatform() };
+});
+
+// L'import ordinaire livre le mock ci-dessus ; `_store` sert au reset entre
+// tests et à l'inspection de ce qui est persisté au repos.
+const { Platform } = await import('../core/platform.js');
 
 const {
   generateCodeVerifier,
@@ -59,23 +57,8 @@ const {
   hasScope,
 } = await import('../core/auth/pkce-auth.js');
 
-function mockFetchOnce(response) {
-  const fn = vi.fn().mockResolvedValue(response);
-  vi.stubGlobal('fetch', fn);
-  return fn;
-}
-
-function jsonResponse(body, { ok = true, status = 200 } = {}) {
-  return {
-    ok,
-    status,
-    json: async () => body,
-    text: async () => JSON.stringify(body),
-  };
-}
-
 beforeEach(() => {
-  mockStore.clear();
+  Platform._store.clear();
 });
 
 afterEach(() => {
@@ -251,9 +234,9 @@ describe('createTokenStore — stockage chiffré', () => {
 
     await store.save(tokenData);
 
-    // Ce qui est réellement écrit dans le mockStore n'est pas le JSON en clair
+    // Ce qui est réellement écrit dans le store mocké n'est pas le JSON en clair
     // (encrypt() renvoie { iv, ciphertext }) — invariant de confidentialité au repos.
-    const raw = mockStore.get('pinkin_token');
+    const raw = Platform._store.get('pinkin_token');
     expect(raw).toHaveProperty('iv');
     expect(raw).toHaveProperty('ciphertext');
     expect(JSON.stringify(raw)).not.toContain('AT');
@@ -274,7 +257,6 @@ describe('createTokenStore — stockage chiffré', () => {
     // On simule la corruption en écrivant, via le Platform mocké, un objet
     // chiffré VALIDE dont le contenu déchiffré n'est pas du JSON — le cas
     // réel visé est une donnée altérée en stockage, pas un échec de crypto.
-    const { Platform } = await import('../core/platform.js');
     const { encrypt } = await import('../core/crypto.js');
     const store = createTokenStore('pinkin_token_corrupt_test');
     const bogus = await encrypt('ceci n\'est pas du JSON {{{', Platform);

@@ -89,3 +89,11 @@ test('statusCounts ventile correctement une liste mixte', () => {
 test('statusCounts sur liste vide -> compteurs à zéro', () => {
   assert.deepEqual(statusCounts([]), { located: 0, unresolved: 0, 'no-address': 0 });
 });
+
+// 9 — Objet sans propriété addresses DU TOUT (undefined, pas []) : la branche
+//     `contact.addresses?.length ?? 0` doit classer en no-address, pas jeter.
+//     Cas réel : un objet partiellement hydraté (cache, fixture, futur refactor).
+test('contact sans propriété addresses (undefined) -> no-address, pas d\'exception', () => {
+  const mock = { hasGeo: () => false, geo: null };
+  assert.deepEqual(contactStatus(mock), { status: 'no-address', located: false, writable: false });
+});

@@ -39,13 +39,33 @@ test.describe('PWA — callback OAuth (régression bug #5)', () => {
       sessionStorage.setItem('pkce_verifier', 'fakeverifier');
     });
 
+    // DEUXIÈME PIÈGE (post-refactor S9-ter, voie γ). handleCallback commence
+    // par getOAuthConfig() -> fetch('/api/oauth-config'), un endpoint qui
+    // n'existe QUE côté Worker Cloudflare de prod — jamais dans
+    // pwa/dev-server.js. Sans interception, le 404 fait throw
+    // OAUTH_CONFIG_FETCH_404 avant tout fetch Google ; le .catch de main.js
+    // navigue vers '/' et le test échoue (gap connu, TAF.md « Dev local :
+    // fallback /api/oauth-config »). On sert ici une config FACTICE au niveau
+    // du test — correctif de test, pas d'architecture : la décision « où vit
+    // le secret en dev local » reste à l'opérateur (AUDIT_DURCISSEMENT.md §5).
+    await page.route('**/api/oauth-config', (route) => route.fulfill({
+      status: 200,
+      contentType: 'application/json',
+      body: JSON.stringify({
+        clientId: 'fake-client-id.apps.googleusercontent.com',
+        clientSecret: 'fake-client-secret',
+      }),
+    }));
+
     // Figer la requête d'échange : la promesse reste pending, handleCallback
-    // ne résout pas, pas de redirect. Le test se termine bien avant 30s.
+    // ne résout pas, pas de redirect. Promesse jamais résolue (pas de timer :
+    // un setTimeout suivi d'un route.abort() post-fermeture de page génère du
+    // bruit asynchrone inutile) — Playwright dispose les handlers à la
+    // fermeture de la page.
     let oauthExchangeAttempted = false;
-    await page.route('**/oauth2.googleapis.com/**', async (route) => {
+    await page.route('**/oauth2.googleapis.com/**', async () => {
       oauthExchangeAttempted = true;
-      await new Promise((resolve) => setTimeout(resolve, 30_000));
-      route.abort();
+      await new Promise(() => {});
     });
 
     // Arrivée simulée depuis Google.
@@ -67,9 +87,10 @@ test.describe('PWA — callback OAuth (régression bug #5)', () => {
     expect(pathname).toBe('/');
 
     // 3) Tentative d'échange du code — confirme que handleCallback a passé
-    // le check state et atteint le fetch.
-    await page.waitForTimeout(200);
-    expect(oauthExchangeAttempted).toBe(true);
+    // le check state et atteint le fetch. expect.poll plutôt qu'un sleep
+    // fixe : sous charge, 200 ms ne suffisent pas toujours ; le poll
+    // réessaie jusqu'à 5 s et se termine dès que c'est vrai.
+    await expect.poll(() => oauthExchangeAttempted, { timeout: 5_000 }).toBe(true);
   });
 
   test('URL sans ?code= : aucun drapeau ni tentative d\'échange', async ({ page }) => {

@@ -19,21 +19,18 @@
 
 import { beforeEach, afterEach, describe, test, expect, vi } from 'vitest';
 
-const mockStore = new Map();
+// Platform en mémoire partagé (helpers/mock-platform.js, usage 2 — substitution
+// de module), avec une auth stubée par-dessus : ce module lit
+// Platform.auth.getAccessToken() avant chaque écriture.
+vi.mock('../core/platform.js', async () => {
+  const { makeMemoryPlatform } = await import('./helpers/mock-platform.js');
+  const Platform = makeMemoryPlatform();
+  Platform.auth = { async getAccessToken() { return 'fake-token'; } };
+  return { Platform };
+});
 
-vi.mock('../core/platform.js', () => ({
-  Platform: {
-    async get(key) { return mockStore.has(key) ? mockStore.get(key) : null; },
-    async set(key, value) {
-      if (value === null) mockStore.delete(key);
-      else mockStore.set(key, value);
-    },
-    async del(key) { mockStore.delete(key); },
-    auth: {
-      async getAccessToken() { return 'fake-token'; },
-    },
-  },
-}));
+const { Platform } = await import('../core/platform.js');
+const mockStore = Platform._store; // Map interne du mock — reset + inspection
 
 // API Google : on intercepte tout pour interroger les calls.
 vi.mock('../core/api/google-people.js', () => ({
