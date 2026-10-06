@@ -26,7 +26,7 @@ consentement OAuth en production + vérification Google → passage en Listé.
 
 1. **Fiche CWS mono-langue** : pas de `_locales/` dans le paquet, donc pas
    d'onglets en/es dans le dashboard. Ajout possible en V1.0.1.
-2. **Politique de confidentialité et hébergeur** : elle dit « aucune donnée
+2. ~~**Politique de confidentialité et hébergeur**~~ **Fait 2026-10-06** — paragraphe « Hébergement du site » fr/en/es ajouté (`278fc8d`), déployé par `wrangler deploy` (version `3743c855`), vérifié en ligne. Webhook GitHub → Cloudflare toujours muet : déployer avec `~/.local/pinkin-tools/node_modules/.bin/wrangler deploy`. Constat initial : elle dit « aucune donnée
    n'est transmise à pinkin.org » ; c'est vrai pour les contacts, mais
    Cloudflare voit l'IP et l'en-tête des visiteurs de la PWA, et la PWA
    appelle `/api/oauth-config`. Une phrase sur l'hébergeur rendrait la
