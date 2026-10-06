@@ -118,6 +118,21 @@ la section *Limited Use Disclosure*.
 > never read by a human, including the developer. The app has no
 > server — everything runs in the user's browser. Thank you. »
 
+### Points de rejet fréquents — à respecter (ajout 2026-10-06)
+
+- **Client ID visible** : sur l'écran de consentement Google, la barre
+  d'adresse doit montrer l'URL complète contenant `client_id=…`. Faire un
+  arrêt sur image ou un zoom sur l'URL. L'extension
+  (`launchWebAuthFlow`) ouvre une fenêtre sans barre d'adresse lisible :
+  tourner la démo sur la **PWA** pinkin.org, et dire à l'oral que
+  l'extension est le même code avec un second client OAuth du même projet.
+- **Écran de consentement en anglais** : régler la langue du compte de
+  test Google sur English avant la prise.
+- **Nom de l'app et scopes lisibles** sur l'écran de consentement, pour
+  chacun des deux consentements (lecture, puis écriture incrémentale).
+- **Compte de test déclaré** comme *test user* tant que l'écran de
+  consentement est en mode *Testing* — sinon Google bloque la connexion.
+
 ---
 
 ## Préparation technique

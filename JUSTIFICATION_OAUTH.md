@@ -13,8 +13,8 @@ Cloud Console pour le projet `pinkin`, section « Scopes ». Session #8.*
 | **Type d'app** | Web app (PWA) + Chrome Extension MV3 — *Two clients, same brand* |
 | **Catégorie de scopes demandée** | **Sensitive scopes** (`contacts.readonly` + `contacts`). Pas de *restricted scope* — pas d'audit CASA, pas de coût récurrent. |
 | **Site web officiel** | https://pinkin.org |
-| **Politique de confidentialité** | https://pinkin.org/privacy.html |
-| **Conditions** | https://pinkin.org/terms.html |
+| **Politique de confidentialité** | https://pinkin.org/privacy |
+| **Conditions** | https://pinkin.org/terms |
 | **Email de contact dev** | cedric.mabilotte@gmail.com |
 | **Vidéo de démo** | À enregistrer selon `PLAN_VIDEO_OAUTH.md` |
 
@@ -162,11 +162,11 @@ Specifically:
 
 | Point | Réalité Pinkin |
 |---|---|
-| **Backend** | Aucun. L'application est 100 % client-side (extension Chrome MV3 ou PWA statique servie sur pinkin.org). |
+| **Backend** | Aucun serveur ne reçoit de donnée utilisateur. L'application est 100 % client-side (extension Chrome MV3, ou PWA statique servie sur pinkin.org par un Cloudflare Worker). **Seul endpoint dynamique** : `GET /api/oauth-config` (`worker.js`), qui renvoie la configuration publique du client OAuth PWA (client ID + secret, cf. ligne « Auth flow ») — il ne reçoit ni jeton ni contact. À dire tel quel si Google demande « does your app have a backend? ». |
 | **Stockage refresh token** | Chiffré AES-GCM 256 via WebCrypto API. Clé maître générée à l'installation, stockée localement, ne quitte jamais le navigateur. Implémentation : `core/crypto.js`, tests : `test/crypto.test.js` (7 cas). |
 | **Auth flow** | Extension : `chrome.identity.launchWebAuthFlow` + Authorization Code Flow + PKCE (RFC 7636). PWA : Authorization Code Flow + PKCE (RFC 7636). Google traite tout client OAuth de type « Application Web » comme confidentiel et exige le `client_secret` à l'échange de code, même en flux PKCE — le secret est donc embarqué dans le code public et le risque est borné par le verrouillage du client OAuth sur ses URI de redirection enregistrées (`chromiumapp.org` côté extension, `pinkin.org` côté PWA). Voir `core/auth/pkce-auth.js` (en-tête). |
 | **Niveau de scope par défaut** | `contacts.readonly`. Le scope `contacts` n'est demandé que sur action utilisateur (opt-in incrémental). |
-| **Open source** | Code intégral sur GitHub (`github.com/CedricMabilotte/`), auditable. |
+| **Open source** | Code intégral sur GitHub (`github.com/CedricMabilotte/pinkin`, public, AGPL-3.0), auditable. |
 | **Aucun analytics** | Aucun GA, aucun Sentry, aucun Mixpanel, aucun cookie tiers. Vérifiable par inspection réseau. |
 
 ---
@@ -182,19 +182,17 @@ homepage, /privacy et /terms.
 
 ---
 
-## Checklist avant soumission OAuth
-
-- [ ] `pinkin.org` accessible en HTTPS (dépend de l'hébergeur retenu)
-- [ ] `/privacy.html` accessible en HTTPS
-- [ ] `/terms.html` accessible en HTTPS
-- [ ] Domaine `pinkin.org` vérifié dans Google Search Console
-- [ ] Écran de consentement OAuth complet (logo, nom, contact, liens)
-- [ ] Vidéo de démo enregistrée (cf. `PLAN_VIDEO_OAUTH.md`)
-- [ ] Texte « Why does your app need this scope » copié pour `contacts.readonly`
-- [ ] Texte « Why does your app need this scope » copié pour `contacts`
-- [ ] Limited Use Disclosure copiée
+## Checklist avant soumission OAuth — état au 2026-10-06
+- [x] `pinkin.org` accessible en HTTPS (Cloudflare Worker, vérifié 2026-10-06)
+- [x] `/privacy` et `/terms` accessibles en HTTPS, contenu = dépôt
+- [x] Domaine `pinkin.org` vérifié dans Search Console (fichier `googleb0fa…html` servi)
+- [ ] Écran de consentement complet : logo, nom, email support, liens homepage/privacy/terms **sans `.html`**, domaine autorisé `pinkin.org`
+- [ ] Les **deux scopes** déclarés dans *Data access* : `contacts.readonly` et `contacts`
+- [ ] Statut de publication passé de *Testing* à *In production* (le bouton de soumission à la vérification n'apparaît qu'en production)
+- [ ] Anciens `CLIENT_SECRET` désactivés (Credentials)
+- [ ] Vidéo de démo en ligne (YouTube non-listé) — cf. `PLAN_VIDEO_OAUTH.md`
+- [ ] Justifications des deux scopes + Limited Use Disclosure collées
 - [ ] Soumis pour revue
-
 *Le processus Google peut prendre de quelques jours à plusieurs semaines,
 avec possibles itérations (Google peut demander des éclaircissements ou un
 réenregistrement de la vidéo). C'est le vrai chemin critique de V1, pas le

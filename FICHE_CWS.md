@@ -10,27 +10,31 @@ fois) et empaquetage `.zip` via `scripts/pack-extension.sh`.*
 
 | Champ | Valeur |
 |---|---|
-| **Nom** | Pinkin — Where are your loved ones on the map? |
+| **Nom** | `Pinkin` — lu dans `manifest.json` (champ `name`), non modifiable dans le dashboard. L'accroche passe par la description courte. |
 | **Identifiant Chrome Web Store** | (assigné par Google à la première publication) |
 | **Identifiant interne extension** | déjà figé par le `key` du `manifest.json` — survit chargement non empaqueté → magasin |
 | **Catégorie principale** | *Productivité* (Productivity) |
 | **Catégorie secondaire** | *Réseaux sociaux et communication* (Social & Communication) |
 | **Langue principale** | Français (fr) |
-| **Langues additionnelles** | Anglais (en), Espagnol (es) — l'extension détecte `navigator.language` et bascule automatiquement |
+| **Langues additionnelles** | L'app bascule fr/en/es selon `navigator.language`, **mais** le paquet n'a pas de dossier `_locales/` : le dashboard CWS ne proposera donc qu'**une seule langue de fiche** (fr). Les versions en/es ci-dessous ne sont collables qu'après ajout de `_locales/` (post-V1, non bloquant) — on peut en attendant ajouter un court paragraphe EN à la fin de la description FR. |
 | **Site web officiel** | https://pinkin.org |
 | **Page d'assistance** | https://pinkin.org (footer — l'auteur est joignable par email) |
-| **Confidentialité** | https://pinkin.org/privacy.html |
-| **Conditions** | https://pinkin.org/terms.html |
+| **Confidentialité** | https://pinkin.org/privacy (URL canonique — `/privacy.html` redirige en 307 vers elle) |
+| **Conditions** | https://pinkin.org/terms |
 | **Email de contact dev** | cedric.mabilotte@gmail.com |
 
 ---
 
 ## Description courte (132 caractères max)
 
-> Où sont tes proches sur la carte ? Tes contacts Google sur OpenStreetMap.
-> Zéro serveur, zéro tracker, open source.
+**Rafraîchi 2026-10-06 :** sur le CWS, le résumé est lu dans le champ
+`description` de `manifest.json` — il n'y a pas de champ à coller. Texte
+effectivement affiché (101 caractères) :
 
-*131 caractères, sous le plafond.*
+> Où sont tes proches sur la carte ? Tes contacts Google sur OpenStreetMap, sans serveur, sans tracker.
+
+*(L'ancienne proposition « … Zéro serveur, zéro tracker, open source. »
+n'est pas dans le manifeste ; la changer imposerait un repack.)*
 
 ---
 
@@ -71,7 +75,7 @@ projet personnel, libre, qui fait une chose et la fait bien.
 
 Confidentialité : https://pinkin.org/privacy.html
 Conditions : https://pinkin.org/terms.html
-Code source : https://github.com/CedricMabilotte/
+Code source : https://github.com/CedricMabilotte/pinkin
 ```
 
 ### Versions traduites (à copier dans les onglets en / es de la fiche CWS)
@@ -107,7 +111,7 @@ one thing and does it well.
 
 Privacy: https://pinkin.org/privacy.html
 Terms: https://pinkin.org/terms.html
-Source: https://github.com/CedricMabilotte/
+Source: https://github.com/CedricMabilotte/pinkin
 ```
 
 #### Español
@@ -143,7 +147,7 @@ libre que hace una cosa y la hace bien.
 
 Privacidad: https://pinkin.org/privacy.html
 Condiciones: https://pinkin.org/terms.html
-Fuente: https://github.com/CedricMabilotte/
+Fuente: https://github.com/CedricMabilotte/pinkin
 ```
 
 ---
@@ -184,6 +188,13 @@ pour passer la revue scope sensible.*
 > when the user opts in to writing, update the GEO field of each
 > contact (RFC 6350).
 
+### `host_permissions` — `https://oauth2.googleapis.com/*`
+*(Ajout 2026-10-06 — permission présente dans le manifeste mais sans
+justification jusqu'ici.)*
+> Required to exchange the OAuth authorization code for tokens and to
+> refresh the access token (Authorization Code flow with PKCE) against
+> Google's token endpoint. No user data other than the OAuth codes and
+> tokens is sent there.
 ### `host_permissions` — `https://nominatim.openstreetmap.org/*`
 
 > Required to geocode the user's contacts' postal addresses into
@@ -195,6 +206,37 @@ pour passer la revue scope sensible.*
 
 > Required to fetch the OpenStreetMap raster tiles that compose the
 > map background.
+
+---
+
+## Onglet « Pratiques de confidentialité » du dashboard (ajout 2026-10-06)
+
+Le formulaire CWS ne s'arrête pas aux justifications : l'onglet *Privacy
+practices* doit être complet, sinon la soumission est bloquée.
+
+**Remote code** — *No, I am not using remote code.* (Leaflet est bundlé
+dans `lib/leaflet/`, CSP `script-src 'self'`.)
+
+**Data usage — cocher honnêtement** (la donnée transite par l'extension,
+même si elle reste locale) :
+
+- [x] *Personally identifiable information* — noms, emails, téléphones,
+  adresses postales des contacts Google ;
+- [x] *Authentication information* — jetons OAuth (refresh token chiffré
+  AES-GCM, stocké localement) ;
+- [ ] le reste (santé, finances, communications personnelles, localisation
+  de l'utilisateur, historique web, activité, contenu de site) : non.
+
+**Les trois certifications** à cocher :
+
+- je ne vends ni ne transfère les données à des tiers hors cas d'usage
+  approuvés ;
+- je n'utilise ni ne transfère les données à des fins sans rapport avec la
+  finalité unique de l'extension ;
+- je n'utilise ni ne transfère les données pour déterminer la solvabilité
+  ou à des fins de prêt.
+
+**URL de la politique de confidentialité** : https://pinkin.org/privacy
 
 ---
 
@@ -247,18 +289,19 @@ avec un compte de test, après `npm run dev:pwa`.*
 
 ---
 
-## Checklist avant soumission
-
-- [ ] Compte développeur Chrome Web Store créé (5 $ payés, une fois) — **opérateur**
-- [ ] `.zip` produit via `bash scripts/pack-extension.sh` — repose sur la recette session #8
-- [ ] Manifeste : `version` incrémentée à `1.0.0` (actuellement à confirmer)
-- [ ] Manifeste : `key` présent (déjà acquis selon `PLAN_PHASE_E.md`)
-- [ ] Icônes 16/32/48/128 px présentes dans `assets/icons/` (déjà acquis)
-- [ ] `CLIENT_ID` extension renseigné dans `extension/background/auth-worker.js` (déjà acquis)
-- [ ] Pages `/privacy.html` et `/terms.html` accessibles sur `pinkin.org` (dépend de l'hébergeur retenu — cf. `HEBERGEUR_PWA.md`)
-- [ ] Captures d'écran 1280×800 prêtes
-- [ ] Small tile 440×280 prête
-- [ ] Description courte / longue / single purpose copiées dans la fiche
-- [ ] Justifications de permissions copiées
-- [ ] Visibilité réglée sur **Non-listé**
+## Checklist avant soumission — état au 2026-10-06
+- [x] Compte développeur Chrome Web Store payé (S9-bis)
+- [x] `.zip` produit : `dist/pinkin-v1.0.0.zip` — **re-vérifié 2026-10-06** :
+      contenu identique octet par octet aux sources actuelles (aucun commit
+      depuis le 2026-06-19 ne touche `manifest.json`, `extension/`, `core/`,
+      `ui/`, `i18n/`, `assets/icons/`, `lib/leaflet/`). Pas de repack nécessaire.
+- [x] Manifeste : version `1.0.0`, `key` présent, icônes 16/32/48/128
+- [x] `extension/background/secrets.js` réel (non placeholder) inclus dans le zip
+- [x] `https://pinkin.org/privacy` et `/terms` en ligne, HTTPS, identiques au dépôt (vérifié 2026-10-06)
+- [ ] Captures d'écran 1280×800 (5)
+- [ ] Small tile 440×280
+- [ ] Description longue + single purpose collées
+- [ ] Justifications de permissions collées (5 hôtes + `identity` + `storage`)
+- [ ] Onglet *Privacy practices* rempli (voir section dédiée)
+- [ ] Visibilité **Non-listé**
 - [ ] Soumis pour revue

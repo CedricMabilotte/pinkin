@@ -1,4 +1,42 @@
-# État projet Pinkin — 2026-06-19 (S10)
+# État projet Pinkin — 2026-10-06 (réactivation)
+
+## Point de reprise
+
+Projet en pause depuis le 2026-07-18 (fin de la revue de durcissement).
+Re-vérifié ce jour [VÉRIFIÉ] :
+
+- `main` propre, synchronisé avec `origin/main` (`a90b4c3`).
+- `npm test` : **165/165** (14 fichiers) ; `check:quotes` propre.
+- `dist/pinkin-v1.0.0.zip` = sources actuelles octet par octet → prêt tel quel.
+- Production pinkin.org = dépôt (`index`, `/privacy`, `/terms` identiques),
+  `/pwa/` et fichier Search Console en 200. `.html` → 307 vers l'URL
+  propre : utiliser `/privacy` et `/terms` dans les formulaires.
+- Dépôt GitHub public.
+
+Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
+`PLAN_VIDEO_OAUTH.md`, `CHECKLIST_LANCEMENT.md`.
+
+## Reste à faire — tout est opérateur
+
+Ordre et détail : `CHECKLIST_LANCEMENT.md`. Résumé : désactiver les anciens
+secrets → compte de test + captures + vidéo → soumission CWS (Non-listé) →
+consentement OAuth en production + vérification Google → passage en Listé.
+
+## Points d'attention relevés le 2026-10-06 (non bloquants, à arbitrer)
+
+1. **Fiche CWS mono-langue** : pas de `_locales/` dans le paquet, donc pas
+   d'onglets en/es dans le dashboard. Ajout possible en V1.0.1.
+2. **Politique de confidentialité et hébergeur** : elle dit « aucune donnée
+   n'est transmise à pinkin.org » ; c'est vrai pour les contacts, mais
+   Cloudflare voit l'IP et l'en-tête des visiteurs de la PWA, et la PWA
+   appelle `/api/oauth-config`. Une phrase sur l'hébergeur rendrait la
+   politique irréprochable (modif + redéploiement).
+3. Vidéo à tourner sur la PWA (client ID visible dans l'URL), pas sur
+   l'extension.
+
+---
+
+## Historique — état au 2026-06-19 (S10)
 
 ## Ce qui est fait
 

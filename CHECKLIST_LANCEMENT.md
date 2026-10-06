@@ -1,5 +1,16 @@
 # Checklist de lancement V1.0 — pinkin
 
+> **Réactivation 2026-10-06 — re-vérifié [VÉRIFIÉ] :** `npm test` 165/165,
+> `check:quotes` propre, arbre git propre et synchronisé avec `origin/main`
+> (`a90b4c3`) ; `dist/pinkin-v1.0.0.zip` identique octet par octet aux
+> sources actuelles (pas de repack) ; pinkin.org, `/privacy`, `/terms`,
+> `/pwa/` et le fichier de vérification Search Console répondent en HTTPS,
+> contenu = dépôt. Fiche CWS, justification OAuth et plan vidéo rafraîchis
+> le même jour (permission `oauth2.googleapis.com` justifiée, onglet
+> *Privacy practices*, URLs sans `.html`, points de rejet vidéo, passage
+> *Testing → In production*). **Aucune étape opérateur ci-dessous n'a
+> bougé depuis juillet** — tout reste à faire à partir de l'étape 1.
+
 *Consolidée le 2026-07-17, à la clôture de la revue de durcissement
 (`AUDIT_DURCISSEMENT.md`, `TESTS_DURCISSEMENT.md`). Objectif : un seul
 document, dans l'ordre d'exécution, pour ce qui reste réellement à faire
@@ -45,6 +56,9 @@ ou décisions qui t'appartiennent. Aucune n'est automatisable par un agent.
 
 ## 3. Soumission Chrome Web Store
 
+- [ ] Remplir aussi l'onglet **Privacy practices** (remote code : non ;
+      données : PII + authentification ; 3 certifications) — détail dans
+      `FICHE_CWS.md`.
 - [ ] Dashboard développeur Chrome Web Store (compte déjà payé, S9-bis) →
       New Item → upload `dist/pinkin-v1.0.0.zip` → visibilité **Non-listé**
       → coller les textes/captures de `FICHE_CWS.md` → soumettre pour revue
@@ -52,6 +66,9 @@ ou décisions qui t'appartiennent. Aucune n'est automatisable par un agent.
 
 ## 4. Validation OAuth Google (scopes sensibles — Contacts)
 
+- [ ] Google Cloud Console → OAuth consent screen : liens `/privacy` et
+      `/terms` sans `.html`, les deux scopes déclarés, statut passé en
+      **In production** (préalable au bouton de vérification).
 - [ ] Google Cloud Console → OAuth consent screen → soumettre les
       justifications de scope (textes déjà rédigés, honnêtes sur
       l'architecture réelle du secret — voir `JUSTIFICATION_OAUTH.md`),
