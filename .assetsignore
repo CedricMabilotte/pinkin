@@ -61,3 +61,7 @@ worker.js
 
 # === Fichiers .vcf de test éventuels ===
 *.vcf
+
+# === Artefacts locaux (rapport de couverture, cache wrangler) ===
+coverage/
+.wrangler/
