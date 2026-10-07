@@ -16,6 +16,22 @@ Re-vérifié ce jour [VÉRIFIÉ] :
 Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
 `PLAN_VIDEO_OAUTH.md`, `CHECKLIST_LANCEMENT.md`.
 
+## Avancement 2026-10-07
+
+- **Fiche CWS créée** (brouillon, ID `amcfdgfoihfhcdononldbgpoeafgpdpo`) : zip importé
+  (sans `key`, cf. `scripts/pack-extension.sh`), description FR + EN, catégorie
+  Communication, langue français, URL officielle/accueil pinkin.org, assistance
+  GitHub issues, onglet Confidentialité complet, visibilité Non répertorié.
+  Restent : icône 128 (`assets/icons/icon128.png`), 5 captures et petite vignette
+  (`marketing/cws/`) — import manuel —, puis « Envoyer pour examen ».
+- **`manifest.json`** : `key` = clé publique du Store → l'ID dev = l'ID Store.
+- **Cloud Console** : redirect `https://amcfdgfoihfhcdononldbgpoeafgpdpo.chromiumapp.org/`
+  ajouté au client « Pinkin Extension » ; branding complété (accueil, `/privacy`,
+  `/terms`) ; scopes `contacts.readonly` + `contacts` déclarés dans Accès aux données.
+  Restent (opérateur) : désactiver les anciens secrets, ajouter le test user
+  `thelittlefrenchy2010@gmail.com`, logo éventuel, puis vidéo et soumission à validation.
+- Captures CWS + script de rendu (contacts fictifs) : `marketing/cws/`.
+
 ## Reste à faire — tout est opérateur
 
 Ordre et détail : `CHECKLIST_LANCEMENT.md`. Résumé : désactiver les anciens
