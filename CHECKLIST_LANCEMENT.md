@@ -40,7 +40,7 @@ ou décisions qui t'appartiennent. Aucune n'est automatisable par un agent.
 
 ## 1. Nettoyage sécurité (2 min)
 
-- [ ] **Désactiver les anciens `CLIENT_SECRET`** dans Google Cloud Console
+- [x] **(Fait, 2026-10-07 : un seul secret actif par client, les anciens étaient déjà supprimés.)** ~~Désactiver les anciens `CLIENT_SECRET`~~ dans Google Cloud Console
       (Credentials → OAuth 2.0 Client IDs → les entrées pré-S9-ter). Les
       nouveaux secrets (post-rotation, voie γ) sont seuls actifs depuis
       S9-ter ; les anciens traînent encore listés sans être utilisés.

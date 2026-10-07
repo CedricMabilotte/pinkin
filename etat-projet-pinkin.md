@@ -28,7 +28,7 @@ Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
 - **Cloud Console** : redirect `https://amcfdgfoihfhcdononldbgpoeafgpdpo.chromiumapp.org/`
   ajouté au client « Pinkin Extension » ; branding complété (accueil, `/privacy`,
   `/terms`) ; scopes `contacts.readonly` + `contacts` déclarés dans Accès aux données.
-  Restent (opérateur) : désactiver les anciens secrets, ajouter le test user
+  Anciens secrets : vérifié 2026-10-07, un seul secret par client (rien à désactiver). Restent (opérateur) : ajouter le test user
   `thelittlefrenchy2010@gmail.com`, logo éventuel, puis vidéo et soumission à validation.
 - Captures CWS + script de rendu (contacts fictifs) : `marketing/cws/`.
 
