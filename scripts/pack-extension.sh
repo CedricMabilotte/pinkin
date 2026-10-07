@@ -144,8 +144,23 @@ FILES=$(find \
 # Tous les fichiers à la même mtime stable pour timestamps zip déterministes
 echo "$FILES" | xargs touch -t "$(date -u -d "@$SOURCE_DATE_EPOCH" '+%Y%m%d%H%M.%S')" 2>/dev/null || true
 
+# MANIFESTE SANS "key" (2026-10-06). Le Chrome Web Store refuse le champ
+# `key` à l'import (« Le champ key n'est pas autorisé dans le fichier
+# manifeste ») : c'est le Store qui attribue l'identifiant de l'extension.
+# `key` reste dans le manifest.json du dépôt, pour que la version chargée
+# en mode développeur garde un identifiant stable — après la première
+# publication, le remplacer par la « clé publique » affichée dans l'onglet
+# Package du dashboard CWS, pour que dev et Store aient le même ID.
+TMPM="$(mktemp -d)"
+python3 -c "import json,sys; m=json.load(open('manifest.json')); m.pop('key',None); json.dump(m,open(sys.argv[1],'w'),ensure_ascii=False,indent=2)" "$TMPM/manifest.json"
+touch -t "$(date -u -d "@$SOURCE_DATE_EPOCH" '+%Y%m%d%H%M.%S')" "$TMPM/manifest.json"
 # zip -X : pas d'extra fields OS-spécifiques. Ordre par stdin (-@) = déterministe.
-echo "$FILES" | zip -X -@ "$ZIP" > /dev/null
+# manifest.json d'abord (version sans key, depuis le dossier temporaire),
+# puis le reste de la liste blanche.
+(cd "$TMPM" && zip -X "$ZIP" manifest.json > /dev/null)
+echo "$FILES" | grep -vx 'manifest.json' | zip -X -@ "$ZIP" > /dev/null
+rm -rf "$TMPM"
+echo "✅ manifest.json du zip : champ key retiré (exigence Chrome Web Store)."
 
 echo ""
 echo "✅ Empaquetage terminé."
