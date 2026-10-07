@@ -16,6 +16,25 @@ Re-vérifié ce jour [VÉRIFIÉ] :
 Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
 `PLAN_VIDEO_OAUTH.md`, `CHECKLIST_LANCEMENT.md`.
 
+## Point de reprise — fin de session 2026-10-07
+
+- **CWS** : fiche complète (textes, icône, 5 captures, vignette, Confidentialité,
+  Non répertorié) ; compte développeur complet (nom, e-mail `cedric@mabilotte.com`
+  validé, non professionnel, adresse). Reste : « Envoyer pour examen » (opérateur).
+- **Cloud Console** : test user `thelittlefrenchy2010@gmail.com` ajouté [VÉRIFIÉ] ;
+  un seul secret par client (rien à désactiver) [VÉRIFIÉ].
+- **Site** : contact `cedric@mabilotte.com` sur accueil/privacy/terms, déployé (wrangler).
+- **Vidéo OAuth — à faire demain** : profil Chrome de démo dans
+  `~/.local/pinkin-tools/demo-profile` (lancé en `--lang=en-US`). L'opérateur s'y
+  connecte au compte de test, importe `marketing/cws/contacts-demo-google.csv`,
+  ferme la fenêtre. Puis : Xvfb `:99` + Chrome sur ce profil (barre d'adresse
+  visible, client_id lisible) piloté en CDP, capture `~/.local/pinkin-tools/video/rec.py`
+  (PIL ImageGrab), sous-titres EN incrustés avec PIL, encodage webm via le ffmpeg
+  de Playwright (`~/.cache/ms-playwright/ffmpeg-1011/ffmpeg-linux`, mjpeg → vp8).
+  Scénario : `PLAN_VIDEO_OAUTH.md` sur la PWA pinkin.org.
+- **Puis** : YouTube non répertorié → formulaire de validation OAuth (textes dans
+  `JUSTIFICATION_OAUTH.md`) → passage en production.
+
 ## Avancement 2026-10-07
 
 - **Fiche CWS créée** (brouillon, ID `amcfdgfoihfhcdononldbgpoeafgpdpo`) : zip importé
