@@ -295,3 +295,23 @@ partie du TEXTE traduit affiché à l'utilisateur, pas des délimiteurs de code.
 
 Verdict : *incident réel avec effet visible (écran blanc), désormais
 détecté automatiquement à la prochaine régression*. Statut : **clos**.
+
+## Réactivation — 2026-10-07
+
+**L20 — Un `package.json` modifié sans régénérer `package-lock.json` casse
+`npm ci` sur le runner, pas en local.** Incident : `@vitest/coverage-v8`
+ajouté en devDependency le 2026-07-18 (`d398b32`) ; le lock datait du
+2026-05-29 et ne le contenait pas. En local `npm install` tolère l'écart
+(165/165 vrais), mais `npm ci` refuse un lock désynchronisé et sort en
+code 1 — avant même que Vitest ne démarre. Les deux premiers pushes de la
+réactivation (`4b02163`, `a556a1d`, doc uniquement) ont donc rougi la CI
+sans qu'aucun test n'ait échoué. Lire le *step* en échec dans le job, pas
+le nom du job : « Unit & DOM failed » masquait « `npm ci` failed ».
+Correctif : lock régénéré (`baa4a14`), actions en `@v5` (`00e77a1`),
+run vert.
+Piège secondaire : le npm 10.9 embarqué dans Node 22 plante
+(`Cannot read properties of null (reading 'edgesOut')`) sur les peer-deps
+de Vitest 4.1 — **régénérer le lock avec `npx npm@latest install`**, pas
+avec le npm par défaut. Règle : tout commit qui touche `devDependencies`
+embarque le lock, et on vérifie le run avant de fermer la session.
+Verdict : *incident réel, cause hors code*. Statut : **clos**.
