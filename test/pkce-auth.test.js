@@ -230,7 +230,9 @@ describe('hasScope', () => {
 describe('createTokenStore — stockage chiffré', () => {
   test('save puis load : aller-retour fidèle, valeur chiffrée au repos (pas le JSON en clair)', async () => {
     const store = createTokenStore('pinkin_token');
-    const tokenData = { access_token: 'AT', refresh_token: 'RT', expires_at: Date.now() + 3600_000 };
+    // Jetons sentinelles longs : 'AT'/'RT' sur 2 caractères apparaissaient par
+    // hasard dans le base64 de l'IV ou du chiffré (test instable, 2026-10-07).
+    const tokenData = { access_token: 'SENTINEL_ACCESS_TOKEN_9f3b', refresh_token: 'SENTINEL_REFRESH_TOKEN_7c1d', expires_at: Date.now() + 3600_000 };
 
     await store.save(tokenData);
 
@@ -239,8 +241,8 @@ describe('createTokenStore — stockage chiffré', () => {
     const raw = Platform._store.get('pinkin_token');
     expect(raw).toHaveProperty('iv');
     expect(raw).toHaveProperty('ciphertext');
-    expect(JSON.stringify(raw)).not.toContain('AT');
-    expect(JSON.stringify(raw)).not.toContain('RT');
+    expect(JSON.stringify(raw)).not.toContain('SENTINEL_ACCESS_TOKEN_9f3b');
+    expect(JSON.stringify(raw)).not.toContain('SENTINEL_REFRESH_TOKEN_7c1d');
 
     const loaded = await store.load();
     expect(loaded).toEqual(tokenData);
