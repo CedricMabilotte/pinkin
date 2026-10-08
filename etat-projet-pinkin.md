@@ -16,6 +16,21 @@ Re-vérifié ce jour [VÉRIFIÉ] :
 Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
 `PLAN_VIDEO_OAUTH.md`, `CHECKLIST_LANCEMENT.md`.
 
+## Avancement 2026-10-08
+
+- **Vidéo de démo OAuth faite** : `marketing/cws/pinkin-oauth-demo.webm` (3 min 12, 9 Mo,
+  sous-titres EN, zoom sur le client_id). PWA pinkin.org, compte de test, contacts
+  fictifs (`marketing/cws/contacts-demo-google.vcf` — le CSV ne passait pas les adresses).
+  Parcours : connexion → avertissement « unverified app » → consentement readonly →
+  carte → fiche → carnet → opt-in écriture → consentement `contacts` → écriture GEO →
+  champ GEO visible dans Google Contacts → déconnexion. Sources : `marketing/cws/video/`.
+- **Bug corrigé et déployé** : la PWA envoyait `no-referrer` → tuiles OSM bloquées
+  (403 « Access blocked »). Passé en `strict-origin-when-cross-origin`.
+- **À vérifier** : l'extension (popup sans meta referrer) — tuiles OK en conditions réelles ?
+- **Amélioration possible** : recadrer la carte (`fitBounds`) à la fin du géocodage
+  progressif, aujourd'hui elle reste sur la vue monde jusqu'au prochain Sync.
+- **Reste** : upload YouTube non répertorié → formulaire de validation OAuth.
+
 ## Point de reprise — fin de session 2026-10-07
 
 - **CWS** : fiche complète (textes, icône, 5 captures, vignette, Confidentialité,

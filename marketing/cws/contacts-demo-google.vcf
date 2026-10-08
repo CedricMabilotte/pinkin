@@ -1,0 +1,205 @@
+BEGIN:VCARD
+VERSION:3.0
+N:Moreau;Camille;;;
+FN:Camille Moreau
+EMAIL;TYPE=INTERNET:camille.moreau@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 01
+ADR;TYPE=HOME:;;12 rue Mercière;Lyon;;69002;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Lefèvre;Hugo;;;
+FN:Hugo Lefèvre
+EMAIL;TYPE=INTERNET:hugo.lefevre@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 02
+ADR;TYPE=HOME:;;8 rue de Charonne;Paris;;75011;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Garnier;Inès;;;
+FN:Inès Garnier
+EMAIL;TYPE=INTERNET:ines.garnier@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 03
+ADR;TYPE=HOME:;;21 rue Lepic;Paris;;75018;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Bonnet;Lucas;;;
+FN:Lucas Bonnet
+EMAIL;TYPE=INTERNET:lucas.bonnet@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 04
+ADR;TYPE=HOME:;;5 quai de la Fosse;Nantes;;44000;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Roux;Manon;;;
+FN:Manon Roux
+EMAIL;TYPE=INTERNET:manon.roux@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 05
+ADR;TYPE=HOME:;;30 cours Victor Hugo;Bordeaux;;33000;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Fournier;Théo;;;
+FN:Théo Fournier
+EMAIL;TYPE=INTERNET:theo.fournier@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 06
+ADR;TYPE=HOME:;;2 La Canebière;Marseille;;13001;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Girard;Léa;;;
+FN:Léa Girard
+EMAIL;TYPE=INTERNET:lea.girard@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 07
+ADR;TYPE=HOME:;;14 rue du Taur;Toulouse;;31000;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Mercier;Nathan;;;
+FN:Nathan Mercier
+EMAIL;TYPE=INTERNET:nathan.mercier@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 08
+ADR;TYPE=HOME:;;3 rue des Juifs;Strasbourg;;67000;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Blanc;Chloé;;;
+FN:Chloé Blanc
+EMAIL;TYPE=INTERNET:chloe.blanc@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 09
+ADR;TYPE=HOME:;;40 rue de la Monnaie;Lille;;59800;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Faure;Jules;;;
+FN:Jules Faure
+EMAIL;TYPE=INTERNET:jules.faure@example.org
+TEL;TYPE=CELL:+33 6 00 00 01 10
+ADR;TYPE=HOME:;;9 place Grenette;Grenoble;;38000;France
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Navarro;Sofía;;;
+FN:Sofía Navarro
+EMAIL;TYPE=INTERNET:sofia.navarro@example.org
+TEL;TYPE=CELL:+34 600 000 201
+ADR;TYPE=HOME:;;Carrer de Verdi 18;Barcelona;;08012;España
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Ortega;Pablo;;;
+FN:Pablo Ortega
+EMAIL;TYPE=INTERNET:pablo.ortega@example.org
+TEL;TYPE=CELL:+34 600 000 202
+ADR;TYPE=HOME:;;Calle de Atocha 50;Madrid;;28012;España
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Romero;Lucía;;;
+FN:Lucía Romero
+EMAIL;TYPE=INTERNET:lucia.romero@example.org
+TEL;TYPE=CELL:+34 600 000 203
+ADR;TYPE=HOME:;;Carrer de Cádiz 12;Valencia;;46006;España
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Hughes;Oliver;;;
+FN:Oliver Hughes
+EMAIL;TYPE=INTERNET:oliver.hughes@example.org
+TEL;TYPE=CELL:+44 7700 900101
+ADR;TYPE=HOME:;;14 Columbia Road;London;;E2 7RG;UK
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Price;Amelia;;;
+FN:Amelia Price
+EMAIL;TYPE=INTERNET:amelia.price@example.org
+TEL;TYPE=CELL:+44 7700 900102
+ADR;TYPE=HOME:;;6 Park Street;Bristol;;BS1 5NF;UK
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Becker;Lukas;;;
+FN:Lukas Becker
+EMAIL;TYPE=INTERNET:lukas.becker@example.org
+TEL;TYPE=CELL:+49 1510 0000301
+ADR;TYPE=HOME:;;Oranienstraße 22;Berlin;;10999;Deutschland
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Schulz;Mia;;;
+FN:Mia Schulz
+EMAIL;TYPE=INTERNET:mia.schulz@example.org
+TEL;TYPE=CELL:+49 1510 0000302
+ADR;TYPE=HOME:;;Gärtnerplatz 3;München;;80469;Deutschland
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Rossi;Giulia;;;
+FN:Giulia Rossi
+EMAIL;TYPE=INTERNET:giulia.rossi@example.org
+TEL;TYPE=CELL:+39 320 000 0401
+ADR;TYPE=HOME:;;Via Po 20;Torino;;10124;Italia
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Bianchi;Marco;;;
+FN:Marco Bianchi
+EMAIL;TYPE=INTERNET:marco.bianchi@example.org
+TEL;TYPE=CELL:+39 320 000 0402
+ADR;TYPE=HOME:;;Via del Pigneto 40;Roma;;00176;Italia
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Peeters;Emma;;;
+FN:Emma Peeters
+EMAIL;TYPE=INTERNET:emma.peeters@example.org
+TEL;TYPE=CELL:+32 470 00 05 01
+ADR;TYPE=HOME:;;Rue Haute 100;Bruxelles;;1000;Belgique
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Janssen;Noah;;;
+FN:Noah Janssen
+EMAIL;TYPE=INTERNET:noah.janssen@example.org
+TEL;TYPE=CELL:+31 6 0000 0601
+ADR;TYPE=HOME:;;Prinsengracht 300;Amsterdam;;1016;Nederland
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Keller;Anna;;;
+FN:Anna Keller
+EMAIL;TYPE=INTERNET:anna.keller@example.org
+TEL;TYPE=CELL:+41 79 000 07 01
+ADR;TYPE=HOME:;;Rue de Carouge 50;Genève;;1205;Suisse
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Almeida;Rui;;;
+FN:Rui Almeida
+EMAIL;TYPE=INTERNET:rui.almeida@example.org
+TEL;TYPE=CELL:+351 910 000 801
+ADR;TYPE=HOME:;;Rua da Rosa 120;Lisboa;;1200;Portugal
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Lambert;Arthur;;;
+FN:Arthur Lambert
+EMAIL;TYPE=INTERNET:arthur@example.org
+TEL;TYPE=CELL:+33 6 00 00 09 01
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Chevalier;Zoé;;;
+FN:Zoé Chevalier
+EMAIL;TYPE=INTERNET:zoe@example.org
+TEL;TYPE=CELL:+33 6 00 00 09 02
+END:VCARD
+BEGIN:VCARD
+VERSION:3.0
+N:Perrin;Élise;;;
+FN:Élise Perrin
+EMAIL;TYPE=INTERNET:elise@example.org
+TEL;TYPE=CELL:+33 6 00 00 09 03
+END:VCARD

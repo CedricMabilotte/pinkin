@@ -31,3 +31,6 @@ extension/background/secrets.js
 # Les originaux vivent hors repo (MediaProd/) ; l'upload CWS est manuel.
 # Évite que des fichiers ~3 Mo polluent le repo open source.
 assets/prints/
+
+# Vidéo de démo OAuth (lourde, hors dépôt)
+marketing/cws/*.webm
