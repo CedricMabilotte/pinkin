@@ -16,7 +16,7 @@ Cloud Console pour le projet `pinkin`, section « Scopes ». Session #8.*
 | **Politique de confidentialité** | https://pinkin.org/privacy |
 | **Conditions** | https://pinkin.org/terms |
 | **Email de contact dev** | cedric.mabilotte@gmail.com |
-| **Vidéo de démo** | À enregistrer selon `PLAN_VIDEO_OAUTH.md` |
+| **Vidéo de démo** | https://youtu.be/0xyNUA8kgaU (non répertoriée, 2026-10-08) |
 
 ---
 
