@@ -3,6 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- Même politique que la PWA (cc037f6) : seule l'origine part vers OSM/Nominatim,
+       jamais le chemin. Depuis une page chrome-extension:// Chrome n'envoie de toute
+       façon pas de Referer ; la balise aligne les deux surfaces et documente l'intention. -->
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <title>Pinkin</title>
   <link rel="stylesheet" href="../../lib/leaflet/leaflet.css">
   <link rel="stylesheet" href="popup.css">
