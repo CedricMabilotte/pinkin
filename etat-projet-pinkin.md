@@ -1,4 +1,4 @@
-# État projet Pinkin — 2026-10-06 (réactivation)
+# État projet Pinkin — 2026-10-31 (OAuth approuvé)
 
 ## Point de reprise
 
@@ -15,6 +15,37 @@ Re-vérifié ce jour [VÉRIFIÉ] :
 
 Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
 `PLAN_VIDEO_OAUTH.md`, `CHECKLIST_LANCEMENT.md`.
+
+## Vérification OAuth Google — APPROUVÉE le 2026-10-14 [VÉRIFIÉ Gmail 2026-10-31]
+- Réponse envoyée le 2026-10-12 20:07 (vidéo v2 https://youtu.be/EE179m5hiKo + argumentaire
+  « pas de scope d'écriture par champ dans People API »), fil « OAuth Verification Request
+  Acknowledgement ».
+- Google (Third Party Data Safety Team) approuve le 2026-10-14 09:23 UTC les deux scopes
+  `contacts` et `contacts.readonly`, projet 915913862394 (`pinkin-497020`).
+- Conséquences : plus d'écran « unverified app » ; tout nouveau scope ou modification de
+  l'écran de consentement redéclenche une vérification.
+- CWS 2026-10-31 : la fiche était restée en **brouillon** depuis le 07/10 (jamais soumise) ;
+  Ced l'a passée en visibilité **Public**. Reste : confirmer « Envoyer pour examen » dans le
+  dashboard, puis suivre la revue (mail CWS). Première soumission = directement publique.
+- Point ouvert avant/pendant la revue : le fix referrer du 08/10 (`cc037f6`) ne touche que
+  `pwa/index.html` ; le paquet `dist/pinkin-v1.0.0.zip` (07/10) et le popup de l'extension
+  n'ont pas de meta referrer. Non testé en conditions réelles : si les tuiles OSM sont
+  bloquées dans l'extension, prévoir une v1.0.1 (voir « À vérifier » du 08/10).
+
+## Avancement 2026-10-12 — vidéo OAuth v2 (après rejet Google du 2026-10-10)
+- Rejet : vidéo jugée insuffisante pour justifier `contacts` (moindre privilège) ;
+  consentements à montrer dépliés, scopes = ceux du Console, instructions pas à pas.
+- **Vidéo v2** : `marketing/cws/pinkin-oauth-demo-v2.webm` (6 min 39, 1280x1000 :
+  navigateur jamais recouvert, sous-titres en bandeau dessous, cartons « scopes
+  demandés », « why no narrower scope », résumé). Démontre : consentement #1 + « See
+  access details », usages readonly, ajout d'adresse d'Élise Perrin depuis sa fiche →
+  consentement #2 incrémental + détails + « 1 service » → écriture adresse + GEO →
+  preuve dans Google Contacts → page Linked apps. Sources : `marketing/cws/video2/`.
+- Compte de test : contacts réimportés le 2026-10-11 (vcf) ; Google impose un défi SMS
+  (ancien numéro de récupération) à chaque connexion OAuth en session Xvfb.
+- **Reste (opérateur)** : upload YouTube non répertorié → remplacer YOUTUBE_LINK_HERE
+  dans le brouillon Gmail de réponse (fil « OAuth Verification Request
+  Acknowledgement ») → envoyer ; mettre à jour le lien vidéo dans le formulaire.
 
 ## Avancement 2026-10-08
 
