@@ -1,4 +1,4 @@
-# État projet Pinkin — 2026-10-31 (OAuth approuvé)
+# État projet Pinkin — 2026-10-31 (OAuth approuvé, v1.0.1 prête)
 
 ## Point de reprise
 
@@ -27,7 +27,14 @@ Rafraîchi ce jour : `FICHE_CWS.md`, `JUSTIFICATION_OAUTH.md`,
 - CWS 2026-10-31 : la fiche était restée en **brouillon** depuis le 07/10 (jamais soumise) ;
   Ced l'a passée en visibilité **Public**. Reste : confirmer « Envoyer pour examen » dans le
   dashboard, puis suivre la revue (mail CWS). Première soumission = directement publique.
-- Point ouvert avant/pendant la revue : le fix referrer du 08/10 (`cc037f6`) ne touche que
+- **v1.0.1 empaquetée le 2026-10-31** (`abb51c2`) : `dist/pinkin-v1.0.1.zip` (2,4 Mo, 49 fichiers,
+  `key` retiré, 165/165 tests, check:quotes propre). Seul changement fonctionnel : meta
+  `referrer strict-origin-when-cross-origin` dans `extension/popup/popup.html`, aligné sur la
+  PWA. Test curl du 31/10 : `tile.openstreetmap.org` répond 200 avec ou sans Referer, avec
+  Origin `chrome-extension://` — le risque de carte grise dans l'extension paraît faible.
+  Reste (opérateur) : dashboard CWS → Paquet → importer `dist/pinkin-v1.0.1.zip` à la place
+  du 1.0.0 → Envoyer pour examen.
+- Point historique : le fix referrer du 08/10 (`cc037f6`) ne touche que
   `pwa/index.html` ; le paquet `dist/pinkin-v1.0.0.zip` (07/10) et le popup de l'extension
   n'ont pas de meta referrer. Non testé en conditions réelles : si les tuiles OSM sont
   bloquées dans l'extension, prévoir une v1.0.1 (voir « À vérifier » du 08/10).

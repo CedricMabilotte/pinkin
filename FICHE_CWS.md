@@ -295,7 +295,7 @@ avec un compte de test, après `npm run dev:pwa`.*
       contenu identique octet par octet aux sources actuelles (aucun commit
       depuis le 2026-06-19 ne touche `manifest.json`, `extension/`, `core/`,
       `ui/`, `i18n/`, `assets/icons/`, `lib/leaflet/`). Pas de repack nécessaire.
-- [x] Manifeste : version `1.0.0`, `key` présent, icônes 16/32/48/128
+- [x] Manifeste : version `1.0.1` (31/10 ; 1.0.0 au 06/10), `key` présent, icônes 16/32/48/128
 - [x] `extension/background/secrets.js` réel (non placeholder) inclus dans le zip
 - [x] `https://pinkin.org/privacy` et `/terms` en ligne, HTTPS, identiques au dépôt (vérifié 2026-10-06)
 - [ ] Captures d'écran 1280×800 (5)

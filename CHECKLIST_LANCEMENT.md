@@ -80,8 +80,8 @@ ou décisions qui t'appartiennent. Aucune n'est automatisable par un agent.
 - [x] Basculer la visibilité Chrome Web Store de **Non-listé** à **Listé** —
       Pinkin devient public. **Fait 2026-10-31** (Ced, dashboard) : la fiche
       était restée en brouillon (jamais soumise en Non-listé le 07/10) ;
-      visibilité passée directement en Public. Reste : « Envoyer pour examen »
-      si pas encore fait, puis attendre la revue magasin (24–72 h en général).
+      visibilité passée directement en Public. Paquet à soumettre : **`dist/pinkin-v1.0.1.zip`** (31/10, remplace le
+      1.0.0 importé le 07/10). Puis « Envoyer pour examen » ; revue 24–72 h.
 
 ---
 
