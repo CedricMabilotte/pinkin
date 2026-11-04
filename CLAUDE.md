@@ -6,14 +6,8 @@ Routine de fin de session — checklist de clôture (vérifier l'état publié, 
 
 Fichier : `routine-fin.md`
 
-## Outils à ne pas utiliser
-
-Deux outils font planter l'interface Cowork de l'opérateur :
-- le rendu de visuel *inline* dans le chat (widget de visualisation) ;
-- l'outil de questions à choix multiple.
-
-Ne jamais les invoquer. À la place : livrer les visuels en **fichier HTML
-autonome** (ouvrable au navigateur), et poser les questions **en texte**.
+## Outils d'interface
+État des outils d'interface (widget de questions, visualisation inline) : para `resources/shared/faits-execution.md`, daté et rejoué par script — l'ancien bloc « Outils à ne pas utiliser » (sans date ni version) est retiré le 2026-11-04 (revue env. D1-07). Périmètre : Cowork ; raison : règle périmée depuis le retest du 2026-09-07 ; sauf si : un plantage signalé par Ced, à noter dans faits-execution.md avec la version d'app.
 
 ## Reprise de session — vérifier les handoffs
 
