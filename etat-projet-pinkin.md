@@ -1,4 +1,5 @@
 # État projet Pinkin — 2026-10-31 (OAuth approuvé, v1.0.1 prête)
+**Mise à jour 2026-11-07 (session Refonte, D8-05)** : l'extension est **publiée sur le Chrome Web Store** [VÉRIFIÉ 2026-11-07, curl de la fiche https://chromewebstore.google.com/detail/pinkin/amcfdgfoihfhcdononldbgpoeafgpdpo : publique, version 1.0.1, mise à jour le 31 octobre 2026, 2,38 MiB, français]. Les lignes « CWS brouillon / jamais soumise / importer v1.0.1 » ci-dessous sont périmées. Reste (para, D8-05 §3) : un contrat de vie « produit » (ce que l'extension collecte, qui peut la retirer — Google, CWS, OSM — et ce qu'on fait alors ; ligne de santé tenue à la main).
 
 ## Point de reprise
 
