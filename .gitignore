@@ -34,3 +34,6 @@ assets/prints/
 
 # Vidéo de démo OAuth (lourde, hors dépôt)
 marketing/cws/*.webm
+
+# copies « avant » des cascades de premier écran / journaux (D1-06, 2026-11-08) : sécurité locale, le texte intact est dans *-archive.md
+avant-cascade/
