@@ -29,3 +29,7 @@ son contexte, son jugement, ou un accès que Claude n'a pas (compte tiers,
 navigateur piloté à la main, runtime non automatisable). Une demande qu'un
 document tranchait déjà, ou qu'un contrôle aurait répondue, est une demande de
 trop. (Leçon #5 L8.)
+## Produit — contrat de vie
+Pinkin est le seul *produit* de para : des utilisateurs qui ne sont pas Cedric, des contacts de tiers, trois gardiens externes (Google OAuth, Chrome Web Store, OpenStreetMap). Son contrat de vie fait foi : para `resources/shared/contrats-de-vie/pinkin-produit.md` (v1, 2026-11-08) ; ligne de santé : `pinkin-produit.py --check` (health-check Partie E).
+- Pas de nouvel hôte ni de nouveau scope — périmètre : `manifest.json` (`host_permissions`) et écran de consentement OAuth ; raison : un scope ajouté rejoue la vérification Google (deux semaines, rejet d'une vidéo le 2026-10-14) et la promesse publique « zéro serveur » (fiche CWS, /privacy) ne se retire pas ; sauf si : décision explicite de Cedric, écrite d'abord dans le contrat de vie.
+- Quand Cedric agit sur le store ou la console OAuth, il le dit dans `etat-projet-pinkin.md` le jour même — périmètre : dashboard CWS, console Google Cloud, où aucune session ne voit rien ; raison : du 31/10 au 07/11 trois sources se contredisaient sur l'état de publication ; sauf si : jamais.

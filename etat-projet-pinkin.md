@@ -1,5 +1,6 @@
 # État projet Pinkin — 2026-10-31 (OAuth approuvé, v1.0.1 prête)
 **Mise à jour 2026-11-07 (session Refonte, D8-05)** : l'extension est **publiée sur le Chrome Web Store** [VÉRIFIÉ 2026-11-07, curl de la fiche https://chromewebstore.google.com/detail/pinkin/amcfdgfoihfhcdononldbgpoeafgpdpo : publique, version 1.0.1, mise à jour le 31 octobre 2026, 2,38 MiB, français]. Les lignes « CWS brouillon / jamais soumise / importer v1.0.1 » ci-dessous sont périmées. Reste (para, D8-05 §3) : un contrat de vie « produit » (ce que l'extension collecte, qui peut la retirer — Google, CWS, OSM — et ce qu'on fait alors ; ligne de santé tenue à la main).
+**Mise à jour 2026-11-08 (session Refonte, D8-05 close)** : contrat de vie « produit » adopté (para `resources/shared/contrats-de-vie/pinkin-produit.md`, règles reprises dans CLAUDE.md §Produit). Champs tenus à la main : **store : publié 1.0.1 (31/10), vu le 08/11** [VÉRIFIÉ `pinkin-produit.py --check` 7/7] · **issues : 0 ouverte, dernière lecture le 08/11** [VÉRIFIÉ `gh api`]. Reste du contrat : formule « maintenu quand Cedric le peut ; une faille de sécurité d'abord » à écrire dans README et fiche CWS ; tuiles de secours non codées ; pas d'adresse de contact sur le site ni la fiche (issues GitHub + SECURITY.md seulement).
 
 ## Point de reprise
 
