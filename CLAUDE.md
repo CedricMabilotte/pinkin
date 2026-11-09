@@ -11,12 +11,7 @@ Fichier : `routine-fin.md`
 
 ## Reprise de session — vérifier les handoffs
 
-Un handoff, ou tout document de passation, est une **suite de claims, pas une
-preuve**. Toute affirmation portant sur l'état du *code* — divergences entre
-fichiers, fichiers morts, « X est fait », « c'est testé » — se **re-vérifie
-contre le code** avant d'être propagée ou utilisée comme base de décision. La
-convention [VÉRIFIÉ] / [SUPPOSÉ] des handoffs sert à ça : ne jamais traiter un
-[SUPPOSÉ] comme acquis.
+Un handoff est une suite de claims, pas une preuve : règle commune et marqueurs [VÉRIFIÉ] / [SUPPOSÉ] dans para `resources/shared/conventions.md` §« Claims vs preuves » (ce bloc en était une copie mot pour mot ; pointeur posé le 09/11, avis kern).
 
 ## Délégation — vérifier d'abord soi-même
 
